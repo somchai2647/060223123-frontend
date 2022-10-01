@@ -10,6 +10,12 @@ export default class MyDocument extends Document {
                     <link rel="icon" href="/favicon.ico" />
                     <link rel="stylesheet" href="assets/css/bootstrap.css" />
 
+                    {/* Google Font */}
+                    <link rel="preconnect" href="https://fonts.googleapis.com" />
+                    <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={`true`} />
+                    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,200;0,400;0,600;1,200&display=swap" rel="stylesheet" />
+                    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
                     {/* jQuery */}
                     <script src="assets/js/jquery-2.0.0.min.js" type="text/javascript"></script>
                     <script src="assets/js/bootstrap.bundle.min.js" type="text/javascript"></script>
