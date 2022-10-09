@@ -17,11 +17,10 @@ export default function Login(category) {
             const res = await Axios.post('/auth/login', dataform)
             console.log(res.data)
 
-            const { role } = res.data
-
-            console.log(role)
+            const { role, token } = res.data
+            localStorage.setItem('token', token)
             if (role === "ADMIN") {
-                router.push("/manage/dashboard");
+                router.push("/manage");
             }
 
         } catch (error) {
