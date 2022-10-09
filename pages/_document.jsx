@@ -25,7 +25,7 @@ export default class MyDocument extends Document {
                 <Head>
                     <meta name="description" content="ร้านหนอนหนังสือ" />
                     <link rel="icon" href="/favicon.ico" />
-                    <link rel="stylesheet" href="assets/css/bootstrap.css" />
+                    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
 
                     {/* Google Font */}
                     <link rel="preconnect" href="https://fonts.googleapis.com" />

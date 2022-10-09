@@ -11,7 +11,7 @@ export default function Navbar({ categorys }) {
                         <div className="row align-items-center">
                             <div className="col-lg-2 col-4">
                                 <a href="http://bootstrap-ecommerce.com" className="brand-wrap">
-                                    <img className="logo" src="assets/images/logo.png" />
+                                    <img className="logo" src="/assets/images/logo.png" />
                                 </a> {/* brand-wrap.// */}
                             </div>
                             <div className="col-lg-6 col-sm-12">
