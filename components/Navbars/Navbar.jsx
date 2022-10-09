@@ -36,10 +36,14 @@ export default function Navbar({ categorys }) {
                                         <a href="#" className="icon icon-sm rounded-circle border"><i className="fa fa-user" /></a>
                                         <div className="text">
                                             <span className="text-muted">ยินดีต้อนรับ!</span>
-                                            <div>
-                                                <a href="#">เข้าสู่ระบบ</a> |
-                                                <a href="#"> สมัครสมาชิก</a>
-                                            </div>
+                                            <br />
+                                            <Link href="/login">
+                                                <a >เข้าสู่ระบบ </a>
+                                            </Link>
+                                            |
+                                            <Link href="/register">
+                                                <a> สมัครสมาชิก</a>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div> {/* widgets-wrap.// */}
@@ -83,7 +87,7 @@ export function Nav({ categorys = [] }) {
                                 <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#"> เพิ่มเติม </a>
                                 <div className="dropdown-menu">
                                     {categorys?.slice(9).map((category) => (
-                                        <Link href="/">
+                                        <Link href="/" key={category.id}>
                                             <a className="dropdown-item">{category.name}</a>
                                         </Link>
                                     ))}

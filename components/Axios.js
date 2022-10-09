@@ -32,13 +32,13 @@ Axios.interceptors.response.use(
         return response
     },
     error => {
-        if (error.response.status === 401 || error.response.status === 400) {
+        if (error.response.status === 401) {
             if (!ISSERVER) {
                 localStorage.removeItem('token')
                 window.location.href = '/'
             }
         }
-        return Promise.reject(error)
+        return Promise.reject(error.response.data.error)
     }
 )
 
