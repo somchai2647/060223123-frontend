@@ -3,8 +3,8 @@ import Layout from '../../components/Layout/Admin'
 
 export default function dashboard() {
     return (
-        <Layout nonavbar={true} title="Dashboard" >
-            dwDad
+        <Layout nonavbar={true} title="หน้าหลัก" >
+            Dashboard
         </Layout>
     )
 }
