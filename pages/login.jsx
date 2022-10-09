@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Layout from '../components/Layout'
 import Axios from '../components/Axios'
 import { useForm } from 'react-hook-form'
 
 export default function Login(category) {
-
+    const router = useRouter()
     const { register, handleSubmit, formState: { errors } } = useForm()
 
     const [loadding, setLoadding] = useState(false)
 
     async function onSubmit(dataform) {
         try {
-            console.log(dataform)
+            // console.log(dataform)
             const res = await Axios.post('/auth/login', dataform)
             console.log(res.data)
-           
+
+            const { role } = res.data
+
+            console.log(role)
+            if (role === "ADMIN") {
+                router.push("/manage/dashboard");
+            }
+
         } catch (error) {
             console.error(error)
         } finally {
