@@ -2,6 +2,23 @@ import * as React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 export default class MyDocument extends Document {
+    static async getInitialProps(ctx) {
+        const originalRenderPage = ctx.renderPage
+
+        // Run the React rendering logic synchronously
+        ctx.renderPage = () =>
+            originalRenderPage({
+                // Useful for wrapping the whole react tree
+                enhanceApp: (App) => App,
+                // Useful for wrapping in a per-page basis
+                enhanceComponent: (Component) => Component,
+            })
+
+        // Run the parent `getInitialProps`, it now includes the custom `renderPage`
+        const initialProps = await Document.getInitialProps(ctx)
+
+        return initialProps
+    }
     render() {
         return (
             <Html lang="en">
@@ -17,17 +34,17 @@ export default class MyDocument extends Document {
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
                     {/* jQuery */}
-                    <script src="assets/js/jquery-2.0.0.min.js" type="text/javascript"></script>
-                    <script src="assets/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+                    <script src="/assets/js/jquery-2.0.0.min.js" type="text/javascript"></script>
+                    <script src="/assets/js/bootstrap.bundle.min.js" type="text/javascript"></script>
                     {/* Font awesome 5 */}
-                    <link href="assets/fonts/fontawesome/css/all.min.css" type="text/css" rel="stylesheet" />
+                    <link href="/assets/fonts/fontawesome/css/all.min.css" type="text/css" rel="stylesheet" />
 
                     {/* custom style */}
-                    <link href="assets/css/ui.css" rel="stylesheet" type="text/css" />
-                    <link href="assets/css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
+                    <link href="/assets/css/ui.css" rel="stylesheet" type="text/css" />
+                    <link href="/assets/css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
 
                     {/* custom javascript */}
-                    <script src="assets/js/script.js" type="text/javascript"></script>
+                    <script src="/assets/js/script.js" type="text/javascript"></script>
 
                 </Head>
                 <body>

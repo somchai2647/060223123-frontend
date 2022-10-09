@@ -15,10 +15,7 @@ export default function Login(category) {
             console.log(dataform)
             const res = await Axios.post('/auth/login', dataform)
             console.log(res.data)
-            setTimeout(() => {
-                setLoadding(false)
-
-            }, 2000);
+           
         } catch (error) {
             console.error(error)
         } finally {
@@ -26,9 +23,9 @@ export default function Login(category) {
         }
     }
 
-    useEffect(() => {
-        console.log(errors)
-    }, [errors])
+    // useEffect(() => {
+    //     console.log(errors)
+    // }, [errors])
 
 
     return (
