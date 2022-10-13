@@ -20,6 +20,10 @@ export default function Product() {
         }
     }
 
+    function handleCallback(data) {
+        setProducts([...products, data])
+    }
+
     useEffect(() => {
         getProducts()
     }, [])
@@ -29,7 +33,7 @@ export default function Product() {
             <div className="card">
                 <div className="card-body">
                     <WarpperStatus />
-                    <ProductModal />
+                    <ProductModal callback={handleCallback} />
                     <hr />
                     <div className="row mb-3">
                         <div className="col">
