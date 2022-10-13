@@ -4,7 +4,7 @@ import Axois from '../../components/Axios'
 import ProductTable from '../../components/Tables/Product'
 import ProductModal from '../../components/Modal/Product'
 
-export default function product() {
+export default function Product() {
     const [products, setProducts] = useState([])
     const [loadding, setLoadding] = useState(false)
 

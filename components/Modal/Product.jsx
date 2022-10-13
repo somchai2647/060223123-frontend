@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import Axios from '../Axios'
+import useBook from '../../hooks/useBook';
 
 export default function Product({ product, editmode, callback }) {
+    const [categorys, authors, publishers] = useBook()
+
     const { register, handleSubmit, errors } = useForm()
     const [loadding, setLoadding] = useState(false)
-    const [categorys, setCategorys] = useState([])
 
     const formControl = useRef(null)
 
@@ -13,15 +15,6 @@ export default function Product({ product, editmode, callback }) {
         formControl.current.click()
     }
 
-    async function loadCategory() {
-        try {
-            const res = await Axios.get(`/category/getcategory`)
-            const data = res.data
-            setCategorys(data)
-        } catch (error) {
-            console.error(error)
-        }
-    }
 
     async function onSubmit(dataform) {
         try {
@@ -36,10 +29,6 @@ export default function Product({ product, editmode, callback }) {
             setLoadding(false)
         }
     }
-
-    useEffect(() => {
-        loadCategory()
-    }, [])
 
 
     return (
@@ -57,14 +46,32 @@ export default function Product({ product, editmode, callback }) {
                             <form onSubmit={handleSubmit(onSubmit)} >
                                 <div className="form-row">
                                     <div className="form-group col-md-12">
-                                        <label for="inputName">ชื่อสินค้า</label>
+                                        <label htmlFor="inputName">ชื่อสินค้า</label>
                                         <input type="text" {...register("name")} id="inputName" className="form-control" />
                                     </div>
-                                    <div className="form-group col-12 col-md-6">
-                                        <label for="inputName">ประเภทสินค้า</label>
-                                        <select id="inputState" defaultValue={""} class="form-control">
+                                    <div className="form-group col-12 col-md-4">
+                                        <label htmlFor="inputCategory">ประเภทสินค้า</label>
+                                        <select id="inputCategory" defaultValue={""} className="form-control">
                                             <option value="" disabled>เลือกประเภทสินค้า</option>
                                             {categorys?.map((item) => (
+                                                <option key={item.id} value={item.id}>{item.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="form-group col-12 col-md-4">
+                                        <label htmlFor="inputAuthor">ชื่อผู้เขียน</label>
+                                        <select id="inputAuthor" defaultValue={""} className="form-control">
+                                            <option value="" disabled>เลือกชื่อผู้เขียน</option>
+                                            {authors?.map((item) => (
+                                                <option key={item.id} value={item.id}>{item.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="form-group col-12 col-md-4">
+                                        <label htmlFor="inputAuthor">ชื่อสำนักพิมพ์</label>
+                                        <select id="inputAuthor" defaultValue={""} className="form-control">
+                                            <option value="" disabled>เลือกสำนักพิมพ์</option>
+                                            {publishers?.map((item) => (
                                                 <option key={item.id} value={item.id}>{item.name}</option>
                                             ))}
                                         </select>
