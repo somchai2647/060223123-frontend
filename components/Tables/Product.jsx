@@ -26,7 +26,7 @@ export default function Product({ products = [] }) {
                         <tr key={item.id} className='text-center'>
                             <th scope="row">{++index}. </th>
                             <td className='text-left'>{item.name}</td>
-                            <td>{item.category?.name}</td>
+                            <td>{item.category?.name}</td> 
                             <td>{item.author?.name}</td>
                             <td>{item.price} บาท</td>
                             <td>{item.discout} บาท</td>
