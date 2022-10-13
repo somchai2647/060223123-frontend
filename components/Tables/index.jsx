@@ -27,7 +27,7 @@ export default function TableDynamic({ fields = [], data = [], callback }) {
                                 <td key={field.key} className={field.align}>{item[field.key]}</td>
                             ))}
                             <td className='text-center'>
-                                <DropdownItem />
+                                <DropdownItem item={item} callback={callback} />
                             </td>
                         </tr>
                     ))}
@@ -38,19 +38,23 @@ export default function TableDynamic({ fields = [], data = [], callback }) {
     )
 }
 
-export function DropdownItem() {
+export function DropdownItem({ item, callback }) {
+
+    function handleClick(mode) {
+        callback({ mode, item })
+    }
+
     return (
         <div className="dropdown dropleft">
-            <a className="btn btn-sm" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+            <button className="btn btn-sm" type="button" data-toggle="dropdown" aria-expanded="false">
                 <i className="fa fa-ellipsis-v"></i>
-            </a>
+            </button>
             <div className="dropdown-menu ">
-                <a className="dropdown-item" href="#">Action</a>
-                <a className="dropdown-item" href="#">Another action</a>
-                <a className="dropdown-item" href="#">Something else here</a>
+                <button className="dropdown-item" type="button" onClick={() => handleClick("edit")}><i className="fas fa-edit"></i> แก้ไข</button>
+                <button className="dropdown-item text-danger" type="button" onClick={() => handleClick("delete")}><i className="fas fa-trash"></i> นำออก</button>
             </div>
         </div>
-
-
     )
 }
+
+

@@ -40,7 +40,10 @@ export default function Product({ product, editmode, callback }) {
             console.log(dataform)
             const res = await Axios.post('/product/createproduct', dataform)
             if (res.data) {
-                callback(res.data)
+                callback({
+                    mode : "add",
+                    data : res.data
+                })
                 reset()
                 closeModal.current.click()
             }

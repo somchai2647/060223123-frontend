@@ -5,6 +5,10 @@ const Menu = [
         path: '/manage',
     },
     {
+        name: 'การสั่งซื้อสินค้า',
+        path: '/manage/order',
+    },
+    {
         name: 'จัดการสินค้าในระบบ',
         path: '/manage/product',
     },

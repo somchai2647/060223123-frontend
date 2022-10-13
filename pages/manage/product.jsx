@@ -21,7 +21,21 @@ export default function Product() {
     }
 
     function handleCallback(data) {
-        setProducts([...products, data])
+        let index;
+        switch (data.mode) {
+            case "add":
+                setProducts([...products, data.data])
+                break;
+            case "edit":
+                index = products.findIndex(item => item?.id === data?.item.id)
+                break;
+            case "delete":
+                index = products.findIndex(item => item?.id === data?.item.id)
+            default:
+                break;
+        }
+
+        console.log(index)
     }
 
     useEffect(() => {
@@ -40,7 +54,7 @@ export default function Product() {
                             <button type='button' className='btn btn-primary shadow-sm' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มสินค้าในระบบ</button>
                         </div>
                     </div>
-                    <ProductTable products={products} />
+                    <ProductTable products={products} callback={handleCallback} />
                 </div>
             </div>
         </Layout>

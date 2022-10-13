@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Product({ products = [] }) {
+export default function Product({ products = [], callback }) {
     return (
         <div className='table-responsive'>
             <table className="table table-striped table-hover shadow-sm">
@@ -26,13 +26,13 @@ export default function Product({ products = [] }) {
                         <tr key={item.id} className='text-center'>
                             <th scope="row">{++index}. </th>
                             <td className='text-left'>{item.name}</td>
-                            <td>{item.category?.name}</td> 
+                            <td>{item.category?.name}</td>
                             <td>{item.author?.name}</td>
                             <td>{item.price} บาท</td>
                             <td>{item.discout} บาท</td>
                             <td>{item.stock}</td>
                             <td>
-                                <DropdownItem />
+                                <DropdownItem item={item} callback={callback} />
                             </td>
                         </tr>
                     ))}
@@ -44,19 +44,21 @@ export default function Product({ products = [] }) {
     )
 }
 
-export function DropdownItem() {
+export function DropdownItem({ item, callback }) {
+
+    function handleClick(mode) {
+        callback({ mode, item })
+    }
+
     return (
         <div className="dropdown dropleft">
-            <a className="btn btn-sm" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+            <button className="btn btn-sm" type="button" data-toggle="dropdown" aria-expanded="false">
                 <i className="fa fa-ellipsis-v"></i>
-            </a>
+            </button>
             <div className="dropdown-menu ">
-                <a className="dropdown-item" href="#">Action</a>
-                <a className="dropdown-item" href="#">Another action</a>
-                <a className="dropdown-item" href="#">Something else here</a>
+                <button className="dropdown-item" type="button" onClick={() => handleClick("edit")}><i className="fas fa-edit"></i> แก้ไข</button>
+                <button className="dropdown-item text-danger" type="button" onClick={() => handleClick("delete")}><i className="fas fa-trash"></i> นำออก</button>
             </div>
         </div>
-
-
     )
 }

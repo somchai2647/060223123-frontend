@@ -29,6 +29,10 @@ export default function Category() {
         }
     }
 
+    function handleCallback(data) {
+        console.log(data)
+    }
+
     useEffect(() => {
         getCategories()
     }, [])
@@ -37,7 +41,7 @@ export default function Category() {
         <Layout title="จัดการหมวดหมู่สินค้าในระบบ">
             <div className="card">
                 <div className="card-body">
-                    <CategoryTable fields={tableFields} data={categories} />
+                    <CategoryTable fields={tableFields} data={categories} callback={handleCallback} />
                 </div>
             </div>
         </Layout>
