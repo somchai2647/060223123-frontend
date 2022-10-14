@@ -1,22 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { useForm } from 'react-hook-form'
+import * as yup from "yup"
 import Axios from '../Axios'
+import { useForm } from 'react-hook-form'
 import useBook from '../../hooks/useBook'
 import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from "yup"
+import React, { useState, useEffect, useRef } from 'react'
+import ErrorLabel from '../ErrorLabel';
 
 const schema = yup.object().shape({
-    name: yup.string().required(),
-    price: yup.number().required(),
-    discount: yup.number().required(),
-    cost: yup.number().required(),
-    desc: yup.string().required(),
-    category: yup.string().required(),
-    author: yup.string().required(),
-    publisher: yup.string().required(),
-    amountpage: yup.number().required(),
-    stock: yup.number().required(),
-    stockAlm: yup.number().required(),
+    name: yup.string().required("กรุณากรอกชื่อสินค้า"),
+    price: yup.number().required("กรุณากรอกราคาสินค้า").positive("กรุณากรอกราคาสินค้าให้มากกว่า 0"),
+    discount: yup.number().positive("กรุณากรอกส่วนลดให้มากกว่า 0").max(100, "ส่วนลดสูงสุด 100%"),
+    cost: yup.number().required("กรุณากรอกราคาทุนสินค้า").positive("กรุณากรอกราคาทุนสินค้าให้มากกว่า 0"),
+    desc: yup.string(),
+    category: yup.string().required("กรุณาเลือกหมวดหมู่สินค้า"),
+    author: yup.string().required("กรุณาเลือกผู้แต่ง"),
+    publisher: yup.string().required("กรุณาเลือกสำนักพิมพ์"),
+    amountpage: yup.number().required("กรุณากรอกจำนวนหน้า").positive("กรุณากรอกจำนวนหน้าให้มากกว่า 0"),
+    stock: yup.number().required("กรุณากรอกจำนวนสินค้า").positive("กรุณากรอกจำนวนสินค้าให้มากกว่า 0"),
+    stockAlm: yup.number().required("กรุณากรอกจำนวนเตือนสินค้า").positive("กรุณากรอกจำนวนสินค้าเตือนให้มากกว่า 0"),
 });
 
 export default function Product({ editmode, callback }) {
@@ -33,6 +34,11 @@ export default function Product({ editmode, callback }) {
     function clickUpload() {
         formControl.current.click()
     }
+
+    useEffect(() => {
+        console.log(errors)
+    }, [errors])
+
 
     async function onSubmit(dataform) {
         try {
@@ -55,6 +61,7 @@ export default function Product({ editmode, callback }) {
     }
 
     useEffect(() => {
+        reset()
         if (editmode) {
             setValue('name', editmode.name)
             setValue('price', editmode.price)
@@ -86,65 +93,75 @@ export default function Product({ editmode, callback }) {
                             <form onSubmit={handleSubmit(onSubmit)} >
                                 <div className="form-row">
                                     <div className="form-group col-md-12">
-                                        <label htmlFor="inputName">ชื่อสินค้า</label>
+                                        <label htmlFor="inputName">ชื่อสินค้า <span className='text-danger'>*</span></label>
                                         <input type="text" {...register("name")} id="inputName" className="form-control" />
+                                        {errors.name && <ErrorLabel text={errors.name.message} />}
                                     </div>
                                     <div className="form-group col-md-12">
                                         <label htmlFor="inputDetail">รายละเอียดสินค้า</label>
                                         <textarea className="form-control" {...register("desc")} id="inputDetail" rows="3"></textarea>
                                     </div>
                                     <div className="form-group col-12 col-md-4">
-                                        <label htmlFor="inputCategory">ประเภทสินค้า</label>
+                                        <label htmlFor="inputCategory">ประเภทสินค้า <span className='text-danger'>*</span></label>
                                         <select id="inputCategory" defaultValue={""}  {...register("category", { required: true })} className="form-control">
                                             <option value="" disabled>เลือกประเภทสินค้า</option>
                                             {categorys?.map((item) => (
                                                 <option key={item.id} value={item.id}>{item.name}</option>
                                             ))}
                                         </select>
+                                        {errors.category && <ErrorLabel text={errors.category.message} />}
                                     </div>
                                     <div className="form-group col-12 col-md-4">
-                                        <label htmlFor="inputAuthor">ชื่อผู้เขียน</label>
+                                        <label htmlFor="inputAuthor">ชื่อผู้เขียน <span className='text-danger'>*</span></label>
                                         <select id="inputAuthor" defaultValue={""}  {...register("author", { required: true })} className="form-control">
                                             <option value="" disabled>เลือกชื่อผู้เขียน</option>
                                             {authors?.map((item) => (
                                                 <option key={item.id} value={item.id}>{item.name}</option>
                                             ))}
                                         </select>
+                                        {errors.author && <ErrorLabel text={errors.author.message} />}
                                     </div>
                                     <div className="form-group col-12 col-md-4">
-                                        <label htmlFor="inputAuthor">ชื่อสำนักพิมพ์</label>
+                                        <label htmlFor="inputAuthor">ชื่อสำนักพิมพ์ <span className='text-danger'>*</span></label>
                                         <select id="inputAuthor" {...register("publisher", { required: true })} defaultValue={""} className="form-control">
                                             <option value="" disabled>เลือกสำนักพิมพ์</option>
                                             {publishers?.map((item) => (
                                                 <option key={item.id} value={item.id}>{item.name}</option>
                                             ))}
                                         </select>
+                                        {errors.publisher && <ErrorLabel text={errors.publisher.message} />}
                                     </div>
                                     <div className="form-group col-12 col-md-4">
-                                        <label htmlFor="inputAmountPage">จำนวนหน้า</label>
+                                        <label htmlFor="inputAmountPage">จำนวนหน้า <span className='text-danger'>*</span></label>
                                         <input type="number" {...register("amountpage")} min={1} id="inputAmountPage" className="form-control" />
+                                        {errors.amountpage && <ErrorLabel text={errors.amountpage.message} />}
                                     </div>
                                     <div className="form-group col-12 col-md-4">
-                                        <label htmlFor="inputStock">จำนวนคงเหลือ</label>
+                                        <label htmlFor="inputStock">จำนวนคงเหลือ <span className='text-danger'>*</span></label>
                                         <input type="number" {...register("stock")} min={1} id="inputStock" className="form-control" />
+                                        {errors.stock && <ErrorLabel text={errors.stock.message} />}
                                     </div>
                                     <div className="form-group col-12 col-md-4">
                                         <label htmlFor="inputstockAlm">จำนวนแจ้งเตือนสำหรับคงเหลือ</label>
                                         <input type="number" {...register("stockAlm")} min={1} id="inputstockAlm" className="form-control" />
+                                        {errors.stockAlm && <ErrorLabel text={errors.stockAlm.message} />}
                                     </div>
                                 </div>
                                 <div className="form-row">
                                     <div className="form-group col-md-4">
-                                        <label htmlFor="inputCost">ราคาต้นทุนสินค้า</label>
+                                        <label htmlFor="inputCost">ราคาต้นทุนสินค้า <span className='text-danger'>*</span></label>
                                         <input type="number" {...register("cost")} step={0.01} min={1} id="inputCost" className="form-control" />
+                                        {errors.cost && <ErrorLabel text={errors.cost.message} />}
                                     </div>
                                     <div className="form-group col-md-4">
-                                        <label htmlFor="inputPrice">ราคาขายสินค้า</label>
+                                        <label htmlFor="inputPrice">ราคาขายสินค้า <span className='text-danger'>*</span></label>
                                         <input type="number" {...register("price")} step={0.01} min={1} id="inputPrice" className="form-control" />
+                                        {errors.price && <ErrorLabel text={errors.price.message} />}
                                     </div>
                                     <div className="form-group col-md-4">
                                         <label htmlFor="inputDiscout">ลดราคาสินค้า %</label>
                                         <input type="number" {...register("discount")} min={1} id="inputDiscout" className="form-control" />
+                                        {errors.discount && <ErrorLabel text={errors.discount.message} />}
                                     </div>
                                 </div>
                                 <button type="submit" className="d-none" ref={formControl} />
