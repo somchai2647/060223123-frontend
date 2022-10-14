@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Layout from '../../components/Layout/Admin'
 import Axois from '../../components/Axios'
 import ProductTable from '../../components/Tables/Product'
@@ -7,6 +7,8 @@ import ProductModal from '../../components/Modal/Product'
 export default function Product() {
     const [products, setProducts] = useState([])
     const [loadding, setLoadding] = useState(false)
+    const [editMode, setEditMode] = useState(null)
+    const ModalBtn = useRef(null)
 
     async function getProducts() {
         try {
@@ -20,22 +22,27 @@ export default function Product() {
         }
     }
 
+    function handleEditMode() {
+        setEditMode(null)
+    }
+
     function handleCallback(data) {
-        let index;
+        let item
         switch (data.mode) {
             case "add":
                 setProducts([...products, data.data])
-                break;
+                break
             case "edit":
-                index = products.findIndex(item => item?.id === data?.item.id)
-                break;
+                item = products.find(item => item?.id === data?.item.id)
+                setEditMode(item)
+                ModalBtn.current.click()
+                break
             case "delete":
-                index = products.findIndex(item => item?.id === data?.item.id)
+                item = products.find(item => item?.id === data?.item.id)
             default:
-                break;
+                break
         }
-
-        console.log(index)
+        console.log(item)
     }
 
     useEffect(() => {
@@ -47,11 +54,12 @@ export default function Product() {
             <div className="card">
                 <div className="card-body">
                     <WarpperStatus />
-                    <ProductModal callback={handleCallback} />
+                    <ProductModal editmode={editMode} callback={handleCallback} />
                     <hr />
                     <div className="row mb-3">
                         <div className="col">
-                            <button type='button' className='btn btn-primary shadow-sm' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มสินค้าในระบบ</button>
+                            <button type='button' onClick={handleEditMode} className='btn btn-primary shadow-sm' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มสินค้าในระบบ</button>
+                            <button type='button' ref={ModalBtn} className='btn btn-primary shadow-sm d-none' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มสินค้าในระบบ</button>
                         </div>
                     </div>
                     <ProductTable products={products} callback={handleCallback} />

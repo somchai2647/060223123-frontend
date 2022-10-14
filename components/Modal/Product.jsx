@@ -19,10 +19,10 @@ const schema = yup.object().shape({
     stockAlm: yup.number().required(),
 });
 
-export default function Product({ product, editmode, callback }) {
+export default function Product({ editmode, callback }) {
     const [categorys, authors, publishers] = useBook()
 
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm({
         resolver: yupResolver(schema)
     })
     const [loadding, setLoadding] = useState(false)
@@ -38,11 +38,11 @@ export default function Product({ product, editmode, callback }) {
         try {
             setLoadding(true)
             console.log(dataform)
-            const res = await Axios.post('/product/createproduct', dataform)
+            const res = await editmode ? Axios.put(`/product/updateProduct/${editmode.id}`, dataform) : Axios.post('/product/createproduct', dataform)
             if (res.data) {
                 callback({
-                    mode : "add",
-                    data : res.data
+                    mode: editmode ? "update" : "add",
+                    data: res.data
                 })
                 reset()
                 closeModal.current.click()
@@ -55,9 +55,20 @@ export default function Product({ product, editmode, callback }) {
     }
 
     useEffect(() => {
-        console.log("ERROR", errors)
-    }, [errors])
-
+        if (editmode) {
+            setValue('name', editmode.name)
+            setValue('price', editmode.price)
+            setValue('discount', editmode.discount)
+            setValue('cost', editmode.cost)
+            setValue('desc', editmode.desc)
+            setValue('category', editmode?.category?.id)
+            setValue('author', editmode?.author?.id)
+            setValue('publisher', editmode?.publisher?.id)
+            setValue('amountpage', editmode.amountpage)
+            setValue('stock', editmode.stock)
+            setValue('stockAlm', editmode.stockAlm)
+        }
+    }, [editmode])
 
 
     return (
@@ -66,8 +77,8 @@ export default function Product({ product, editmode, callback }) {
                 <div className="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="staticBackdropLabel">เพิ่มสินค้าในระบบ</h5>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close" ref={closeModal}>
+                            <h5 className="modal-title" id="staticBackdropLabel"> {editmode ? "แก้ไขสินค้าในระบบ" : "เพิ่มสินค้าในระบบ"}</h5>
+                            <button type="button" disabled={loadding} className="close" data-dismiss="modal" aria-label="Close" ref={closeModal}>
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
@@ -140,8 +151,8 @@ export default function Product({ product, editmode, callback }) {
                             </form>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" onClick={clickUpload} className="btn btn-primary">บันทึกข้อมูล</button>
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                            <button type="button" onClick={clickUpload} className="btn btn-primary" disabled={loadding}>{loadding ? "กำลังบันทึก..." : "บันทึก"}</button>
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal" disabled={loadding}>ปิด</button>
                         </div>
                     </div>
                 </div>
