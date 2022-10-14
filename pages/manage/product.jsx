@@ -37,12 +37,17 @@ export default function Product() {
                 setEditMode(item)
                 ModalBtn.current.click()
                 break
+            case "update":
+                item = products.findIndex(item => item?.id === data?.data.id)
+                console.log("=>", item)
+                products[item] = data.data
+                setProducts([...products])
+                break
             case "delete":
                 item = products.find(item => item?.id === data?.item.id)
             default:
                 break
         }
-        console.log(item)
     }
 
     useEffect(() => {

@@ -9,7 +9,7 @@ import ErrorLabel from '../ErrorLabel';
 const schema = yup.object().shape({
     name: yup.string().required("กรุณากรอกชื่อสินค้า"),
     price: yup.number().required("กรุณากรอกราคาสินค้า").positive("กรุณากรอกราคาสินค้าให้มากกว่า 0"),
-    discount: yup.number().positive("กรุณากรอกส่วนลดให้มากกว่า 0").max(100, "ส่วนลดสูงสุด 100%"),
+    discount: yup.number().max(100, "ส่วนลดสูงสุด 100%"),
     cost: yup.number().required("กรุณากรอกราคาทุนสินค้า").positive("กรุณากรอกราคาทุนสินค้าให้มากกว่า 0"),
     desc: yup.string(),
     category: yup.string().required("กรุณาเลือกหมวดหมู่สินค้า"),
@@ -29,35 +29,34 @@ export default function Product({ editmode, callback }) {
     const [loadding, setLoadding] = useState(false)
 
     const formControl = useRef(null)
-    const closeModal = useRef(null)
+    const btnControl = useRef(null)
 
     function clickUpload() {
         formControl.current.click()
     }
 
-    useEffect(() => {
-        console.log(errors)
-    }, [errors])
+    function closeModal(){
+        btnControl.current.click()
+    }
 
 
     async function onSubmit(dataform) {
         try {
-            setLoadding(true)
-            console.log(dataform)
-            const res = await editmode ? Axios.put(`/product/updateProduct/${editmode.id}`, dataform) : Axios.post('/product/createproduct', dataform)
+            // setLoadding(true)
+            const res = editmode ? await Axios.put(`/product/updateProduct/${editmode.id}`, dataform) : await Axios.post('/product/createproduct', dataform)
             if (res.data) {
                 callback({
                     mode: editmode ? "update" : "add",
-                    data: res.data
+                    data: res.data,
                 })
-                reset()
-                closeModal.current.click()
             }
         } catch (error) {
             console.error(error)
         } finally {
             setLoadding(false)
+            reset()
         }
+        closeModal()
     }
 
     useEffect(() => {
@@ -85,7 +84,7 @@ export default function Product({ editmode, callback }) {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="staticBackdropLabel"> {editmode ? "แก้ไขสินค้าในระบบ" : "เพิ่มสินค้าในระบบ"}</h5>
-                            <button type="button" disabled={loadding} className="close" data-dismiss="modal" aria-label="Close" ref={closeModal}>
+                            <button type="button" disabled={loadding} className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
@@ -160,7 +159,7 @@ export default function Product({ editmode, callback }) {
                                     </div>
                                     <div className="form-group col-md-4">
                                         <label htmlFor="inputDiscout">ลดราคาสินค้า %</label>
-                                        <input type="number" {...register("discount")} min={1} id="inputDiscout" className="form-control" />
+                                        <input type="number" {...register("discount")} min={0} id="inputDiscout" className="form-control" />
                                         {errors.discount && <ErrorLabel text={errors.discount.message} />}
                                     </div>
                                 </div>
@@ -169,7 +168,7 @@ export default function Product({ editmode, callback }) {
                         </div>
                         <div className="modal-footer">
                             <button type="button" onClick={clickUpload} className="btn btn-primary" disabled={loadding}>{loadding ? "กำลังบันทึก..." : "บันทึก"}</button>
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal" disabled={loadding}>ปิด</button>
+                            <button type="button" className="btn btn-secondary" ref={btnControl} data-dismiss="modal" disabled={loadding}>ปิด</button>
                         </div>
                     </div>
                 </div>

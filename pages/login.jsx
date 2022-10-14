@@ -13,9 +13,7 @@ export default function Login(category) {
 
     async function onSubmit(dataform) {
         try {
-            // console.log(dataform)
             const res = await Axios.post('/auth/login', dataform)
-            console.log(res.data)
 
             const { role, token } = res.data
             localStorage.setItem('token', token)
@@ -29,11 +27,6 @@ export default function Login(category) {
             setLoadding(false)
         }
     }
-
-    // useEffect(() => {
-    //     console.log(errors)
-    // }, [errors])
-
 
     return (
         <Layout categorys={category["categorys"]}>

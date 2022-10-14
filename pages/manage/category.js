@@ -30,7 +30,7 @@ export default function Category() {
     }
 
     function handleCallback(data) {
-        console.log(data)
+       
     }
 
     useEffect(() => {
