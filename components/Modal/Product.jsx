@@ -42,7 +42,7 @@ export default function Product({ editmode, callback }) {
 
     async function onSubmit(dataform) {
         try {
-            // setLoadding(true)
+            setLoadding(true)
             const res = editmode ? await Axios.put(`/product/updateProduct/${editmode.id}`, dataform) : await Axios.post('/product/createproduct', dataform)
             if (res.data) {
                 callback({
@@ -53,9 +53,9 @@ export default function Product({ editmode, callback }) {
         } catch (error) {
             console.error(error)
         } finally {
-            setLoadding(false)
             reset()
         }
+        setLoadding(false)
         closeModal()
     }
 
@@ -168,7 +168,7 @@ export default function Product({ editmode, callback }) {
                         </div>
                         <div className="modal-footer">
                             <button type="button" onClick={clickUpload} className="btn btn-primary" disabled={loadding}>{loadding ? "กำลังบันทึก..." : "บันทึก"}</button>
-                            <button type="button" className="btn btn-secondary" ref={btnControl} data-dismiss="modal" disabled={loadding}>ปิด</button>
+                            <button type="button" className="btn btn-secondary" ref={btnControl} data-dismiss="modal" >ปิด</button>
                         </div>
                     </div>
                 </div>
