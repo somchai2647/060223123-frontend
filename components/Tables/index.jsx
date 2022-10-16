@@ -1,4 +1,6 @@
 import React from 'react'
+import Moment from 'moment'
+import "moment/locale/th"
 
 export default function TableDynamic({ fields = [], data = [], callback }) {
 
@@ -24,7 +26,7 @@ export default function TableDynamic({ fields = [], data = [], callback }) {
                         <tr key={item.id}>
                             <td className='text-center'>{index + 1}.</td>
                             {fields?.map((field) => (
-                                <td key={field.key} className={field.align}>{item[field.key]}</td>
+                                <td key={field.key} className={field.align}>{field.type == "date" ? Moment(item[field.key]).format("lll") : item[field.key]}</td>
                             ))}
                             <td className='text-center'>
                                 <DropdownItem data={item} callback={callback} />

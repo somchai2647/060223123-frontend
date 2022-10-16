@@ -18,7 +18,7 @@ const tableFields = [
         name: 'สร้างเมื่อ',
         key: 'createdAt',
         align: 'center',
-        inputType: 'date',
+        type: 'date',
         isInput: false,
     }
 ]
@@ -41,7 +41,7 @@ export default function Category() {
 
     async function getCategories() {
         try {
-            const res = await Axios.get('/category/getcategory')
+            const res = await Axios.get('/category/getcategory?order=desc')
             setCategories(res.data)
         } catch (error) {
             console.error(error)
