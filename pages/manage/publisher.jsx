@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import * as yup from "yup"
 import Layout from '../../components/Layout/Admin'
-import AuthorTable from '../../components/Tables'
+import PublisherTable from '../../components/Tables'
 import Axios from "../../components/Axios"
 import DynamicModal from "../../components/Modal"
 import manageState from '../../helpers/manageState'
@@ -17,10 +17,18 @@ const tableFields = [
         required: true
     },
     {
-        name: "อีเมลล์",
-        key: "email",
+        name: "ที่อยู่สำนักพิมพ์",
+        key: "address",
         align: "left",
-        type: "email",
+        type: "text",
+        isInput: true,
+        required: true
+    },
+    {
+        name: 'เบอร์โทรศัพท์',
+        key: 'tel',
+        align: 'left',
+        type: 'text',
         isInput: true,
         required: true
     },
@@ -34,26 +42,29 @@ const tableFields = [
 ]
 
 const schema = yup.object().shape({
-
+    name: yup.string().required(),
+    address: yup.string().required(),
+    tel: yup.string().required(),
 })
 
 const AxiosConfig = {
-    post: '/author/createauthor',
-    put: '/author/updateauthor',
+    post: '/publisher/createpublisher',
+    put: '/publisher/updatepublisher',
 }
 
-export default function Author() {
+export default function Publisher() {
 
-    const [authors, setAuthors] = useState([])
+
+    const [publisher, setPublisher] = useState([])
     const [editmode, setEditmode] = useState(null)
 
     const ModalBtn = useRef(null)
     const ModalDel = useRef(null)
 
-    async function getAuthors() {
+    async function getPublisher() {
         try {
-            const res = await Axios.get('/author/getauthor?withproduct=0')
-            setAuthors(res.data)
+            const res = await Axios.get('/publisher/getpublisher?withproduct=0')
+            setPublisher(res.data)
         } catch (error) {
             console.error(error)
         }
@@ -74,15 +85,15 @@ export default function Author() {
             default:
                 break;
         }
-        manageState(mode, authors, setAuthors, data)
+        manageState(mode, publisher, setPublisher, data)
     }
 
     useEffect(() => {
-        getAuthors()
+        getPublisher()
     }, [])
 
     return (
-        <Layout title="🧑‍🏫 จัดการผู้เขียน/ผู้แต่ง">
+        <Layout title="🏢 จัดการสำนักพิมพ์">
             <div className="card">
                 <div className="card-body">
                     <div className="row mb-3">
@@ -91,12 +102,12 @@ export default function Author() {
                             <button type='button' ref={ModalBtn} className='btn btn-primary shadow-sm d-none' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มผู้เขียน/ผู้แต่ง</button>
                         </div>
                     </div>
-                    <AuthorTable fields={tableFields} data={authors} callback={handleCallback} />
+                    <PublisherTable fields={tableFields} data={publisher} callback={handleCallback} />
                 </div>
             </div>
             <DynamicModal
                 schema={schema}
-                name="ผู้เขียน/ผู้แต่ง"
+                name="สำนักพิมพ์"
                 field={tableFields}
                 editmode={editmode}
                 axiosconfig={AxiosConfig}
@@ -105,9 +116,9 @@ export default function Author() {
             <DeleteModal
                 ref={ModalDel}
                 callback={handleCallback}
-                title="ลบผู้เขียน/ผู้แต่ง"
-                message={`คุณต้องการลบผู้เขียน/ผู้แต่ง ${editmode?.name} ใช่หรือไม่`}
-                path={`/author/destroyauthor/${editmode?.id}`}
+                title="ลบสำนักพิมพ์"
+                message={`คุณต้องการลบสำนักพิมพ์ ${editmode?.name} ใช่หรือไม่`}
+                path={`/publisher/destroypublisher/${editmode?.id}`}
             />
         </Layout>
     )

@@ -19,7 +19,7 @@ export default function TableDynamic({ fields = [], data = [], callback }) {
                 <tbody>
                     {data?.length === 0 && (
                         <tr key={1}>
-                            <td colSpan={fields.length + 1} className="text-center">-ไม่พบข้อมูล-</td>
+                            <td colSpan={fields.length + 2} className="text-center">-ไม่พบข้อมูล-</td>
                         </tr>
                     )}
                     {data?.map((item, index) => (
