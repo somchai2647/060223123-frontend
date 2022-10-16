@@ -27,7 +27,7 @@ export default function TableDynamic({ fields = [], data = [], callback }) {
                                 <td key={field.key} className={field.align}>{item[field.key]}</td>
                             ))}
                             <td className='text-center'>
-                                <DropdownItem item={item} callback={callback} />
+                                <DropdownItem data={item} callback={callback} />
                             </td>
                         </tr>
                     ))}
@@ -38,10 +38,10 @@ export default function TableDynamic({ fields = [], data = [], callback }) {
     )
 }
 
-export function DropdownItem({ item, callback }) {
+export function DropdownItem({ data, callback }) {
 
     function handleClick(mode) {
-        callback({ mode, item })
+        callback({ mode, data })
     }
 
     return (

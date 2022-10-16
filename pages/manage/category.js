@@ -50,14 +50,12 @@ export default function Category() {
 
 
     function handleCallback(backdata) {
-        console.log(backdata)
-        const { mode, item } = backdata
-        console.log(item)
+        const { mode, data } = backdata
         if (mode == "edit") {
-            setEditmode(item)
+            setEditmode(data)
             ModalBtn.current.click()
         }
-        // manageState(mode, categories, setCategories, item)
+        manageState(mode, categories, setCategories, data)
     }
 
     useEffect(() => {
@@ -78,7 +76,7 @@ export default function Category() {
                 <div className="card-body">
                     <div className="row mb-3">
                         <div className="col">
-                            <button type='button' className='btn btn-primary shadow-sm' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มหมวดหมู่สินค้า</button>
+                            <button type='button' onClick={() => setEditmode(null)} className='btn btn-primary shadow-sm' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มหมวดหมู่สินค้า</button>
                             <button type='button' ref={ModalBtn} className='btn btn-primary shadow-sm d-none' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มหมวดหมู่สินค้า</button>
                         </div>
                     </div>

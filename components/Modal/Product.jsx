@@ -93,7 +93,7 @@ export default function Product({ editmode, callback }) {
                                 <div className="form-row">
                                     <div className="form-group col-md-12">
                                         <label htmlFor="inputName">ชื่อสินค้า <span className='text-danger'>*</span></label>
-                                        <input type="text" {...register("name")} id="inputName" className="form-control" />
+                                        <input type="text" {...register("name")} id="inputName" className="form-control" autoFocus />
                                         {errors.name && <ErrorLabel text={errors.name.message} />}
                                     </div>
                                     <div className="form-group col-md-12">

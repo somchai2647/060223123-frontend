@@ -33,18 +33,17 @@ export default function Product() {
                 setProducts([...products, data.data])
                 break
             case "edit":
-                item = products.find(item => item?.id === data?.item.id)
+                item = products.find(item => item?.id === data?.data.id)
                 setEditMode(item)
                 ModalBtn.current.click()
                 break
             case "update":
                 item = products.findIndex(item => item?.id === data?.data.id)
-                console.log("=>", item)
                 products[item] = data.data
                 setProducts([...products])
                 break
             case "delete":
-                item = products.find(item => item?.id === data?.item.id)
+                item = products.find(item => item?.id === data?.data.id)
             default:
                 break
         }

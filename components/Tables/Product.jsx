@@ -32,7 +32,7 @@ export default function Product({ products = [], callback }) {
                             <td>{item.discout} บาท</td>
                             <td>{item.stock}</td>
                             <td>
-                                <DropdownItem item={item} callback={callback} />
+                                <DropdownItem data={item} callback={callback} />
                             </td>
                         </tr>
                     ))}
@@ -44,10 +44,10 @@ export default function Product({ products = [], callback }) {
     )
 }
 
-export function DropdownItem({ item, callback }) {
+export function DropdownItem({ data, callback }) {
 
     function handleClick(mode) {
-        callback({ mode, item })
+        callback({ mode, data })
     }
 
     return (

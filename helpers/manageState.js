@@ -4,7 +4,7 @@ export default function manageState(action, state, setState, callback) {
             setState([...state, callback])
             break
         case "edit":
-            setState(callback)
+            // setState(callback)
             break
         case "update":
             const item = state.findIndex(item => item?.id === callback?.id)
