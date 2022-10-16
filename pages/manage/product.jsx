@@ -3,12 +3,15 @@ import Layout from '../../components/Layout/Admin'
 import Axois from '../../components/Axios'
 import ProductTable from '../../components/Tables/Product'
 import ProductModal from '../../components/Modal/Product'
+import manageState from '../../helpers/manageState'
+import DeleteModal from '../../components/Modal/DynamicDelete';
 
 export default function Product() {
     const [products, setProducts] = useState([])
     const [loadding, setLoadding] = useState(false)
     const [editMode, setEditMode] = useState(null)
     const ModalBtn = useRef(null)
+    const ModalDel = useRef(null)
 
     async function getProducts() {
         try {
@@ -26,27 +29,21 @@ export default function Product() {
         setEditMode(null)
     }
 
-    function handleCallback(data) {
-        let item
-        switch (data.mode) {
-            case "add":
-                setProducts([...products, data.data])
-                break
+    function handleCallback(backdata) {
+        const { mode, data } = backdata
+        switch (mode) {
             case "edit":
-                item = products.find(item => item?.id === data?.data.id)
-                setEditMode(item)
+                setEditMode(data)
                 ModalBtn.current.click()
-                break
-            case "update":
-                item = products.findIndex(item => item?.id === data?.data.id)
-                products[item] = data.data
-                setProducts([...products])
-                break
-            case "delete":
-                item = products.find(item => item?.id === data?.data.id)
+                break;
+            case "del":
+                setEditMode(data)
+                ModalDel.current.click()
+                break;
             default:
-                break
+                break;
         }
+        manageState(mode, products, setProducts, data)
     }
 
     useEffect(() => {
@@ -69,6 +66,13 @@ export default function Product() {
                     <ProductTable products={products} callback={handleCallback} />
                 </div>
             </div>
+            <DeleteModal
+                ref={ModalDel}
+                title="ลบสินค้า"
+                message={`คุณต้องการลบสินค้า ${editMode?.name}  นี้ใช่หรือไม่`}
+                callback={handleCallback}
+                path={`/product/destroyproduct/${editMode?.id}`}
+            />
         </Layout>
     )
 }
