@@ -1,7 +1,7 @@
 export default function manageState(action, state, setState, callback) {
     switch (action) {
         case "add":
-            setState([...state, callback])
+            setState([callback, ...state])
             break
         case "edit":
             // setState(callback)
