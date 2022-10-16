@@ -1,24 +1,43 @@
-import React, { useState, useEffect } from 'react'
-import Layout from '../../components/Layout/Admin';
-import CategoryTable from '../../components/Tables';
-import Axios from "../../components/Axios";
+import React, { useState, useEffect, useRef } from 'react'
+import * as yup from "yup"
+import Layout from '../../components/Layout/Admin'
+import CategoryTable from '../../components/Tables'
+import Axios from "../../components/Axios"
+import DynamicModal from "../../components/Modal"
+import manageState from '../../helpers/manageState'
 
 const tableFields = [
     {
         name: 'ชื่อประเภทสินค้า',
         key: 'name',
         align: 'left',
+        type: 'text',
+        isInput: true
     },
     {
         name: 'สร้างเมื่อ',
         key: 'createdAt',
         align: 'center',
+        inputType: 'date',
+        isInput: false,
     }
 ]
+
+const schema = yup.object().shape({
+    name: yup.string().required("กรุณากรอกชื่อประเภทสินค้า")
+})
+
+const AxiosConfig = {
+    post: '/category/createcategory',
+    put: '/category/updatecategory',
+}
 
 export default function Category() {
 
     const [categories, setCategories] = useState([])
+    const [editmode, setEditmode] = useState(null)
+
+    const ModalBtn = useRef(null)
 
     async function getCategories() {
         try {
@@ -29,8 +48,16 @@ export default function Category() {
         }
     }
 
-    function handleCallback(data) {
-       
+
+    function handleCallback(backdata) {
+        console.log(backdata)
+        const { mode, item } = backdata
+        console.log(item)
+        if (mode == "edit") {
+            setEditmode(item)
+            ModalBtn.current.click()
+        }
+        // manageState(mode, categories, setCategories, item)
     }
 
     useEffect(() => {
@@ -39,8 +66,22 @@ export default function Category() {
 
     return (
         <Layout title="จัดการหมวดหมู่สินค้าในระบบ">
+            <DynamicModal
+                schema={schema}
+                name="หมวดหมู่สินค้า"
+                field={tableFields}
+                editmode={editmode}
+                axiosconfig={AxiosConfig}
+                callback={handleCallback}
+            />
             <div className="card">
                 <div className="card-body">
+                    <div className="row mb-3">
+                        <div className="col">
+                            <button type='button' className='btn btn-primary shadow-sm' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มหมวดหมู่สินค้า</button>
+                            <button type='button' ref={ModalBtn} className='btn btn-primary shadow-sm d-none' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มหมวดหมู่สินค้า</button>
+                        </div>
+                    </div>
                     <CategoryTable fields={tableFields} data={categories} callback={handleCallback} />
                 </div>
             </div>
