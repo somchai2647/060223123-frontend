@@ -46,7 +46,7 @@ export default function DynamicModal({ field = [], name, callback, schema, editm
         reset()
         if (editmode) {
             field?.map(item => {
-                setValue(item.key, editmode.name)
+                setValue(item.key, editmode[item.key])
             })
         }
     }, [editmode])

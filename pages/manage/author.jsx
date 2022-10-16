@@ -9,10 +9,17 @@ import DeleteModal from '../../components/Modal/DynamicDelete';
 
 const tableFields = [
     {
-        name: 'ชื่อประเภทสินค้า',
+        name: 'ชื่อผู้เขียน/ผู้แต่ง',
         key: 'name',
         align: 'left',
         type: 'text',
+        isInput: true
+    },
+    {
+        name: "อีเมลล์",
+        key: "email",
+        align: "left",
+        type: "email",
         isInput: true
     },
     {
@@ -25,26 +32,26 @@ const tableFields = [
 ]
 
 const schema = yup.object().shape({
-    name: yup.string().required("กรุณากรอกชื่อประเภทสินค้า")
+
 })
 
 const AxiosConfig = {
-    post: '/category/createcategory',
-    put: '/category/updatecategory',
+    post: '/author/createauthor',
+    put: '/author/updateauthor',
 }
 
 export default function Author() {
 
-    const [categories, setCategories] = useState([])
+    const [authors, setAuthors] = useState([])
     const [editmode, setEditmode] = useState(null)
 
     const ModalBtn = useRef(null)
     const ModalDel = useRef(null)
 
-    async function getCategories() {
+    async function getAuthors() {
         try {
-            const res = await Axios.get('/category/getcategory?order=desc')
-            setCategories(res.data)
+            const res = await Axios.get('/author/getauthor?withproduct=0')
+            setAuthors(res.data)
         } catch (error) {
             console.error(error)
         }
@@ -65,11 +72,11 @@ export default function Author() {
             default:
                 break;
         }
-        manageState(mode, categories, setCategories, data)
+        manageState(mode, authors, setAuthors, data)
     }
 
     useEffect(() => {
-        getCategories()
+        getAuthors()
     }, [])
 
     return (
@@ -78,16 +85,16 @@ export default function Author() {
                 <div className="card-body">
                     <div className="row mb-3">
                         <div className="col">
-                            <button type='button' onClick={() => setEditmode(null)} className='btn btn-primary shadow-sm' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มหมวดหมู่สินค้า</button>
-                            <button type='button' ref={ModalBtn} className='btn btn-primary shadow-sm d-none' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มหมวดหมู่สินค้า</button>
+                            <button type='button' onClick={() => setEditmode(null)} className='btn btn-primary shadow-sm' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มผู้เขียน/ผู้แต่งา</button>
+                            <button type='button' ref={ModalBtn} className='btn btn-primary shadow-sm d-none' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มผู้เขียน/ผู้แต่งา</button>
                         </div>
                     </div>
-                    <CategoryTable fields={tableFields} data={categories} callback={handleCallback} />
+                    <CategoryTable fields={tableFields} data={authors} callback={handleCallback} />
                 </div>
             </div>
             <DynamicModal
                 schema={schema}
-                name="หมวดหมู่สินค้า"
+                name="ผู้เขียน/ผู้แต่ง"
                 field={tableFields}
                 editmode={editmode}
                 axiosconfig={AxiosConfig}
@@ -96,9 +103,9 @@ export default function Author() {
             <DeleteModal
                 ref={ModalDel}
                 callback={handleCallback}
-                title="ลบหมวดหมู่สินค้า"
-                message={`คุณต้องการลบหมวดหมู่สินค้า ${editmode?.name} ใช่หรือไม่`}
-                path={`/category/destroycategory/${editmode?.id}`}
+                title="ลบผู้เขียน/ผู้แต่ง"
+                message={`คุณต้องการลบผู้เขียน/ผู้แต่ง ${editmode?.name} ใช่หรือไม่`}
+                path={`/author/destroyauthor/${editmode?.id}`}
             />
         </Layout>
     )
