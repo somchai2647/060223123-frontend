@@ -73,7 +73,7 @@ export default function Category() {
     }, [])
 
     return (
-        <Layout title="จัดการหมวดหมู่สินค้าในระบบ">
+        <Layout title="🏷️ จัดการหมวดหมู่สินค้า">
             <div className="card">
                 <div className="card-body">
                     <div className="row mb-3">

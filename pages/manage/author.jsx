@@ -73,7 +73,7 @@ export default function Author() {
     }, [])
 
     return (
-        <Layout title="จัดการหมวดหมู่สินค้าในระบบ">
+        <Layout title="🧑‍🏫 จัดการผู้เขียน/ผู้แต่ง">
             <div className="card">
                 <div className="card-body">
                     <div className="row mb-3">

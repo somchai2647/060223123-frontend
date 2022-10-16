@@ -51,7 +51,7 @@ export default function Product() {
     }, [])
 
     return (
-        <Layout nonavbar={true} title="จัดการสินค้าในระบบ">
+        <Layout nonavbar={true} title="📦 จัดการสินค้าในระบบ">
             <div className="card">
                 <div className="card-body">
                     <WarpperStatus />
