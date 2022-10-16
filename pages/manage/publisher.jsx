@@ -42,9 +42,9 @@ const tableFields = [
 ]
 
 const schema = yup.object().shape({
-    name: yup.string().required(),
-    address: yup.string().required(),
-    tel: yup.string().required(),
+    name: yup.string().required("กรุณากรอกชื่อสำนักพิมพ์"),
+    address: yup.string().required("กรุณากรอกที่อยู่สำนักพิมพ์"),
+    tel: yup.string().required("กรุณากรอกเบอร์โทรศัพท์"),
 })
 
 const AxiosConfig = {
@@ -98,8 +98,8 @@ export default function Publisher() {
                 <div className="card-body">
                     <div className="row mb-3">
                         <div className="col">
-                            <button type='button' onClick={() => setEditmode(null)} className='btn btn-primary shadow-sm' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มผู้เขียน/ผู้แต่ง</button>
-                            <button type='button' ref={ModalBtn} className='btn btn-primary shadow-sm d-none' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มผู้เขียน/ผู้แต่ง</button>
+                            <button type='button' onClick={() => setEditmode(null)} className='btn btn-primary shadow-sm' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มสำนักพิมพ์</button>
+                            <button type='button' ref={ModalBtn} className='btn btn-primary shadow-sm d-none' data-toggle="modal" data-target="#staticBackdrop"><i className="fas fa-plus-circle"></i> เพิ่มสำนักพิมพ์</button>
                         </div>
                     </div>
                     <PublisherTable fields={tableFields} data={publisher} callback={handleCallback} />

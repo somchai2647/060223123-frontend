@@ -34,7 +34,8 @@ const tableFields = [
 ]
 
 const schema = yup.object().shape({
-
+    name: yup.string().required("กรุณากรอกชื่อผู้เขียน/ผู้แต่ง"),
+    email: yup.string().email("กรุณากรอกอีเมลล์ให้ถูกต้อง").required("กรุณากรอกอีเมลล์"),
 })
 
 const AxiosConfig = {
