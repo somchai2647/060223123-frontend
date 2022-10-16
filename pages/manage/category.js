@@ -97,7 +97,7 @@ export default function Category() {
                 ref={ModalDel}
                 callback={handleCallback}
                 title="ลบหมวดหมู่สินค้า"
-                text={`คุณต้องการลบหมวดหมู่สินค้า ${editmode?.name} ใช่หรือไม่`}
+                message={`คุณต้องการลบหมวดหมู่สินค้า ${editmode?.name} ใช่หรือไม่`}
                 path={`/category/destroycategory/${editmode?.id}`}
             />
         </Layout>

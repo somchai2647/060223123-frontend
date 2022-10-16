@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Axios from '../Axios'
 
-const DeleteTicker = React.forwardRef(({ title, path, callback, text }, ref) => {
+const DeleteTicker = React.forwardRef(({ title, path, callback, message }, ref) => {
 
     const [loadding, setLoadding] = useState(false)
 
@@ -41,7 +41,7 @@ const DeleteTicker = React.forwardRef(({ title, path, callback, text }, ref) => 
                                 </button>
                             </div>
                             <div className="modal-body">
-                                {text}
+                                {message}
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-danger" onClick={handleDelete} disabled={loadding}>ใช่, ลบรายการนี้</button>
