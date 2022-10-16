@@ -5,6 +5,7 @@ import CategoryTable from '../../components/Tables'
 import Axios from "../../components/Axios"
 import DynamicModal from "../../components/Modal"
 import manageState from '../../helpers/manageState'
+import DeleteModal from '../../components/Modal/DynamicDelete';
 
 const tableFields = [
     {
@@ -38,6 +39,7 @@ export default function Category() {
     const [editmode, setEditmode] = useState(null)
 
     const ModalBtn = useRef(null)
+    const ModalDel = useRef(null)
 
     async function getCategories() {
         try {
@@ -51,9 +53,17 @@ export default function Category() {
 
     function handleCallback(backdata) {
         const { mode, data } = backdata
-        if (mode == "edit") {
-            setEditmode(data)
-            ModalBtn.current.click()
+        switch (mode) {
+            case "edit":
+                setEditmode(data)
+                ModalBtn.current.click()
+                break;
+            case "del":
+                setEditmode(data)
+                ModalDel.current.click()
+                break;
+            default:
+                break;
         }
         manageState(mode, categories, setCategories, data)
     }
@@ -64,14 +74,6 @@ export default function Category() {
 
     return (
         <Layout title="จัดการหมวดหมู่สินค้าในระบบ">
-            <DynamicModal
-                schema={schema}
-                name="หมวดหมู่สินค้า"
-                field={tableFields}
-                editmode={editmode}
-                axiosconfig={AxiosConfig}
-                callback={handleCallback}
-            />
             <div className="card">
                 <div className="card-body">
                     <div className="row mb-3">
@@ -83,6 +85,21 @@ export default function Category() {
                     <CategoryTable fields={tableFields} data={categories} callback={handleCallback} />
                 </div>
             </div>
+            <DynamicModal
+                schema={schema}
+                name="หมวดหมู่สินค้า"
+                field={tableFields}
+                editmode={editmode}
+                axiosconfig={AxiosConfig}
+                callback={handleCallback}
+            />
+            <DeleteModal
+                ref={ModalDel}
+                callback={handleCallback}
+                title="ลบหมวดหมู่สินค้า"
+                text={`คุณต้องการลบหมวดหมู่สินค้า ${editmode?.name} ใช่หรือไม่`}
+                path={`/category/destroycategory/${editmode?.id}`}
+            />
         </Layout>
     )
 }

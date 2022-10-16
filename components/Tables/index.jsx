@@ -53,7 +53,7 @@ export function DropdownItem({ data, callback }) {
             </button>
             <div className="dropdown-menu ">
                 <button className="dropdown-item" type="button" onClick={() => handleClick("edit")}><i className="fas fa-edit"></i> แก้ไข</button>
-                <button className="dropdown-item text-danger" type="button" onClick={() => handleClick("delete")}><i className="fas fa-trash"></i> นำออก</button>
+                <button className="dropdown-item text-danger" type="button" onClick={() => handleClick("del")}><i className="fas fa-trash"></i> นำออก</button>
             </div>
         </div>
     )
