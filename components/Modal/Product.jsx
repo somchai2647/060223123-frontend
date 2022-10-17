@@ -18,6 +18,7 @@ const schema = yup.object().shape({
     amountpage: yup.number().required("กรุณากรอกจำนวนหน้า").positive("กรุณากรอกจำนวนหน้าให้มากกว่า 0"),
     stock: yup.number().required("กรุณากรอกจำนวนสินค้า").positive("กรุณากรอกจำนวนสินค้าให้มากกว่า 0"),
     stockAlm: yup.number().required("กรุณากรอกจำนวนเตือนสินค้า").positive("กรุณากรอกจำนวนสินค้าเตือนให้มากกว่า 0"),
+    isRecommend: yup.boolean(),
 });
 
 export default function Product({ editmode, callback }) {
@@ -35,7 +36,7 @@ export default function Product({ editmode, callback }) {
         formControl.current.click()
     }
 
-    function closeModal(){
+    function closeModal() {
         btnControl.current.click()
     }
 
@@ -73,6 +74,7 @@ export default function Product({ editmode, callback }) {
             setValue('amountpage', editmode.amountpage)
             setValue('stock', editmode.stock)
             setValue('stockAlm', editmode.stockAlm)
+            setValue('isRecommend', editmode.isRecommend)
         }
     }, [editmode])
 
@@ -90,6 +92,14 @@ export default function Product({ editmode, callback }) {
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit(onSubmit)} >
+                                <div className="form-row">
+                                    <div className="form-group pl-2">
+                                        <div className="custom-control custom-switch">
+                                            <input type="checkbox" className="custom-control-input"  {...register("isRecommend", { value: false })} id="recommandSwitch" />
+                                            <label className="custom-control-label" htmlFor="recommandSwitch">⭐ จัดอยู่ในหมวดหมู่แนะนำ</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div className="form-row">
                                     <div className="form-group col-md-12">
                                         <label htmlFor="inputName">ชื่อสินค้า <span className='text-danger'>*</span></label>
