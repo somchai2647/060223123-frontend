@@ -1,6 +1,6 @@
 import * as yup from "yup"
 import Axios from '../Axios'
-import { useForm } from 'react-hook-form'
+import { useForm, useFieldArray } from 'react-hook-form'
 import useBook from '../../hooks/useBook'
 import { yupResolver } from '@hookform/resolvers/yup'
 import React, { useState, useEffect, useRef } from 'react'
@@ -24,13 +24,20 @@ const schema = yup.object().shape({
 export default function Product({ editmode, callback }) {
     const [categorys, authors, publishers] = useBook()
 
-    const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset, setValue, control } = useForm({
         resolver: yupResolver(schema)
     })
+
+    const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({ control, name: "imagebook" })
+
     const [loadding, setLoadding] = useState(false)
 
     const formControl = useRef(null)
     const btnControl = useRef(null)
+
+    function handleAppend() {
+        append({ url: "" })
+    }
 
     function clickUpload() {
         formControl.current.click()
@@ -40,10 +47,10 @@ export default function Product({ editmode, callback }) {
         btnControl.current.click()
     }
 
-
     async function onSubmit(dataform) {
         try {
             setLoadding(true)
+            console.log(dataform)
             const res = editmode ? await Axios.put(`/product/updateProduct/${editmode.id}`, dataform) : await Axios.post('/product/createproduct', dataform)
             if (res.data) {
                 callback({
@@ -54,10 +61,10 @@ export default function Product({ editmode, callback }) {
         } catch (error) {
             console.error(error)
         } finally {
-            reset()
+            // reset()
         }
         setLoadding(false)
-        closeModal()
+        // closeModal()
     }
 
     useEffect(() => {
@@ -173,11 +180,40 @@ export default function Product({ editmode, callback }) {
                                         {errors.discount && <ErrorLabel text={errors.discount.message} />}
                                     </div>
                                 </div>
+                                <hr />
+                                <div className="form-row">
+                                    <div className="form-group col-12">
+                                        <button className="btn btn-primary btn-sm" onClick={handleAppend} type="button"><i className="fas fa-plus-circle"></i> เพิ่มภาพประกอบ</button>
+                                    </div>
+                                    <div className="form-group col-12">
+                                        <div className="input-group mb-3">
+                                            <div className="input-group-prepend">
+                                                <span className="input-group-text" id="basic-addon1">หน้าปกหนังสือ</span>
+                                            </div>
+                                            <input type="text" className="form-control" {...register("cover")} placeholder="URL: http://" aria-label="URL: http://" aria-describedby="button-addon2" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="form-row">
+                                    {fields.map((item, index) => (
+                                        <div className="form-group col-12" key={item.id}>
+                                            <div className="input-group mb-3">
+                                                <div className="input-group-prepend">
+                                                    <span className="input-group-text" id="basic-addon1">ภาพประกอบ</span>
+                                                </div>
+                                                <input type="text" className="form-control" {...register(`imagebook.${index}.url`)} placeholder="URL: http://" aria-label="URL: http://" aria-describedby="button-addon2" />
+                                                <div className="input-group-append">
+                                                    <button className="btn btn-outline-danger" onClick={() => remove(index)} type="button" id="button-addon2"><i className="fas fa-trash"></i> นำออก</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                                 <button type="submit" className="d-none" ref={formControl} />
                             </form>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" onClick={clickUpload} className="btn btn-primary" disabled={loadding}>{loadding ? "กำลังบันทึก..." : "บันทึก"}</button>
+                            <button type="button" onClick={clickUpload} className="btn btn-primary" disabled={loadding}><i className="fas fa-save mr-1"></i> {loadding ? "กำลังบันทึก..." : "บันทึก"}</button>
                             <button type="button" className="btn btn-secondary" ref={btnControl} data-dismiss="modal" >ปิด</button>
                         </div>
                     </div>
