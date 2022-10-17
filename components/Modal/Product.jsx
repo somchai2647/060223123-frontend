@@ -61,10 +61,10 @@ export default function Product({ editmode, callback }) {
         } catch (error) {
             console.error(error)
         } finally {
-            // reset()
+            reset()
         }
         setLoadding(false)
-        // closeModal()
+        closeModal()
     }
 
     useEffect(() => {
@@ -82,6 +82,10 @@ export default function Product({ editmode, callback }) {
             setValue('stock', editmode.stock)
             setValue('stockAlm', editmode.stockAlm)
             setValue('isRecommend', editmode.isRecommend)
+            setValue('cover', editmode.image?.filter(x => x.type == "COVER")[0].url)
+            editmode.image?.filter(x => x.type == "OTHER").map(x => {
+                append({ url: x.url })
+            })
         }
     }, [editmode])
 
