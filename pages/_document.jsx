@@ -23,7 +23,12 @@ export default class MyDocument extends Document {
         return (
             <Html lang="en">
                 <Head>
-                    <meta name="description" content="ร้านหนอนหนังสือ" />
+                    <meta name="title" content="ระบบร้านขายหนังสือออนไลน์ ร้านหนอนหนังสือ" />
+                    <meta name="description" content="ระบบร้านขายหนังสือออนไลน์ ร้านหนอนหนังสือ(เป็นส่วนหนึ่งของวิชา Database System 060223123)" />
+                    <meta name="keywords" content="ระบบ, ร้านขายหนังสือ, ร้านหนอนหนังสือ, BookStore" />
+                    <meta name="robots" content="index, follow" />
+                    <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+
                     <link rel="icon" href="/favicon.ico" />
                     <link rel="stylesheet" href="/assets/css/bootstrap.css" />
 
