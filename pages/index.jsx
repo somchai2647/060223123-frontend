@@ -10,7 +10,7 @@ export default function Home(props) {
       <section className="section-content">
         <div className="container">
           <header className="section-heading">
-            <h3 className="section-title">Popular products</h3>
+            <h3 className="section-title">หนังสือเข้าใหม่</h3>
           </header>
           <div className="row">
             {props.products?.map((product, index) => (
@@ -48,12 +48,20 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`${process.env.BASE_URL}/product/getproduct`)
-  const data = await res.json()
-  console.log(data)
-  return {
-    props: {
-      products: data
-    },
+  try {
+    const res = await fetch(`${process.env.BASE_URL}/product/getproduct`)
+    const data = await res.json()
+    return {
+      props: {
+        products: data
+      },
+    }
+  } catch (error) {
+    console.error(error)
+    return {
+      props: {
+        products: []
+      },
+    }
   }
 }

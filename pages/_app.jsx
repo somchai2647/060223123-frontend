@@ -17,9 +17,15 @@ function MyApp({ Component, pageProps, categorys }) {
 
 MyApp.getInitialProps = async (appContext) => {
   const appProps = await App.getInitialProps(appContext)
-  const res = await Axios.get('/category/getcategory')
-  const categorys = await res.data
-  return { ...appProps, categorys }
+  try {
+    const res = await Axios.get('/category/getcategory')
+    const categorys = await res.data
+    return { ...appProps, categorys }
+  } catch (error) {
+    console.error(error)
+    return { ...appProps }
+  }
+
 }
 
 

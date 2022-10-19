@@ -1,6 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Link from 'next/link';
+import numberWithCommas from '../../helpers/numberWithCommas';
 
-export default function ProductDetail() {
+export default function ProductDetail({ product }) {
+
+    const [quantity, setQuantity] = useState(1)
+    const [selectedImage, setSelectedImage] = useState(product ? product?.image[0]?.url : "")
+
+    function increment() {
+        setQuantity(quantity => quantity + 1)
+    }
+
+    function decrement() {
+        if (quantity > 1) {
+            setQuantity(quantity => quantity - 1)
+        }
+    }
+
+    function handleClickImage(image) {
+        setSelectedImage(image)
+    }
+
     return (
         <>
             <div className="card">
@@ -8,82 +28,88 @@ export default function ProductDetail() {
                     <aside className="col-md-6">
                         <article className="gallery-wrap">
                             <div className="img-big-wrap">
-                                <a href="#"><img src="../images/items/12.jpg" /></a>
+                                <div className="d-block text-center"><img src={selectedImage} /></div>
                             </div> {/* img-big-wrap.// */}
                             <div className="thumbs-wrap">
-                                <a href="#" className="item-thumb"> <img src="../images/items/12-1.jpg" /></a>
-                                <a href="#" className="item-thumb"> <img src="../images/items/12-2.jpg" /></a>
-                                <a href="#" className="item-thumb"> <img src="../images/items/12.jpg" /></a>
-                                <a href="#" className="item-thumb"> <img src="../images/items/4.jpg" /></a>
+                                {product.image?.map((img, index) => (
+                                    <span className="item-thumb" key={index} onClick={() => handleClickImage(img.url)}> <img src={img.url} /></span>
+                                ))}
                             </div> {/* thumbs-wrap.// */}
                         </article> {/* gallery-wrap .end// */}
                     </aside>
                     <main className="col-md-6 border-left">
                         <article className="content-body">
-                            <h2 className="title">Off-White Odsy-1000 Low-Top Sneakers</h2>
+                            <h2 className="title">{product.name}</h2>
                             <div className="rating-wrap my-3">
                                 <ul className="rating-stars">
-                                    <li style={{ width: '80%' }} className="stars-active">
-                                        <img src="../images/icons/stars-active.svg" alt />
+                                    <li style={{ width: '100%' }} className="stars-active">
+                                        <img src="/assets/images/icons/stars-active.svg" alt />
                                     </li>
                                     <li>
-                                        <img src="../images/icons/starts-disable.svg" alt />
+                                        <img src="/assets/images/icons/starts-disable.svg" alt />
                                     </li>
                                 </ul>
                                 <small className="label-rating text-muted">132 reviews</small>
                                 <small className="label-rating text-success"> <i className="fa fa-clipboard-check" /> 154 orders </small>
                             </div> {/* rating-wrap.// */}
                             <div className="mb-3">
-                                <var className="price h4">$815.00</var>
-                                <span className="text-muted">/per kg</span>
+                                {product.discount ? <PriceTag discount={product.discount} price={product.price} /> :
+                                    <var className="price h3">ราคา  {numberWithCommas(product.price)} บาท</var>
+                                }
+                                <br />
                             </div>
-                            <p>Virgil Abloh’s Off-White is a streetwear-inspired collection that continues to break away from the conventions of mainstream fashion. Made in Italy, these black and brown Odsy-1000 low-top sneakers.</p>
+                            <p>{product.desc}</p>
                             <dl className="row">
-                                <dt className="col-sm-3">Model#</dt>
-                                <dd className="col-sm-9">Odsy-1000</dd>
-                                <dt className="col-sm-3">Color</dt>
-                                <dd className="col-sm-9">Brown</dd>
-                                <dt className="col-sm-3">Delivery</dt>
-                                <dd className="col-sm-9">Russia, USA, and Europe </dd>
+                                <dt className="col-sm-3">หมวดหมู่สินค้า</dt>
+                                <dd className="col-sm-9 mb-3">
+                                    <Link href={`/category/${product.category.id}`}>
+                                        <a>{product.category.name}</a>
+                                    </Link>
+                                </dd>
+                                <dt className="col-sm-3">สำนักพิมพ์</dt>
+                                <dd className="col-sm-9 mb-3">
+                                    <Link href={`/publisher/${product.publisher.id}`}>
+                                        <a>{product.publisher.name}</a>
+                                    </Link>
+                                </dd>
+                                <dt className="col-sm-3">ผู้เขียน/ผู้แต่ง</dt>
+                                <dd className="col-sm-9 mb-3">
+                                    <Link href={`/author/${product.author.id}`}>
+                                        <a>{product.author.name}</a>
+                                    </Link>
+                                </dd>
                             </dl>
                             <hr />
                             <div className="row">
                                 <div className="form-group col-md flex-grow-0">
-                                    <label>Quantity</label>
+                                    <label>จำนวน</label>
                                     <div className="input-group mb-3 input-spinner">
                                         <div className="input-group-prepend">
-                                            <button className="btn btn-light" type="button" id="button-plus"> + </button>
+                                            <button className="btn btn-light" ons onClick={decrement} type="button" id="button-minus"> - </button>
                                         </div>
-                                        <input type="text" className="form-control" defaultValue={1} />
+                                        <input type="text" className="form-control" value={quantity} />
                                         <div className="input-group-append">
-                                            <button className="btn btn-light" type="button" id="button-minus"> − </button>
+                                            <button className="btn btn-light" onClick={increment} type="button" id="button-plus"> + </button>
                                         </div>
                                     </div>
-                                </div> {/* col.// */}
-                                <div className="form-group col-md">
-                                    <label>Select size</label>
-                                    <div className="mt-2">
-                                        <label className="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" name="select_size" defaultChecked className="custom-control-input" />
-                                            <div className="custom-control-label">Small</div>
-                                        </label>
-                                        <label className="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" name="select_size" className="custom-control-input" />
-                                            <div className="custom-control-label">Medium</div>
-                                        </label>
-                                        <label className="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" name="select_size" className="custom-control-input" />
-                                            <div className="custom-control-label">Large</div>
-                                        </label>
-                                    </div>
-                                </div> {/* col.// */}
+                                </div>
                             </div> {/* row.// */}
-                            <a href="#" className="btn  btn-primary"> Buy now </a>
-                            <a href="#" className="btn  btn-outline-primary"> <span className="text">Add to cart</span> <i className="fas fa-shopping-cart" /></a>
+                            <button className="btn btn-outline-primary" type='button'> <span className="text">Add to cart</span> <i className="fas fa-shopping-cart" /></button>
                         </article> {/* product-info-aside .// */}
                     </main> {/* col.// */}
                 </div> {/* row.// */}
             </div> {/* card.// */}
+        </>
+    )
+}
+
+export function PriceTag({ price, discount }) {
+    return (
+        <>
+            <span className="price h3">ราคา  {numberWithCommas(price - (price / 100) * discount)} บาท</span><br />
+            <span className="text-danger h5"><del>{numberWithCommas(price)} บาท</del></span>
+            <span className="text-danger ml-3">ประหยัด {numberWithCommas((price / 100) * discount)} บาท</span>
+            <span className="text-danger ml-1">(ประหยัด {discount} %)</span>
         </>
     )
 }
