@@ -2,20 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
 import Axios from '../../components/Axios'
-import ProductDetail from '../../components/Card/ProductDetail';
 
-export default function ProductDetailPage(props) {
+export default function CategoryProduct(props) {
     const router = useRouter()
-    const { pid } = router.query
+    const { cid } = router.query
 
     const [product, setProduct] = useState(null)
+    const [category, setCategory] = useState(null)
 
     async function getProduct() {
         try {
-            const res = await Axios.get(`/product/getproduct/${pid}`)
-            const product = await res.data
-            if (product) {
-                setProduct(product)
+            const res = await Axios.get(`/category/getcategory/${cid}?withproduct=1`)
+            const categorydata = await res.data
+            if (categorydata) {
+                setCategory(categorydata)
+                setProduct(categorydata.Products)
             }
 
         } catch (error) {
@@ -27,14 +28,9 @@ export default function ProductDetailPage(props) {
         getProduct()
     }, [router.isReady])
 
-
     return (
         <Layout categorys={props.categorys}>
-            <section className="section-content padding-y bg">
-                <div className="container">
-                    {product && <ProductDetail product={product} />}
-                </div>
-            </section>
+            {JSON.stringify(category.name)}
         </Layout>
     )
 }
