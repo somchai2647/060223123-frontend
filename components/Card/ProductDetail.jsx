@@ -87,7 +87,7 @@ export default function ProductDetail({ product }) {
                                         <div className="input-group-prepend">
                                             <button className="btn btn-light" ons onClick={decrement} type="button" id="button-minus"> - </button>
                                         </div>
-                                        <input type="text" className="form-control" value={quantity} />
+                                        <input type="text" className="form-control" readOnly value={quantity} />
                                         <div className="input-group-append">
                                             <button className="btn btn-light" onClick={increment} type="button" id="button-plus"> + </button>
                                         </div>

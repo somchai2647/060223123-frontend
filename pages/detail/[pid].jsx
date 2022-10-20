@@ -25,7 +25,7 @@ export default function ProductDetailPage(props) {
 
     useEffect(() => {
         getProduct()
-    }, [router.isReady])
+    }, [router.isReady,router.query])
 
 
     return (

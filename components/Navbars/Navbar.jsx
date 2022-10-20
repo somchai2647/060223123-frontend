@@ -77,7 +77,7 @@ export function Nav({ categorys = [] }) {
                         </li>
                         {categorys?.slice(0, 9).map((category) => (
                             <li className="nav-item dropdown" key={category.id}>
-                                <Link href="/">
+                                <Link href={`/category/${category.id}`}>
                                     <a className="nav-link" >{category.name}</a>
                                 </Link>
                             </li>
@@ -87,7 +87,7 @@ export function Nav({ categorys = [] }) {
                                 <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#"> เพิ่มเติม </a>
                                 <div className="dropdown-menu">
                                     {categorys?.slice(9).map((category) => (
-                                        <Link href="/" key={category.id}>
+                                        <Link href={`/category/${category.id}`} key={category.id}>
                                             <a className="dropdown-item">{category.name}</a>
                                         </Link>
                                     ))}
