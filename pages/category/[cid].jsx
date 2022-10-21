@@ -47,7 +47,7 @@ export default function CategoryProduct(props) {
                                 <ProductListingLarge product={item} key={item.id} />
                             ))}
                             {products && products.length === 0 && <h2 className='text-center'>ไม่พบหนังสือ</h2>}
-                            {(products && products.length > 4) && <Pagination />}
+                            {(products && products.length > 5) && <Pagination />}
                         </main>
                     </div>
                 </div>
