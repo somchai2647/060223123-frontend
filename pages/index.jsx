@@ -49,7 +49,8 @@ export default function Home(props) {
 
 export async function getServerSideProps(context) {
   try {
-    const res = await fetch(`${process.env.BASE_URL}/product/getproduct`)
+    const dev = process.env.NODE_ENV !== 'production';
+    const res = await fetch(`${dev ? "http://localhost:4001/api" : process.env.NEXT_PUBLIC_BASE_URL}/product/getproduct`)
     const data = await res.json()
     return {
       props: {

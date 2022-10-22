@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
 import Script from 'next/script'
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 export default class MyDocument extends Document {
     static async getInitialProps(ctx) {
         const originalRenderPage = ctx.renderPage
@@ -38,9 +38,6 @@ export default class MyDocument extends Document {
                     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,200;0,400;0,600;1,200&display=swap" rel="stylesheet" />
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
-                    {/* jQuery */}
-                    <Script src="/assets/js/jquery-2.0.0.min.js" type="text/javascript"></Script>
-                    <Script src="/assets/js/bootstrap.bundle.min.js" type="text/javascript"></Script>
                     {/* Font awesome 5 */}
                     <link href="/assets/fonts/fontawesome/css/all.min.css" type="text/css" rel="stylesheet" />
 
@@ -48,13 +45,13 @@ export default class MyDocument extends Document {
                     <link href="/assets/css/ui.css" rel="stylesheet" type="text/css" />
                     <link href="/assets/css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
 
-                    {/* custom javascript */}
-                    <Script src="/assets/js/script.js" type="text/javascript"></Script>
-
                 </Head>
                 <body>
                     <Main />
                     <NextScript />
+                    <Script src="/assets/js/jquery-2.0.0.min.js" type="text/javascript" strategy="beforeInteractive"></Script>
+                    <Script src="/assets/js/bootstrap.bundle.min.js" type="text/javascript" strategy="beforeInteractive"></Script>
+                    <Script src="/assets/js/script.js" type="text/javascript" strategy="beforeInteractive"></Script>
                 </body>
             </Html>
         );
