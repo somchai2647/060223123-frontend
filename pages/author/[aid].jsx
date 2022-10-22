@@ -9,21 +9,21 @@ import HeaderPanel from '../../components/Card/HeaderPanel'
 import FilterPanel from '../../components/Card/FilterPanel'
 import Pagination from '../../components/Pagination'
 
-export default function PublisherProduct(props) {
+export default function AuthorProduct(props) {
     const router = useRouter()
-    const { pid } = router.query
+    const { aid } = router.query
 
     const [products, setProducts] = useState(null)
-    const [publisher, setPublisher] = useState(null)
+    const [author, setAuthor] = useState(null)
     const [gride, setGride] = useState(false)
 
     async function getProduct() {
         try {
-            const res = await Axios.get(`/publisher/getpublisher/${pid}?withproduct=1`)
-            const publisherdata = await res.data
-            if (publisherdata) {
-                setPublisher(publisherdata)
-                setProducts(publisherdata.Products)
+            const res = await Axios.get(`/author/getauthor/${aid}?withproduct=1`)
+            const authordata = await res.data
+            if (authordata) {
+                setAuthor(authordata)
+                setProducts(authordata.Products)
             }
 
         } catch (error) {
@@ -41,7 +41,7 @@ export default function PublisherProduct(props) {
 
     return (
         <Layout categorys={props.categorys}>
-            <SectionPage title={`🔎 ผลการสำนักพิมพ์ : ${publisher && publisher.name}`} />
+            <SectionPage title={`🔎 ผลการค้นหานักเขียน : ${author && author.name}`} />
             <section className="section-content padding-y">
                 <div className="container">
                     <div className="row">
