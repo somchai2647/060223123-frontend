@@ -7,8 +7,8 @@ const ISSERVER = typeof window === "undefined";
 if (!ISSERVER) TOKEN = localStorage.getItem("token");
 
 const Axios = axios.create({
-    baseURL: process.env.BASE_URL || 'http://localhost:4001/api',
-    timeout: process.env.TIMEOUT || 10000,
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:4001/api',
+    timeout: process.env.NEXT_PUBLIC_TIMEOUT || 10000,
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
