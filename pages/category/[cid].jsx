@@ -4,8 +4,9 @@ import Layout from '../../components/Layout'
 import SectionPage from '../../components/SectionPage'
 import Axios from '../../components/Axios'
 import ProductListingLarge from '../../components/Card/ProductListingLarge'
+import ProductGride from '../../components/Card/ProductGride';
 import FilterPanel from '../../components/Card/FilterPanel'
-import Pagination from '../../components/Pagination';
+import Pagination from '../../components/Pagination'
 
 export default function CategoryProduct(props) {
     const router = useRouter()
@@ -13,6 +14,7 @@ export default function CategoryProduct(props) {
 
     const [products, setProducts] = useState(null)
     const [category, setCategory] = useState(null)
+    const [gride, setGride] = useState(false)
 
     async function getProduct() {
         try {
@@ -32,6 +34,10 @@ export default function CategoryProduct(props) {
         getProduct()
     }, [router.isReady, router.query])
 
+    function handleGridMode(mode) {
+        setGride(mode)
+    }
+
     return (
         <Layout categorys={props.categorys}>
             <SectionPage title={`🔎 ผลการค้นหาหมวดหมู่ : ${category && category.name}`} />
@@ -42,10 +48,8 @@ export default function CategoryProduct(props) {
                             <FilterPanel />
                         </aside>
                         <main className="col-md-9">
-                            <HeaderPanel />
-                            {products && products?.map((item) => (
-                                <ProductListingLarge product={item} key={item.id} />
-                            ))}
+                            <HeaderPanel numberitem={products?.length} callback={handleGridMode} />
+                            {gride ? <ProductGride products={products} /> : <ProductListingLarge products={products} />}
                             {products && products.length === 0 && <h2 className='text-center'>ไม่พบหนังสือ</h2>}
                             {(products && products.length > 5) && <Pagination />}
                         </main>
@@ -56,11 +60,19 @@ export default function CategoryProduct(props) {
     )
 }
 
-export function HeaderPanel() {
+export function HeaderPanel({ callback, numberitem = 0 }) {
+
+    const [grid, setGrid] = useState(false)
+
+    function toggle() {
+        callback(!grid)
+        setGrid(!grid)
+    }
+
     return (
         <header className="border-bottom mb-4 pb-3">
             <div className="form-inline">
-                <span className="mr-md-auto">32 Items found </span>
+                <span className="mr-md-auto">{numberitem} Items found </span>
                 <select className="mr-2 form-control">
                     <option>Latest items</option>
                     <option>Trending</option>
@@ -68,10 +80,10 @@ export function HeaderPanel() {
                     <option>Cheapest</option>
                 </select>
                 <div className="btn-group">
-                    <a href="#" className="btn btn-outline-secondary active" data-toggle="tooltip" title="List view">
-                        <i className="fa fa-bars" /></a>
-                    <a href="#" className="btn  btn-outline-secondary" data-toggle="tooltip" title="Grid view">
-                        <i className="fa fa-th" /></a>
+                    <button className={`btn btn-outline-secondary ${!grid && "active"}`} onClick={toggle} data-toggle="tooltip" title="List view">
+                        <i className="fa fa-bars" /></button>
+                    <button className={`btn  btn-outline-secondary ${grid && "active"}`} onClick={toggle} data-toggle="tooltip" title="Grid view">
+                        <i className="fa fa-th" /></button>
                 </div>
             </div>
         </header>
