@@ -39,6 +39,10 @@ export default function PublisherProduct(props) {
         setGride(mode)
     }
 
+    function handleSort(sort) {
+        setProducts([...products].sort((a, b) => (a[sort] > b[sort]) ? 1 : -1))
+    }
+
     return (
         <Layout categorys={props.categorys}>
             <SectionPage title={`🔎 ผลการสำนักพิมพ์ : ${publisher && publisher.name}`} />
@@ -49,7 +53,7 @@ export default function PublisherProduct(props) {
                             <FilterPanel />
                         </aside>
                         <main className="col-md-9">
-                            <HeaderPanel numberitem={products?.length} callback={handleGridMode} />
+                            <HeaderPanel sortaction={handleSort} numberitem={products?.length} callback={handleGridMode} />
                             {gride ? <ProductGride products={products} /> : <ProductListingLarge products={products} />}
                             {products && products.length === 0 && <h2 className='text-center'>ไม่พบหนังสือ</h2>}
                             {(products && products.length > 5) && <Pagination />}

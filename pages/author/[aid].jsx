@@ -16,6 +16,7 @@ export default function AuthorProduct(props) {
     const [products, setProducts] = useState(null)
     const [author, setAuthor] = useState(null)
     const [gride, setGride] = useState(false)
+    const [sortby, setSortby] = useState("createdAt")
 
     async function getProduct() {
         try {
@@ -39,6 +40,10 @@ export default function AuthorProduct(props) {
         setGride(mode)
     }
 
+    function handleSort(sort) {
+        setProducts([...products].sort((a, b) => (a[sort] > b[sort]) ? 1 : -1))
+    }
+
     return (
         <Layout categorys={props.categorys}>
             <SectionPage title={`🔎 ผลการค้นหานักเขียน : ${author && author.name}`} />
@@ -49,7 +54,7 @@ export default function AuthorProduct(props) {
                             <FilterPanel />
                         </aside>
                         <main className="col-md-9">
-                            <HeaderPanel numberitem={products?.length} callback={handleGridMode} />
+                            <HeaderPanel sortaction={handleSort} numberitem={products?.length} callback={handleGridMode} />
                             {gride ? <ProductGride products={products} /> : <ProductListingLarge products={products} />}
                             {products && products.length === 0 && <h2 className='text-center'>ไม่พบหนังสือ</h2>}
                             {(products && products.length > 5) && <Pagination />}
