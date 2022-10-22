@@ -50,7 +50,6 @@ export default function Product({ editmode, callback }) {
     async function onSubmit(dataform) {
         try {
             setLoadding(true)
-            console.log(dataform)
             const res = editmode ? await Axios.put(`/product/updateProduct/${editmode.id}`, dataform) : await Axios.post('/product/createproduct', dataform)
             if (res.data) {
                 callback({

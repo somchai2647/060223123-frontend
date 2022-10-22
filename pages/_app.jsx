@@ -22,7 +22,6 @@ MyApp.getInitialProps = async (appContext) => {
     const categorys = await res.data
     return { ...appProps, categorys }
   } catch (error) {
-    console.error(error)
     return { ...appProps }
   }
 
