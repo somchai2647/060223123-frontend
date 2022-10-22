@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-
+import Script from 'next/script'
 export default class MyDocument extends Document {
     static async getInitialProps(ctx) {
         const originalRenderPage = ctx.renderPage
@@ -39,8 +39,8 @@ export default class MyDocument extends Document {
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
                     {/* jQuery */}
-                    <script src="/assets/js/jquery-2.0.0.min.js" type="text/javascript"></script>
-                    <script src="/assets/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+                    <Script src="/assets/js/jquery-2.0.0.min.js" type="text/javascript"></Script>
+                    <Script src="/assets/js/bootstrap.bundle.min.js" type="text/javascript"></Script>
                     {/* Font awesome 5 */}
                     <link href="/assets/fonts/fontawesome/css/all.min.css" type="text/css" rel="stylesheet" />
 
@@ -49,7 +49,7 @@ export default class MyDocument extends Document {
                     <link href="/assets/css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
 
                     {/* custom javascript */}
-                    <script src="/assets/js/script.js" type="text/javascript"></script>
+                    <Script src="/assets/js/script.js" type="text/javascript"></Script>
 
                 </Head>
                 <body>
