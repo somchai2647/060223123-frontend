@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Axios from '../Axios'
 
-const DeleteTicker = React.forwardRef(({ title, path, callback, message }, ref) => {
+const DynamicDelete = React.forwardRef(({ title, path, callback, message }, ref) => {
 
     const [loadding, setLoadding] = useState(false)
 
@@ -55,4 +55,4 @@ const DeleteTicker = React.forwardRef(({ title, path, callback, message }, ref) 
     )
 })
 
-export default DeleteTicker
+export default DynamicDelete
