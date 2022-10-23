@@ -6,7 +6,8 @@ import Layout from '../components/Layout'
 import { useForm } from 'react-hook-form'
 import React, { useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
-import ErrorLabel from '../components/ErrorLabel';
+import ErrorLabel from '../components/ErrorLabel'
+import useSweetAlert from '../hooks/useSweetAlert';
 
 const schema = yup.object().shape({
     username: yup.string().required("กรุณากรอกชื่อผู้ใช้งาน"),
@@ -18,6 +19,8 @@ const schema = yup.object().shape({
 });
 
 export default function register(category) {
+
+    const sweetalert = useSweetAlert()
 
     const router = useRouter()
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -72,6 +75,7 @@ export default function register(category) {
                                 </div>
                             </div>
                             <div className="form-group">
+                                <button type="button" onClick={handlesw}>CLICK</button>
                                 <button type="submit" className="btn btn-primary btn-block" disabled={loadding}> {loadding ? "กำลังสมัครสมาชิก" : "สมัครสมาชิก"} </button>
                             </div>
                         </form>
