@@ -33,9 +33,13 @@ export default function register(category) {
         try {
             setLoadding(true)
             const res = await Axios.post('/auth/register', dataform)
-
+            const user = await res.data
+            if (user) {
+                sweetalert.success('สมัครสมาชิกสำเร็จ', 'กรุณาเข้าสู่ระบบ')
+                router.push('/login?username=' + dataform.username)
+            }
         } catch (error) {
-            console.error(error)
+            sweetalert.warning("สมัครสมาชิกไม่สำเร็จ", error.response.data.message)
         } finally {
             setLoadding(false)
         }
@@ -75,7 +79,6 @@ export default function register(category) {
                                 </div>
                             </div>
                             <div className="form-group">
-                                <button type="button" onClick={handlesw}>CLICK</button>
                                 <button type="submit" className="btn btn-primary btn-block" disabled={loadding}> {loadding ? "กำลังสมัครสมาชิก" : "สมัครสมาชิก"} </button>
                             </div>
                         </form>

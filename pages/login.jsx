@@ -4,10 +4,14 @@ import Link from 'next/link'
 import Layout from '../components/Layout'
 import Axios from '../components/Axios'
 import { useForm } from 'react-hook-form'
+import useSweetAlert from '../hooks/useSweetAlert';
 
 export default function Login(category) {
+    const sweetalert = useSweetAlert()
     const router = useRouter()
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { username } = router.query
+
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm()
 
     const [loadding, setLoadding] = useState(false)
 
@@ -23,11 +27,18 @@ export default function Login(category) {
             }
 
         } catch (error) {
-            console.error(error)
+            sweetalert.warning("ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง", "กรุณาลองใหม่อีกครั้ง")
         } finally {
             setLoadding(false)
         }
     }
+
+    useEffect(() => {
+ 
+        if (username) {
+            setValue("username", username)
+        }
+    }, [router.isReady])
 
     return (
         <Layout categorys={category["categorys"]}>
@@ -37,10 +48,10 @@ export default function Login(category) {
                         <h4 className="card-title mb-4">เข้าสู่ระบบ</h4>
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="form-group">
-                                <input {...register("username", { required: true })} disabled={loadding} className="form-control" placeholder="ชื่อผู้ใช้งาน*" autoFocus type="text" />
+                                <input {...register("username", { required: true })} disabled={loadding} className="form-control" placeholder="ชื่อผู้ใช้งาน*" autoFocus={!username} type="text" />
                             </div> {/* form-group// */}
                             <div className="form-group">
-                                <input {...register("password", { required: true })} disabled={loadding} className="form-control" placeholder="รหัสผ่าน*" type="password" autoComplete='off' />
+                                <input {...register("password", { required: true })} disabled={loadding} className="form-control" placeholder="รหัสผ่าน*" type="password"  autoFocus={username} autoComplete='off' />
                             </div> {/* form-group// */}
                             <div className="form-group">
                                 <a href="#" className="float-right">ลืมรหัสผ่าน?</a>
