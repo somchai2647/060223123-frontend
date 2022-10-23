@@ -2,15 +2,20 @@ import '../styles/globals.css'
 import App from "next/app"
 import * as React from 'react'
 import Head from 'next/head'
-import Script from 'next/script'
+import AuthenContext from '../contexts/AuthenContext'
 
 function MyApp({ Component, pageProps, categorys }) {
+
+  const [isLogin, setIsLogin] = React.useState(false)
+
   return (
     <>
       <Head>
         <title>{process.env.NEXT_PUBLIC_WEB_TITLE}</title>
       </Head>
-      <Component {...pageProps} categorys={categorys} />
+      <AuthenContext.Provider value={{ isLogin, setIsLogin }}>
+        <Component {...pageProps} categorys={categorys} />
+      </AuthenContext.Provider>
     </>
   )
 }

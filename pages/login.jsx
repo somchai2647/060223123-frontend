@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
-import Layout from '../components/Layout'
+import { useRouter } from 'next/router'
 import Axios from '../components/Axios'
+import Layout from '../components/Layout'
 import { useForm } from 'react-hook-form'
-import useSweetAlert from '../hooks/useSweetAlert';
+import useSweetAlert from '../hooks/useSweetAlert'
+import AuthenContext from '../contexts/AuthenContext'
+import React, { useEffect, useState, useContext } from 'react'
 
 export default function Login(category) {
+    const authenContext = useContext(AuthenContext)
     const sweetalert = useSweetAlert()
     const router = useRouter()
     const { username } = router.query
@@ -21,18 +23,22 @@ export default function Login(category) {
             setLoadding(true)
             const res = await Axios.post('/auth/login', dataform)
 
-            const { role, token } = res.data
-            localStorage.setItem('token', token)
+            if (res.data) {
+                const { role, token } = res.data
+                localStorage.setItem('token', token)
 
-            if (checked) {
-                localStorage.setItem('username', dataform.username)
+                if (checked) {
+                    localStorage.setItem('username', dataform.username)
+                }
+
+                if (role === "ADMIN") {
+                    router.push("/manage");
+                } else {
+                    router.push("/");
+                }
+                authenContext.setIsLogin(true)
             }
 
-            if (role === "ADMIN") {
-                router.push("/manage");
-            } else {
-                router.push("/");
-            }
 
         } catch (error) {
             sweetalert.warning("ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง", "กรุณาลองใหม่อีกครั้ง")
@@ -47,7 +53,7 @@ export default function Login(category) {
 
     useEffect(() => {
 
-        if(localStorage.getItem('username')){
+        if (localStorage.getItem('username')) {
             setValue('username', localStorage.getItem('username'))
             setChecked(true)
         }
