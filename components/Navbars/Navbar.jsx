@@ -16,9 +16,11 @@ export default function Navbar({ categorys }) {
                     <div className="container">
                         <div className="row align-items-center">
                             <div className="col-lg-2 col-4">
-                                <a href="http://bootstrap-ecommerce.com" className="brand-wrap">
-                                    <img className="logo" src="/assets/images/logo.png" />
-                                </a> {/* brand-wrap.// */}
+                                <Link href={"/"}>
+                                    <a className="brand-wrap">
+                                        <img className="logo" src="/assets/images/logo.png" />
+                                    </a>
+                                </Link>
                             </div>
                             <div className="col-lg-6 col-sm-12">
                                 <form action="#" className="search">
@@ -35,7 +37,9 @@ export default function Navbar({ categorys }) {
                             <div className="col-lg-4 col-sm-6 col-12">
                                 <div className="widgets-wrap float-md-right">
                                     <div className="widget-header  mr-3">
-                                        <a href="#" className="icon icon-sm rounded-circle border"><i className="fa fa-shopping-cart" /></a>
+                                        <Link href={"/cart"}>
+                                            <a className="icon icon-sm rounded-circle border"><i className="fa fa-shopping-cart" /></a>
+                                        </Link>
                                         <span className="badge badge-pill badge-danger notify">0</span>
                                     </div>
                                     <div className="widget-header icontext">
@@ -59,13 +63,12 @@ export default function Navbar({ categorys }) {
                                             </div>}
 
                                     </div>
-                                </div> {/* widgets-wrap.// */}
-                            </div> {/* col.// */}
-                        </div> {/* row.// */}
-                    </div> {/* container.// */}
-                </section> {/* header-main .// */}
-            </header> {/* section-header.// */}
-            {/* section-header.// */}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </header> 
             <Nav categorys={categorys} />
         </div>
 
