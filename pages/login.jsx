@@ -14,6 +14,7 @@ export default function Login(category) {
     const { register, handleSubmit, formState: { errors }, setValue } = useForm()
 
     const [loadding, setLoadding] = useState(false)
+    const [checked, setChecked] = useState(false)
 
     async function onSubmit(dataform) {
         try {
@@ -22,8 +23,15 @@ export default function Login(category) {
 
             const { role, token } = res.data
             localStorage.setItem('token', token)
+
+            if (checked) {
+                localStorage.setItem('username', dataform.username)
+            }
+
             if (role === "ADMIN") {
                 router.push("/manage");
+            } else {
+                router.push("/");
             }
 
         } catch (error) {
@@ -33,8 +41,16 @@ export default function Login(category) {
         }
     }
 
+    function handleCheck() {
+        setChecked(!checked)
+    }
+
     useEffect(() => {
- 
+
+        if(localStorage.getItem('username')){
+            setValue('username', localStorage.getItem('username'))
+            setChecked(true)
+        }
         if (username) {
             setValue("username", username)
         }
@@ -49,21 +65,21 @@ export default function Login(category) {
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="form-group">
                                 <input {...register("username", { required: true })} disabled={loadding} className="form-control" placeholder="ชื่อผู้ใช้งาน*" autoFocus={!username} type="text" />
-                            </div> {/* form-group// */}
+                            </div>
                             <div className="form-group">
-                                <input {...register("password", { required: true })} disabled={loadding} className="form-control" placeholder="รหัสผ่าน*" type="password"  autoFocus={username} autoComplete='off' />
-                            </div> {/* form-group// */}
+                                <input {...register("password", { required: true })} disabled={loadding} className="form-control" placeholder="รหัสผ่าน*" type="password" autoFocus={username} autoComplete='off' />
+                            </div>
                             <div className="form-group">
                                 <a href="#" className="float-right">ลืมรหัสผ่าน?</a>
-                                <label className="float-left custom-control custom-checkbox"> <input type="checkbox" className="custom-control-input" defaultChecked /> <div className="custom-control-label"> จดจำชื่อผู้ใช้งาน </div> </label>
+                                <label className="float-left custom-control custom-checkbox"> <input type="checkbox" className="custom-control-input" onClick={handleCheck} defaultChecked={!!checked} value={checked} /> <div className="custom-control-label"> จดจำชื่อผู้ใช้งาน </div> </label>
                             </div> {/* form-group form-check .// */}
                             {(errors.password || errors.username) && <span className='text-danger'>กรุณากรอกให้ครบถ้วน</span>}
                             <div className="form-group">
                                 <button type="submit" className="btn btn-primary btn-block" disabled={loadding}> {loadding ? "กำลังเข้าสู่ระบบ" : "เข้าสู่ระบบ"} </button>
-                            </div> {/* form-group// */}
+                            </div>
                         </form>
-                    </div> {/* card-body.// */}
-                </div> {/* card .// */}
+                    </div>
+                </div>
                 <p className="text-center mt-4">คุณยังไม่มีบัญชีผู้ใช้หรือไม่? <Link href="/register"><a className='text-primary'>สมัครสมาชิก</a></Link></p>
                 <br /><br />
             </section>
