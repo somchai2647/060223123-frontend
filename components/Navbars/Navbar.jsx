@@ -49,6 +49,7 @@ export default function Navbar({ categorys }) {
                                                 <span className="text-muted">ยินดีต้อนรับ!</span>
                                                 <br />
                                                 <a>{userContext.user.fname} {userContext.user.lname}</a>
+                                                {userContext.user.role === "ADMIN" && <AdminPanel />}
                                             </div>
                                             : <div className="text">
                                                 <span className="text-muted">ยินดีต้อนรับ!</span>
@@ -68,11 +69,21 @@ export default function Navbar({ categorys }) {
                         </div>
                     </div>
                 </section>
-            </header> 
+            </header>
             <Nav categorys={categorys} />
+        </div >
+
+
+    )
+}
+
+export function AdminPanel() {
+    return (
+        <div className='mt-2'>
+            <Link href={"/manage"}>
+                <a className='btn btn-primary btn-sm text-white'>Admin Panel</a>
+            </Link>
         </div>
-
-
     )
 }
 
