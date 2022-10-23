@@ -5,10 +5,13 @@ import Layout from '../components/Layout'
 import { useForm } from 'react-hook-form'
 import useSweetAlert from '../hooks/useSweetAlert'
 import AuthenContext from '../contexts/AuthenContext'
+import UserContext from '../contexts/UserContext'
 import React, { useEffect, useState, useContext } from 'react'
 
 export default function Login(category) {
     const authenContext = useContext(AuthenContext)
+    const userContext = useContext(UserContext)
+
     const sweetalert = useSweetAlert()
     const router = useRouter()
     const { username } = router.query
@@ -37,10 +40,8 @@ export default function Login(category) {
                 router.push("/");
             }
             authenContext.setIsLogin(true)
-            authenContext.setIsLogin({
-                isLogin: true,
-                user: res.data
-            })
+            userContext.setUser(res.data)
+
 
         } catch (error) {
             sweetalert.warning("ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง", "กรุณาลองใหม่อีกครั้ง")

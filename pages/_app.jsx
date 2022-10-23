@@ -1,12 +1,36 @@
 import '../styles/globals.css'
 import App from "next/app"
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import AuthenContext from '../contexts/AuthenContext'
+import UserContext from '../contexts/UserContext'
+import { useRouter } from 'next/router'
+import Axios from '../components/Axios'
 
 function MyApp({ Component, pageProps, categorys }) {
 
-  const [isLogin, setIsLogin] = React.useState(false)
+  const router = useRouter()
+  const [isLogin, setIsLogin] = useState(false)
+  const [user, setUser] = useState(null)
+
+  async function loginAuto() {
+    try {
+      const res = await Axios.get('/auth/checktoken')
+      const data = await res.data
+      if (data) {
+        setUser(data)
+        setIsLogin(true)
+      }
+    } catch (error) {
+      setIsLogin(false)
+    }
+  }
+  useEffect(() => {
+    if (!isLogin) {
+      loginAuto()
+    }
+  }, [router.isReady])
+
 
   return (
     <>
@@ -14,7 +38,9 @@ function MyApp({ Component, pageProps, categorys }) {
         <title>{process.env.NEXT_PUBLIC_WEB_TITLE}</title>
       </Head>
       <AuthenContext.Provider value={{ isLogin, setIsLogin }}>
-        <Component {...pageProps} categorys={categorys} />
+        <UserContext.Provider value={{ user, setUser }}>
+          <Component {...pageProps} categorys={categorys} />
+        </UserContext.Provider>
       </AuthenContext.Provider>
     </>
   )

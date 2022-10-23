@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Link from 'next/link';
 import AuthenContext from '../../contexts/AuthenContext'
+import UserContext from '../../contexts/UserContext'
 import Axios from '../Axios'
 
 export default function Navbar({ categorys }) {
 
     const authenContext = useContext(AuthenContext)
+    const userContext = useContext(UserContext)
 
     return (
         <div>
@@ -38,9 +40,13 @@ export default function Navbar({ categorys }) {
                                     </div>
                                     <div className="widget-header icontext">
                                         <a href="#" className="icon icon-sm rounded-circle border"><i className="fa fa-user" /></a>
-                                        {authenContext.isLogin ? 
-                                        null
-                                      : <div className="text">
+                                        {authenContext.isLogin ?
+                                            <div className="text">
+                                                <span className="text-muted">ยินดีต้อนรับ!</span>
+                                                <br />
+                                                <a>{userContext.user.fname} {userContext.user.lname}</a>
+                                            </div>
+                                            : <div className="text">
                                                 <span className="text-muted">ยินดีต้อนรับ!</span>
                                                 <br />
                                                 <Link href="/login">

@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext } from 'react'
 import Link from 'next/link'
-import Navbar from '../components/Navbars/Navbar'
 import Layout from '../components/Layout'
 import AuthenContext from '../contexts/AuthenContext'
+import UserContext from '../contexts/UserContext'
 
 export default function Home(props) {
   const authenContext = useContext(AuthenContext);
+  const userContext = useContext(UserContext);
   return (
     <Layout categorys={props.categorys}>
       <section className="section-content">
@@ -13,7 +14,6 @@ export default function Home(props) {
           <header className="section-heading">
             <h3 className="section-title">หนังสือเข้าใหม่</h3>
           </header>
-          {JSON.stringify(authenContext)}
           <div className="row">
             {props.products?.map((product, index) => (
               <div className="col-md-3" key={index}>
