@@ -70,6 +70,7 @@ export default function Navbar({ categorys }) {
                     </div>
                 </section>
             </header>
+            {JSON.stringify(userContext)}
             <Nav categorys={categorys} />
         </div >
 

@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import Link from 'next/link';
-import numberWithCommas from '../../helpers/numberWithCommas';
+import Link from 'next/link'
+import numberWithCommas from '../../helpers/numberWithCommas'
+import useCart from '../../hooks/useCart'
 
 export default function ProductDetail({ product }) {
-
+    const { addCard } = useCart()
     const [quantity, setQuantity] = useState(1)
     const [selectedImage, setSelectedImage] = useState(product ? product?.image[0]?.url : "")
 
@@ -19,6 +20,10 @@ export default function ProductDetail({ product }) {
 
     function handleClickImage(image) {
         setSelectedImage(image)
+    }
+
+    function handleAddCart() {
+        addCard(product.id, quantity)
     }
 
     return (
@@ -43,10 +48,10 @@ export default function ProductDetail({ product }) {
                             <div className="rating-wrap my-3">
                                 <ul className="rating-stars">
                                     <li style={{ width: '100%' }} className="stars-active">
-                                        <img src="/assets/images/icons/stars-active.svg" alt />
+                                        <img src="/assets/images/icons/stars-active.svg" />
                                     </li>
                                     <li>
-                                        <img src="/assets/images/icons/starts-disable.svg" alt />
+                                        <img src="/assets/images/icons/starts-disable.svg" />
                                     </li>
                                 </ul>
                                 <small className="label-rating text-muted">132 reviews</small>
@@ -85,7 +90,7 @@ export default function ProductDetail({ product }) {
                                     <label>จำนวน</label>
                                     <div className="input-group mb-3 input-spinner">
                                         <div className="input-group-prepend">
-                                            <button className="btn btn-light" ons onClick={decrement} type="button" id="button-minus"> - </button>
+                                            <button className="btn btn-light" onClick={decrement} type="button" id="button-minus"> - </button>
                                         </div>
                                         <input type="text" className="form-control" readOnly value={quantity} />
                                         <div className="input-group-append">
@@ -94,7 +99,7 @@ export default function ProductDetail({ product }) {
                                     </div>
                                 </div>
                             </div> {/* row.// */}
-                            <button className="btn btn-outline-primary" type='button'> <span className="text">Add to cart</span> <i className="fas fa-shopping-cart" /></button>
+                            <button className="btn btn-outline-primary" onClick={handleAddCart} type='button'> <span className="text">Add to cart</span> <i className="fas fa-shopping-cart" /></button>
                         </article> {/* product-info-aside .// */}
                     </main> {/* col.// */}
                 </div> {/* row.// */}
