@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Link from 'next/link';
+import AuthenContext from '../../contexts/AuthenContext'
 import Axios from '../Axios'
 
 export default function Navbar({ categorys }) {
+
+    const authenContext = useContext(AuthenContext)
+
     return (
         <div>
             <header className="section-header">
@@ -34,17 +38,20 @@ export default function Navbar({ categorys }) {
                                     </div>
                                     <div className="widget-header icontext">
                                         <a href="#" className="icon icon-sm rounded-circle border"><i className="fa fa-user" /></a>
-                                        <div className="text">
-                                            <span className="text-muted">ยินดีต้อนรับ!</span>
-                                            <br />
-                                            <Link href="/login">
-                                                <a >เข้าสู่ระบบ </a>
-                                            </Link>
-                                            |
-                                            <Link href="/register">
-                                                <a> สมัครสมาชิก</a>
-                                            </Link>
-                                        </div>
+                                        {authenContext.isLogin ? 
+                                        null
+                                      : <div className="text">
+                                                <span className="text-muted">ยินดีต้อนรับ!</span>
+                                                <br />
+                                                <Link href="/login">
+                                                    <a >เข้าสู่ระบบ </a>
+                                                </Link>
+                                                |
+                                                <Link href="/register">
+                                                    <a> สมัครสมาชิก</a>
+                                                </Link>
+                                            </div>}
+
                                     </div>
                                 </div> {/* widgets-wrap.// */}
                             </div> {/* col.// */}

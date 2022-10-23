@@ -23,22 +23,24 @@ export default function Login(category) {
             setLoadding(true)
             const res = await Axios.post('/auth/login', dataform)
 
-            if (res.data) {
-                const { role, token } = res.data
-                localStorage.setItem('token', token)
 
-                if (checked) {
-                    localStorage.setItem('username', dataform.username)
-                }
+            const { role, token } = res.data
+            localStorage.setItem('token', token)
 
-                if (role === "ADMIN") {
-                    router.push("/manage");
-                } else {
-                    router.push("/");
-                }
-                authenContext.setIsLogin(true)
+            if (checked) {
+                localStorage.setItem('username', dataform.username)
             }
 
+            if (role === "ADMIN") {
+                router.push("/manage");
+            } else {
+                router.push("/");
+            }
+            authenContext.setIsLogin(true)
+            authenContext.setIsLogin({
+                isLogin: true,
+                user: res.data
+            })
 
         } catch (error) {
             sweetalert.warning("ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง", "กรุณาลองใหม่อีกครั้ง")
