@@ -13,6 +13,7 @@ export default function Login(category) {
 
     async function onSubmit(dataform) {
         try {
+            setLoadding(true)
             const res = await Axios.post('/auth/login', dataform)
 
             const { role, token } = res.data
