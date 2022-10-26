@@ -6,7 +6,7 @@ export default function ProductListingLarge({ products }) {
   return (
     <>
       {products?.map((product) => (
-        <article className="card card-product-list">
+        <article className="card card-product-list" key={product.id}>
           <div className="row no-gutters">
             <aside className="col-md-3">
               <Link href={`/detail/${product.id}`}>

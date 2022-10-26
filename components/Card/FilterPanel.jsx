@@ -6,7 +6,7 @@ export default function FilterPanel() {
             <div className="card">
                 <article className="filter-group">
                     <header className="card-header">
-                        <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" className>
+                        <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true">
                             <i className="icon-control fa fa-chevron-down" />
                             <h6 className="title">Product type</h6>
                         </a>
@@ -35,7 +35,7 @@ export default function FilterPanel() {
                 </article> {/* filter-group  .// */}
                 <article className="filter-group">
                     <header className="card-header">
-                        <a href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true" className>
+                        <a href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true">
                             <i className="icon-control fa fa-chevron-down" />
                             <h6 className="title">Brands </h6>
                         </a>
@@ -72,14 +72,14 @@ export default function FilterPanel() {
                 </article> {/* filter-group .// */}
                 <article className="filter-group">
                     <header className="card-header">
-                        <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" className>
+                        <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true">
                             <i className="icon-control fa fa-chevron-down" />
                             <h6 className="title">Price range </h6>
                         </a>
                     </header>
                     <div className="filter-content collapse show" id="collapse_3" style={{}}>
                         <div className="card-body">
-                            <input type="range" className="custom-range" min={0} max={100} name />
+                            <input type="range" className="custom-range" min={0} max={100} />
                             <div className="form-row">
                                 <div className="form-group col-md-6">
                                     <label>Min</label>
@@ -96,7 +96,7 @@ export default function FilterPanel() {
                 </article> {/* filter-group .// */}
                 <article className="filter-group">
                     <header className="card-header">
-                        <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" className>
+                        <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true">
                             <i className="icon-control fa fa-chevron-down" />
                             <h6 className="title">Sizes </h6>
                         </a>
@@ -124,7 +124,7 @@ export default function FilterPanel() {
                 </article> {/* filter-group .// */}
                 <article className="filter-group">
                     <header className="card-header">
-                        <a href="#" data-toggle="collapse" data-target="#collapse_5" aria-expanded="false" className>
+                        <a href="#" data-toggle="collapse" data-target="#collapse_5" aria-expanded="false">
                             <i className="icon-control fa fa-chevron-down" />
                             <h6 className="title">More filter </h6>
                         </a>
