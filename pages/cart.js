@@ -1,8 +1,30 @@
-import React from 'react'
 import Layout from '../components/Layout'
+import React, { useState, useEffect, useContext } from 'react'
 import SectionPage from '../components/SectionPage'
+import Axios from '../components/Axios'
+import Image from 'next/image'
 
 export default function Cart(props) {
+
+    const [products, setProducts] = useState([])
+
+    async function getCart() {
+        try {
+            const res = await Axios.get('/cart/getcart')
+            const data = await res.data
+            if (data) {
+                setProducts(data)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    useEffect(() => {
+        getCart()
+    }, [])
+
+
     return (
         <Layout categorys={props.categorys}>
             <SectionPage title="🛒 ตะกร้าสินค้า" />
@@ -21,92 +43,45 @@ export default function Cart(props) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                <figure className="itemside">
-                                                    <div className="aside"><img src="images/items/1.jpg" className="img-sm" /></div>
-                                                    <figcaption className="info">
-                                                        <a href="#" className="title text-dark">Some name of item goes here nice</a>
-                                                        <p className="text-muted small">Size: XL, Color: blue, <br /> Brand: Gucci</p>
-                                                    </figcaption>
-                                                </figure>
-                                            </td>
-                                            <td>
-                                                <select className="form-control">
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <div className="price-wrap">
-                                                    <var className="price">$1156.00</var>
-                                                    <small className="text-muted"> $315.20 each </small>
-                                                </div> {/* price-wrap .// */}
-                                            </td>
-                                            <td className="text-right">
-                                                <a data-original-title="Save to Wishlist" title href className="btn btn-light" data-toggle="tooltip"> <i className="fa fa-heart" /></a>
-                                                <a href className="btn btn-light"> Remove</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <figure className="itemside">
-                                                    <div className="aside"><img src="images/items/2.jpg" className="img-sm" /></div>
-                                                    <figcaption className="info">
-                                                        <a href="#" className="title text-dark">Product name  goes here nice</a>
-                                                        <p className="text-muted small">Size: XL, Color: blue, <br /> Brand: Gucci</p>
-                                                    </figcaption>
-                                                </figure>
-                                            </td>
-                                            <td>
-                                                <select className="form-control">
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <div className="price-wrap">
-                                                    <var className="price">$149.97</var>
-                                                    <small className="text-muted"> $75.00 each </small>
-                                                </div> {/* price-wrap .// */}
-                                            </td>
-                                            <td className="text-right">
-                                                <a data-original-title="Save to Wishlist" title href className="btn btn-light" data-toggle="tooltip"> <i className="fa fa-heart" /></a>
-                                                <a href className="btn btn-light btn-round"> Remove</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <figure className="itemside">
-                                                    <div className="aside"><img src="images/items/3.jpg" className="img-sm" /></div>
-                                                    <figcaption className="info">
-                                                        <a href="#" className="title text-dark">Another name of some product goes just here</a>
-                                                        <p className="small text-muted">Size: XL, Color: blue,  Brand: Tissot</p>
-                                                    </figcaption>
-                                                </figure>
-                                            </td>
-                                            <td>
-                                                <select className="form-control">
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <div className="price-wrap">
-                                                    <var className="price">$98.00</var>
-                                                    <small className="text-muted"> $578.00 each</small>
-                                                </div> {/* price-wrap .// */}
-                                            </td>
-                                            <td className="text-right">
-                                                <a data-original-title="Save to Wishlist" title href className="btn btn-light" data-toggle="tooltip"> <i className="fa fa-heart" /></a>
-                                                <a href className="btn btn-light btn-round"> Remove</a>
-                                            </td>
-                                        </tr>
+                                        {products?.map((product) => (
+                                            <tr key={product.id}>
+                                                <td>
+                                                    <figure className="itemside">
+                                                        <div className="aside">
+                                                            {/* <img src={product.Products.image[0].url} /> */}
+                                                            <Image
+                                                                src={product.Products.image[0].url}
+                                                                alt="Picture of the author"
+                                                                width={70}
+                                                                height={100}
+                                                                quality={50}
+                                                            />
+                                                        </div>
+                                                        <figcaption className="info">
+                                                            <a href="#" className="title text-dark">{product.Products.name}</a>
+                                                            <p className="text-muted small">Size: XL, Color: blue, <br /> Brand: Gucci</p>
+                                                        </figcaption>
+                                                    </figure>
+                                                </td>
+                                                <td>
+                                                    <select className="form-control">
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <div className="price-wrap">
+                                                        <var className="price">$1156.00</var>
+                                                        <small className="text-muted"> $315.20 each </small>
+                                                    </div> {/* price-wrap .// */}
+                                                </td>
+                                                <td className="text-right">
+                                                    <a href className="btn btn-light"> Remove</a>
+                                                </td>
+                                            </tr>
+                                        ))}
                                     </tbody>
                                 </table>
                                 <div className="card-body border-top">

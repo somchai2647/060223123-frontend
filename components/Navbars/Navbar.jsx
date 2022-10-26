@@ -1,13 +1,24 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Link from 'next/link';
+import { useRouter } from 'next/router'
 import AuthenContext from '../../contexts/AuthenContext'
 import UserContext from '../../contexts/UserContext'
 import Axios from '../Axios'
+import useSweetAlert from '../../hooks/useSweetAlert'
 
 export default function Navbar({ categorys }) {
-
+    const router = useRouter()
+    const alert = useSweetAlert()
     const authenContext = useContext(AuthenContext)
     const userContext = useContext(UserContext)
+
+    function handleCart() {
+        if (!authenContext.isLogin) {
+            alert.warning('กรุณาเข้าสู่ระบบก่อน', 'กรุณาเข้าสู่ระบบเพื่อดูตะกร้าสินค้า')
+        } else {
+            router.push('/cart')
+        }
+    }
 
     return (
         <div>
@@ -37,10 +48,8 @@ export default function Navbar({ categorys }) {
                             <div className="col-lg-4 col-sm-6 col-12">
                                 <div className="widgets-wrap float-md-right">
                                     <div className="widget-header  mr-3">
-                                        <Link href={"/cart"}>
-                                            <a className="icon icon-sm rounded-circle border"><i className="fa fa-shopping-cart" /></a>
-                                        </Link>
-                                        <span className="badge badge-pill badge-danger notify">0</span>
+                                        <span className="icon icon-sm rounded-circle border" onClick={handleCart} style={{ cursor: "pointer" }}><i className="fa fa-shopping-cart" /></span>
+                                        {authenContext.isLogin && <span className="badge badge-pill badge-danger notify">0</span>}
                                     </div>
                                     <div className="widget-header icontext">
                                         <a href="#" className="icon icon-sm rounded-circle border"><i className="fa fa-user" /></a>
@@ -70,7 +79,7 @@ export default function Navbar({ categorys }) {
                     </div>
                 </section>
             </header>
-            {JSON.stringify(userContext)}
+            {/* {JSON.stringify(userContext)} */}
             <Nav categorys={categorys} />
         </div >
 
