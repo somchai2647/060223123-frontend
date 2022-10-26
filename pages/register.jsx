@@ -18,7 +18,7 @@ const schema = yup.object().shape({
     tel: yup.string().required("กรุณากรอกเบอร์โทรศัพท์"),
 });
 
-export default function register(category) {
+export default function Register(category) {
 
     const sweetalert = useSweetAlert()
 
