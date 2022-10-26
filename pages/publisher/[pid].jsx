@@ -49,10 +49,10 @@ export default function PublisherProduct(props) {
             <section className="section-content padding-y">
                 <div className="container">
                     <div className="row">
-                        <aside className="col-md-3">
+                        {/* <aside className="col-md-3">
                             <FilterPanel />
-                        </aside>
-                        <main className="col-md-9">
+                        </aside> */}
+                        <main className="col-md-12">
                             <HeaderPanel sortaction={handleSort} numberitem={products?.length} callback={handleGridMode} />
                             {gride ? <ProductGride products={products} /> : <ProductListingLarge products={products} />}
                             {products && products.length === 0 && <h2 className='text-center'>ไม่พบหนังสือ</h2>}
