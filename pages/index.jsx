@@ -12,7 +12,7 @@ export default function Home(props) {
       <section className="section-content">
         <div className="container">
           <header className="section-heading">
-            <a href="#" class="btn  float-right text-primary">เพิ่มเติม</a>
+            <a href="#" className="btn  float-right text-primary">เพิ่มเติม</a>
             <h3 className="section-title">หนังสือเข้าใหม่</h3>
           </header>
           <div className="row">
