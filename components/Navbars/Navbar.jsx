@@ -2,10 +2,8 @@ import React, { useState, useEffect, useContext } from 'react'
 import Link from 'next/link';
 import AuthenContext from '../../contexts/AuthenContext'
 import UserContext from '../../contexts/UserContext'
-import Axios from '../Axios'
 
-export default function Navbar({ categorys }) {
-
+export default function Navbar(props) {
     const authenContext = useContext(AuthenContext)
     const userContext = useContext(UserContext)
 
@@ -38,9 +36,9 @@ export default function Navbar({ categorys }) {
                                 <div className="widgets-wrap float-md-right">
                                     <div className="widget-header  mr-3">
                                         <Link href={"/cart"}>
-                                            <a className="icon icon-sm rounded-circle border"><i className="fa fa-shopping-cart" /></a>
+                                            <a className="icon icon-sm rounded-circle border" style={{ cursor: "pointer" }}><i className="fa fa-shopping-cart" /></a>
                                         </Link>
-                                        <span className="badge badge-pill badge-danger notify">0</span>
+                                        {authenContext.isLogin && <span className="badge badge-pill badge-danger notify">0</span>}
                                     </div>
                                     <div className="widget-header icontext">
                                         <a href="#" className="icon icon-sm rounded-circle border"><i className="fa fa-user" /></a>
@@ -49,6 +47,7 @@ export default function Navbar({ categorys }) {
                                                 <span className="text-muted">ยินดีต้อนรับ!</span>
                                                 <br />
                                                 <a>{userContext.user.fname} {userContext.user.lname}</a>
+                                                {userContext.user.role === "ADMIN" && <AdminPanel />}
                                             </div>
                                             : <div className="text">
                                                 <span className="text-muted">ยินดีต้อนรับ!</span>
@@ -68,11 +67,22 @@ export default function Navbar({ categorys }) {
                         </div>
                     </div>
                 </section>
-            </header> 
-            <Nav categorys={categorys} />
+            </header>
+            {/* {JSON.stringify(userContext)} */}
+            <Nav categorys={props.categorys} />
+        </div >
+
+
+    )
+}
+
+export function AdminPanel() {
+    return (
+        <div className='mt-2'>
+            <Link href={"/manage"}>
+                <a className='btn btn-primary btn-sm text-white'>Admin Panel</a>
+            </Link>
         </div>
-
-
     )
 }
 

@@ -44,7 +44,7 @@ const tableFields = [
 const schema = yup.object().shape({
     name: yup.string().required("กรุณากรอกชื่อสำนักพิมพ์"),
     address: yup.string().required("กรุณากรอกที่อยู่สำนักพิมพ์"),
-    tel: yup.string().required("กรุณากรอกเบอร์โทรศัพท์"),
+    tel: yup.string().required("กรุณากรอกเบอร์โทรศัพท์").min(10, "กรุณากรอกเบอร์โทรศัพท์ให้ครบ 10 หลัก"),
 })
 
 const AxiosConfig = {

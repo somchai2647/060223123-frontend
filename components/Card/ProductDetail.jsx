@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import numberWithCommas from '../../helpers/numberWithCommas'
+import useCart from '../../hooks/useCart'
 
 export default function ProductDetail({ product }) {
-
+    const { addCard } = useCart()
     const [quantity, setQuantity] = useState(1)
     const [selectedImage, setSelectedImage] = useState(product ? product?.image[0]?.url : "")
 
@@ -20,6 +20,10 @@ export default function ProductDetail({ product }) {
 
     function handleClickImage(image) {
         setSelectedImage(image)
+    }
+
+    function handleAddCart() {
+        addCard(product.id, quantity)
     }
 
     return (
@@ -98,7 +102,7 @@ export default function ProductDetail({ product }) {
                                     </div>
                                 </div>
                             </div> {/* row.// */}
-                            <button className="btn btn-outline-primary" type='button'> <span className="text">Add to cart</span> <i className="fas fa-shopping-cart" /></button>
+                            <button className="btn btn-outline-primary" onClick={handleAddCart} type='button'> <span className="text">Add to cart</span> <i className="fas fa-shopping-cart" /></button>
                         </article> {/* product-info-aside .// */}
                     </main> {/* col.// */}
                 </div> {/* row.// */}

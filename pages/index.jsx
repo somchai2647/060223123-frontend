@@ -15,7 +15,7 @@ export default function Home(props) {
             <h3 className="section-title">หนังสือเข้าใหม่</h3>
           </header>
           <div className="row">
-            {props.products?.map((product, index) => (
+            {props.products.length > 0 && props.products?.map((product, index) => (
               <div className="col-md-3" key={index}>
                 <Link href={`/detail/${product.id}`}>
                   <div className="card card-product-grid">
@@ -37,7 +37,6 @@ export default function Home(props) {
                     </figcaption>
                   </div>
                 </Link>
-
               </div>
             ))}
 

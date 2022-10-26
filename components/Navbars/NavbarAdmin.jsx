@@ -1,7 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Link from 'next/link';
+import AuthenContext from '../../contexts/AuthenContext'
+import UserContext from '../../contexts/UserContext'
+import Axios from '../Axios'
 
 export default function Navbar({ categorys }) {
+
+    const authenContext = useContext(AuthenContext)
+    const userContext = useContext(UserContext)
+
     return (
         <div>
             <header className="section-header">
@@ -9,9 +16,11 @@ export default function Navbar({ categorys }) {
                     <div className="container">
                         <div className="row align-items-center">
                             <div className="col-lg-2 col-4">
-                                <a href="http://bootstrap-ecommerce.com" className="brand-wrap">
-                                    <img className="logo" src="/assets/images/logo.png" />
-                                </a> {/* brand-wrap.// */}
+                                <Link href={"/"}>
+                                    <a className="brand-wrap">
+                                        <img className="logo" src="/assets/images/logo.png" />
+                                    </a>
+                                </Link>
                             </div>
                             <div className="col-lg-6 col-sm-12">
                                 <form action="#" className="search">
@@ -28,34 +37,51 @@ export default function Navbar({ categorys }) {
                             <div className="col-lg-4 col-sm-6 col-12">
                                 <div className="widgets-wrap float-md-right">
                                     <div className="widget-header  mr-3">
-                                        <a href="#" className="icon icon-sm rounded-circle border"><i className="fa fa-shopping-cart" /></a>
+                                        <Link href={"/cart"}>
+                                            <a className="icon icon-sm rounded-circle border"><i className="fa fa-shopping-cart" /></a>
+                                        </Link>
                                         <span className="badge badge-pill badge-danger notify">0</span>
                                     </div>
                                     <div className="widget-header icontext">
                                         <a href="#" className="icon icon-sm rounded-circle border"><i className="fa fa-user" /></a>
-                                        <div className="text">
-                                            <span className="text-muted">ยินดีต้อนรับ!</span>
-                                            <br />
-                                            <Link href="/login">
-                                                <a >เข้าสู่ระบบ </a>
-                                            </Link>
-                                            |
-                                            <Link href="/register">
-                                                <a> สมัครสมาชิก</a>
-                                            </Link>
-                                        </div>
+                                        {authenContext.isLogin ?
+                                            <div className="text">
+                                                <span className="text-muted">ยินดีต้อนรับ!</span>
+                                                <br />
+                                                <a>{userContext.user.fname} {userContext.user.lname}</a>
+                                            </div>
+                                            : <div className="text">
+                                                <span className="text-muted">ยินดีต้อนรับ!</span>
+                                                <br />
+                                                <Link href="/login">
+                                                    <a >เข้าสู่ระบบ </a>
+                                                </Link>
+                                                |
+                                                <Link href="/register">
+                                                    <a> สมัครสมาชิก</a>
+                                                </Link>
+                                            </div>}
+
                                     </div>
-                                </div> {/* widgets-wrap.// */}
-                            </div> {/* col.// */}
-                        </div> {/* row.// */}
-                    </div> {/* container.// */}
-                </section> {/* header-main .// */}
-            </header> {/* section-header.// */}
-            {/* section-header.// */}
-            {/* <Nav categorys={categorys} /> */}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </header>
+        </div >
+
+
+    )
+}
+
+export function AdminPanel() {
+    return (
+        <div className='mt-2'>
+            <Link href={"/manage"}>
+                <a className='btn btn-primary btn-sm text-white'>Admin Panel</a>
+            </Link>
         </div>
-
-
     )
 }
 
@@ -76,7 +102,7 @@ export function Nav({ categorys = [] }) {
                         </li>
                         {categorys?.slice(0, 9).map((category) => (
                             <li className="nav-item dropdown" key={category.id}>
-                                <Link href="/">
+                                <Link href={`/category/${category.id}`}>
                                     <a className="nav-link" >{category.name}</a>
                                 </Link>
                             </li>
@@ -86,7 +112,7 @@ export function Nav({ categorys = [] }) {
                                 <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#"> เพิ่มเติม </a>
                                 <div className="dropdown-menu">
                                     {categorys?.slice(9).map((category) => (
-                                        <Link href="/" key={category.id}>
+                                        <Link href={`/category/${category.id}`} key={category.id}>
                                             <a className="dropdown-item">{category.name}</a>
                                         </Link>
                                     ))}

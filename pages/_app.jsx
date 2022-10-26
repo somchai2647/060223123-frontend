@@ -7,6 +7,7 @@ import UserContext from '../contexts/UserContext'
 import { useRouter } from 'next/router'
 import Axios from '../components/Axios'
 
+
 function MyApp({ Component, pageProps, categorys }) {
 
   const router = useRouter()
@@ -29,7 +30,7 @@ function MyApp({ Component, pageProps, categorys }) {
     if (!isLogin) {
       loginAuto()
     }
-  }, [router.isReady])
+  }, [])
 
 
   return (
@@ -39,7 +40,7 @@ function MyApp({ Component, pageProps, categorys }) {
       </Head>
       <AuthenContext.Provider value={{ isLogin, setIsLogin }}>
         <UserContext.Provider value={{ user, setUser }}>
-          <Component {...pageProps} categorys={categorys} />
+          <Component {...pageProps} categorys={categorys} user={user} />
         </UserContext.Provider>
       </AuthenContext.Provider>
     </>
@@ -52,7 +53,7 @@ MyApp.getInitialProps = async (appContext) => {
   try {
     const res = await fetch(`${dev ? "http://localhost:4001/api" : process.env.NEXT_PUBLIC_BASE_URL}/category/getcategory`)
     const categorys = await res.json()
-    return { ...appProps, categorys }
+    return { ...appProps, categorys: categorys }
   } catch (error) {
     return { ...appProps }
   }
