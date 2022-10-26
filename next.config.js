@@ -4,6 +4,7 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: ['storage.naiin.com'],
+    
   },
 }
 

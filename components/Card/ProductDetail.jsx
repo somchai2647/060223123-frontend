@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import numberWithCommas from '../../helpers/numberWithCommas'
 import useCart from '../../hooks/useCart'
 
@@ -33,13 +34,15 @@ export default function ProductDetail({ product }) {
                     <aside className="col-md-6">
                         <article className="gallery-wrap">
                             <div className="img-big-wrap">
-                                <div className="d-block text-center"><img src={selectedImage} /></div>
+                                <div className="d-block text-center">
+                                    {/* <img src={selectedImage}  /> */}
+                                    <Image src={selectedImage} quality={100} width={338} height={450} />
+                                </div>
                             </div> {/* img-big-wrap.// */}
                             <div className="thumbs-wrap">
                                 {product.image?.map((img, index) => (
                                     <span className="item-thumb" key={index} onClick={() => handleClickImage(img.url)}>
-                                        {/* <img src={img.url} /> */}
-                                        <Image src={img.url} quality={50} width={43} height={58} />
+                                        <Image src={img.url} quality={100} width={43} height={58} />
                                     </span>
                                 ))}
                             </div> {/* thumbs-wrap.// */}

@@ -12,10 +12,11 @@ export default function Home(props) {
       <section className="section-content">
         <div className="container">
           <header className="section-heading">
+            <a href="#" class="btn  float-right text-primary">เพิ่มเติม</a>
             <h3 className="section-title">หนังสือเข้าใหม่</h3>
           </header>
           <div className="row">
-            {props.products.length > 0 && props.products?.map((product, index) => (
+            {props.products.length > 0 && props.products?.slice(0, 4).map((product, index) => (
               <div className="col-md-3" key={index}>
                 <Link href={`/detail/${product.id}`}>
                   <div className="card card-product-grid">
