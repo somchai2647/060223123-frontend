@@ -30,7 +30,7 @@ function MyApp({ Component, pageProps, categorys }) {
     if (!isLogin) {
       loginAuto()
     }
-  }, [router.isReady])
+  }, [])
 
 
   return (

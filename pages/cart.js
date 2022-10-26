@@ -3,14 +3,29 @@ import React, { useState, useEffect, useContext } from 'react'
 import SectionPage from '../components/SectionPage'
 import Axios from '../components/Axios'
 import Image from 'next/image'
+import manageState from '../helpers/manageState'
+import useSweetAlert from '../hooks/useSweetAlert'
+import { useRouter } from 'next/router'
 
 export default function Cart(props) {
-
+    const router = useRouter()
+    const alert = useSweetAlert()
     const [products, setProducts] = useState([])
+
+    async function removeItem(item) {
+        const response = await Axios.delete(`/cart/deleteItem/${item.id}`)
+        const data = await response.data
+
+        if (data) {
+            manageState("delete", products, setProducts, data)
+            alert.toast("success", "Item removed from cart")
+        }
+
+    }
 
     async function getCart() {
         try {
-            const res = await Axios.get('/cart/getcart')
+            const res = await Axios.get(`/cart/getcart/${props.user.username}`)
             const data = await res.data
             if (data) {
                 setProducts(data)
@@ -21,8 +36,10 @@ export default function Cart(props) {
     }
 
     useEffect(() => {
-        getCart()
-    }, [])
+        if (props.user) {
+            getCart()
+        }
+    }, [router.isReady, props])
 
 
     return (
@@ -78,7 +95,7 @@ export default function Cart(props) {
                                                     </div> {/* price-wrap .// */}
                                                 </td>
                                                 <td className="text-right">
-                                                    <a href className="btn btn-light"> Remove</a>
+                                                    <button onClick={() => removeItem(product)} className="btn btn-light"> Remove</button>
                                                 </td>
                                             </tr>
                                         ))}

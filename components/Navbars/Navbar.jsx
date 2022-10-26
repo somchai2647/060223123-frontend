@@ -1,24 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Link from 'next/link';
-import { useRouter } from 'next/router'
 import AuthenContext from '../../contexts/AuthenContext'
 import UserContext from '../../contexts/UserContext'
-import Axios from '../Axios'
-import useSweetAlert from '../../hooks/useSweetAlert'
 
-export default function Navbar({ categorys }) {
-    const router = useRouter()
-    const alert = useSweetAlert()
+export default function Navbar(props) {
     const authenContext = useContext(AuthenContext)
     const userContext = useContext(UserContext)
-
-    function handleCart() {
-        if (!authenContext.isLogin) {
-            alert.warning('กรุณาเข้าสู่ระบบก่อน', 'กรุณาเข้าสู่ระบบเพื่อดูตะกร้าสินค้า')
-        } else {
-            router.push('/cart')
-        }
-    }
 
     return (
         <div>
@@ -48,7 +35,9 @@ export default function Navbar({ categorys }) {
                             <div className="col-lg-4 col-sm-6 col-12">
                                 <div className="widgets-wrap float-md-right">
                                     <div className="widget-header  mr-3">
-                                        <span className="icon icon-sm rounded-circle border" onClick={handleCart} style={{ cursor: "pointer" }}><i className="fa fa-shopping-cart" /></span>
+                                        <Link href={"/cart"}>
+                                            <a className="icon icon-sm rounded-circle border" style={{ cursor: "pointer" }}><i className="fa fa-shopping-cart" /></a>
+                                        </Link>
                                         {authenContext.isLogin && <span className="badge badge-pill badge-danger notify">0</span>}
                                     </div>
                                     <div className="widget-header icontext">
@@ -80,7 +69,7 @@ export default function Navbar({ categorys }) {
                 </section>
             </header>
             {/* {JSON.stringify(userContext)} */}
-            <Nav categorys={categorys} />
+            <Nav categorys={props.categorys} />
         </div >
 
 
