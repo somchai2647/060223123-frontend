@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import Link from 'next/link';
-import numberWithCommas from '../../helpers/numberWithCommas';
+import Link from 'next/link'
+import Image from 'next/image'
+import numberWithCommas from '../../helpers/numberWithCommas'
 
 export default function ProductDetail({ product }) {
 
@@ -32,7 +33,10 @@ export default function ProductDetail({ product }) {
                             </div> {/* img-big-wrap.// */}
                             <div className="thumbs-wrap">
                                 {product.image?.map((img, index) => (
-                                    <span className="item-thumb" key={index} onClick={() => handleClickImage(img.url)}> <img src={img.url} /></span>
+                                    <span className="item-thumb" key={index} onClick={() => handleClickImage(img.url)}>
+                                        {/* <img src={img.url} /> */}
+                                        <Image src={img.url} quality={50} width={43} height={58} />
+                                    </span>
                                 ))}
                             </div> {/* thumbs-wrap.// */}
                         </article> {/* gallery-wrap .end// */}
@@ -43,10 +47,10 @@ export default function ProductDetail({ product }) {
                             <div className="rating-wrap my-3">
                                 <ul className="rating-stars">
                                     <li style={{ width: '100%' }} className="stars-active">
-                                        <img src="/assets/images/icons/stars-active.svg" alt />
+                                        <img src="/assets/images/icons/stars-active.svg" />
                                     </li>
                                     <li>
-                                        <img src="/assets/images/icons/starts-disable.svg" alt />
+                                        <img src="/assets/images/icons/starts-disable.svg" />
                                     </li>
                                 </ul>
                                 <small className="label-rating text-muted">132 reviews</small>
@@ -85,7 +89,7 @@ export default function ProductDetail({ product }) {
                                     <label>จำนวน</label>
                                     <div className="input-group mb-3 input-spinner">
                                         <div className="input-group-prepend">
-                                            <button className="btn btn-light" ons onClick={decrement} type="button" id="button-minus"> - </button>
+                                            <button className="btn btn-light" onClick={decrement} type="button" id="button-minus"> - </button>
                                         </div>
                                         <input type="text" className="form-control" readOnly value={quantity} />
                                         <div className="input-group-append">
