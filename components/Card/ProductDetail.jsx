@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import numberWithCommas from '../../helpers/numberWithCommas'
@@ -7,7 +7,7 @@ import useCart from '../../hooks/useCart'
 export default function ProductDetail({ product }) {
     const { addCard } = useCart()
     const [quantity, setQuantity] = useState(1)
-    const [selectedImage, setSelectedImage] = useState(product ? product?.image[0]?.url : "")
+    const [selectedImage, setSelectedImage] = useState(product?.image[0]?.url || "")
 
     function increment() {
         setQuantity(quantity => quantity + 1)
@@ -39,7 +39,7 @@ export default function ProductDetail({ product }) {
                                     <Image
                                         src={selectedImage}
                                         alt={product.name}
-                                        quality={80}
+                                        quality={100}
                                         layout='responsive'
                                         width={"100%"}
                                         height={"80%"}
@@ -82,20 +82,20 @@ export default function ProductDetail({ product }) {
                             <dl className="row">
                                 <dt className="col-sm-3">หมวดหมู่สินค้า</dt>
                                 <dd className="col-sm-9 mb-3">
-                                    <Link href={`/category/${product.category.id}`}>
-                                        <a>{product.category.name}</a>
+                                    <Link href={`/category/${product.category?.id}`}>
+                                        <a>{product.category?.name}</a>
                                     </Link>
                                 </dd>
                                 <dt className="col-sm-3">สำนักพิมพ์</dt>
                                 <dd className="col-sm-9 mb-3">
-                                    <Link href={`/publisher/${product.publisher.id}`}>
-                                        <a>{product.publisher.name}</a>
+                                    <Link href={`/publisher/${product.publisher?.id}`}>
+                                        <a>{product.publisher?.name}</a>
                                     </Link>
                                 </dd>
                                 <dt className="col-sm-3">ผู้เขียน/ผู้แต่ง</dt>
                                 <dd className="col-sm-9 mb-3">
-                                    <Link href={`/author/${product.author.id}`}>
-                                        <a>{product.author.name}</a>
+                                    <Link href={`/author/${product.author?.id}`}>
+                                        <a>{product.author?.name}</a>
                                     </Link>
                                 </dd>
                             </dl>
