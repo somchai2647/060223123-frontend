@@ -3,8 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['storage.naiin.com'],
-    
+    domains: ['storage.naiin.com', 'www.b2s.co.th'],
+
   },
 }
 
