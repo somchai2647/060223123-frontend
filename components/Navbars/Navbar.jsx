@@ -17,7 +17,7 @@ export default function Navbar(props) {
                             <div className="col-lg-2 col-4">
                                 <Link href={"/"}>
                                     <a className="brand-wrap">
-                                        <img className="logo" src="/assets/images/logo-large.png" />
+                                        <img className="logo" src="/assets/images/logo-large.png" alt='logo-large' />
                                     </a>
                                 </Link>
                             </div>
@@ -54,11 +54,11 @@ export default function Navbar(props) {
                                                 <span className="text-muted">ยินดีต้อนรับ!</span>
                                                 <br />
                                                 <Link href="/login">
-                                                    <a >เข้าสู่ระบบ </a>
+                                                    <span className='cursor-pointer'>เข้าสู่ระบบ </span>
                                                 </Link>
                                                 |
                                                 <Link href="/register">
-                                                    <a> สมัครสมาชิก</a>
+                                                    <span className='cursor-pointer'> สมัครสมาชิก</span>
                                                 </Link>
                                             </div>}
 
