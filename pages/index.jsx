@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import Link from 'next/link'
+import Axios from '../components/Axios'
 import Layout from '../components/Layout'
 import AuthenContext from '../contexts/AuthenContext'
 import UserContext from '../contexts/UserContext'
@@ -10,8 +10,11 @@ export default function Home(props) {
   const userContext = useContext(UserContext);
   return (
     <Layout categorys={props.categorys}>
-      <ProductList title={"สินค้าแนะนำ"} api="/product/getProdctGroup?isrecommend=true" />
-      <ProductList title={"สินค้าใหม่"} api="/product/getProdctGroup?createdat=desc" />
+      {/* {JSON.stringify(props.products2)} */}
+      <ProductList title={"สินค้าแนะนำ"} products={props.products} />
+      <ProductList title={"สินค้าใหม่"} products={props.products2} />
+      {/* <ProductList title={"สินค้าแนะนำ"} api="/product/getProdctGroup?isrecommend=true" />
+      <ProductList title={"สินค้าใหม่"} api="/product/getProdctGroup?createdat=desc" /> */}
 
     </Layout>
   )
@@ -19,12 +22,18 @@ export default function Home(props) {
 
 export async function getServerSideProps(context) {
   try {
-    const dev = process.env.NODE_ENV !== 'production';
-    const res = await fetch(`${dev ? "http://localhost:4001/api" : process.env.NEXT_PUBLIC_BASE_URL}/product/getproduct`)
-    const data = await res.json()
+    context.res.setHeader(
+      'Cache-Control',
+      'public, s-maxage=10, stale-while-revalidate=59'
+    )
+    const res = await Axios.get(`/product/getProdctGroup?isrecommend=true`)
+    const products = await res.data
+    const res2 = await Axios.get(`/product/getProdctGroup?createdat=desc`)
+    const products2 = await res2.data
     return {
       props: {
-        products: data
+        products: products,
+        products2: products2
       },
     }
   } catch (error) {

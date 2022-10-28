@@ -3,20 +3,20 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Axios from '../Axios'
 
-export default function ProductList({ title, api }) {
+export default function ProductList({ title, api, products }) {
 
-    const [products, setProducts] = useState([])
+    // const [products, setProducts] = useState([])
 
-    async function getProduct() {
-        const res = await Axios.get(api)
-        const data = await res.data
+    // async function getProduct() {
+    //     const res = await Axios.get(api)
+    //     const data = await res.data
 
-        setProducts(data)
-    }
+    //     setProducts(data)
+    // }
 
-    useEffect(() => {
-        getProduct()
-    }, [])
+    // useEffect(() => {
+    //     getProduct()
+    // }, [])
 
 
     return (
