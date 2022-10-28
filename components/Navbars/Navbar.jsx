@@ -16,7 +16,7 @@ export default function Navbar(props) {
                             <div className="col-lg-2 col-4">
                                 <Link href={"/"}>
                                     <a className="brand-wrap">
-                                        <img className="logo" src="/assets/images/logo-large.png" />
+                                        <img className="logo" src="/assets/images/logo-large2.png" />
                                     </a>
                                 </Link>
                             </div>
