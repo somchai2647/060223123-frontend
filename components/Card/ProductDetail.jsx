@@ -36,7 +36,8 @@ export default function ProductDetail({ product }) {
                             <div className="img-big-wrap">
                                 <div className="d-block text-center">
                                     {/* <img src={selectedImage}  /> */}
-                                    <Image src={selectedImage} quality={100} width={338} height={450} />
+                                    {/* <Image src={selectedImage} quality={100} /> */}
+                                    <img src={selectedImage}  />
                                 </div>
                             </div> {/* img-big-wrap.// */}
                             <div className="thumbs-wrap">
