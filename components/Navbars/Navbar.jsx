@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import Link from 'next/link';
+import Link from 'next/link'
+import Image from 'next/image'
 import AuthenContext from '../../contexts/AuthenContext'
 import UserContext from '../../contexts/UserContext'
 

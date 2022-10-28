@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import Axios from '../Axios'
 
@@ -30,7 +31,15 @@ export default function ProductList({ title, api }) {
                         <div className="col-md-3" key={index}>
                             <Link href={`/detail/${product.id}`}>
                                 <div className="card card-product-grid">
-                                    <a href={`/detail/${product.id}`} className="img-wrap"> <img src={product?.image[0].url} /> </a>
+                                    <a href={`/detail/${product.id}`} className="img-wrap">
+                                        <Image
+                                            src={product?.image[0].url}
+                                            alt={product.name}
+                                            layout='fill'
+                                            objectFit='contain'
+                                            quality={70}
+                                        />
+                                    </a>
                                     <figcaption className="info-wrap">
                                         <a href={`/detail/${product.id}`} className="title">{product.name}</a>
                                         <div className="rating-wrap">

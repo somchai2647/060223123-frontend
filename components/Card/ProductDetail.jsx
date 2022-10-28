@@ -36,14 +36,22 @@ export default function ProductDetail({ product }) {
                             <div className="img-big-wrap">
                                 <div className="d-block text-center">
                                     {/* <img src={selectedImage}  /> */}
-                                    {/* <Image src={selectedImage} quality={100} /> */}
-                                    <img src={selectedImage}  />
+                                    <Image
+                                        src={selectedImage}
+                                        alt={product.name}
+                                        quality={80}
+                                        layout='responsive'
+                                        width={"100%"}
+                                        height={"80%"}
+                                        objectFit='contain'
+                                        priority
+                                    />
                                 </div>
                             </div> {/* img-big-wrap.// */}
                             <div className="thumbs-wrap">
                                 {product.image?.map((img, index) => (
                                     <span className="item-thumb" key={index} onClick={() => handleClickImage(img.url)}>
-                                        <Image src={img.url} quality={100} width={43} height={58} />
+                                        <Image src={img.url} alt={`thumb${index}`} quality={100} width={43} height={58} />
                                     </span>
                                 ))}
                             </div> {/* thumbs-wrap.// */}

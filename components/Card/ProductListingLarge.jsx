@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import numberWithCommas from '../../helpers/numberWithCommas'
 
 export default function ProductListingLarge({ products }) {
@@ -12,7 +13,14 @@ export default function ProductListingLarge({ products }) {
               <Link href={`/detail/${product.id}`}>
                 <a className="img-wrap">
                   <span className="badge badge-danger"> NEW </span>
-                  <img src={product.image[0]?.url} />
+                  {/* <img src={product.image[0]?.url} /> */}
+                  <Image
+                    src={product.image[0]?.url}
+                    alt={product.name}
+                    quality={70}
+                    layout='fill'
+                    objectFit='contain'
+                  />
                 </a>
               </Link>
             </aside>
