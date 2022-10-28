@@ -29,7 +29,7 @@ export default class MyDocument extends Document {
                     <meta name="robots" content="index, follow" />
                     <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
 
-                    <link rel="icon" href="/favicon.ico" />
+                    <link rel="icon" href="/the-nohn-books-logo-01.ico" />
                     <link rel="stylesheet" href="/assets/css/bootstrap.css" />
 
                     {/* Google Font */}
