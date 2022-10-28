@@ -51,7 +51,7 @@ MyApp.getInitialProps = async (appContext) => {
   const appProps = await App.getInitialProps(appContext)
   const dev = process.env.NODE_ENV !== 'production';
   try {
-    const res = await fetch(`${dev ? "http://localhost:4001/api" : process.env.NEXT_PUBLIC_BASE_URL}/category/getcategory`)
+    const res = await fetch(`${dev ? "http://localhost:4001/api" : process.env.NEXT_PUBLIC_BASE_URL}/category/getcategory?order=asc`)
     const categorys = await res.json()
     return { ...appProps, categorys: categorys }
   } catch (error) {
