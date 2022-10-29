@@ -2,8 +2,15 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import numberWithCommas from '../../helpers/numberWithCommas'
+import useCart from '../../hooks/useCart'
 
 export default function ProductListingLarge({ products }) {
+  const { addCard } = useCart()
+
+  function handleAddCard(product) {
+    addCard(product.id, 1)
+  }
+
   return (
     <>
       {products?.map((product) => (
@@ -56,7 +63,7 @@ export default function ProductListingLarge({ products }) {
                 <p className="text-success">ประหยัด {numberWithCommas((product.price / 100) * product.discount)} บาท</p>
                 <br />
                 <p>
-                  <a href="#" className="btn btn-primary btn-block mt-4"><i className="fas fa-shopping-cart mr-2" /> Add to cart </a>
+                  <button type='button' onClick={() => handleAddCard(product)} className="btn btn-primary btn-block mt-4"><i className="fas fa-shopping-cart mr-2" /> Add to cart </button>
                 </p>
               </div>
             </aside>

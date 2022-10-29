@@ -37,7 +37,8 @@ export default function ProductList({ title, api, products }) {
                                             alt={product.name}
                                             layout='fill'
                                             objectFit='contain'
-                                            quality={70}
+                                            quality={60}
+                                            priority
                                         />
                                     </a>
                                     <figcaption className="info-wrap">

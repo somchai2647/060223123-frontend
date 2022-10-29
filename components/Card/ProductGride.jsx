@@ -1,8 +1,15 @@
 import React from 'react'
 import Link from 'next/link'
 import numberWithCommas from '../../helpers/numberWithCommas'
+import useCart from '../../hooks/useCart'
 
 export default function ProductGride({ products }) {
+    const { addCard } = useCart()
+
+    function handleAddCard(product) {
+        addCard(product.id, 1)
+    }
+
     return (
         <>
             <div className="row">
@@ -42,7 +49,7 @@ export default function ProductGride({ products }) {
                                         <div className="label-rating">7/10</div>
                                     </div>
                                 </div>
-                                <a href="#" className="btn btn-block btn-primary">Add to cart </a>
+                                <button type='button' onClick={() => handleAddCard(product)} className="btn btn-block btn-primary">Add to cart </button>
                             </figcaption>
                         </figure>
                     </div>
