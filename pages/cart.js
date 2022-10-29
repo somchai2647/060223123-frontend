@@ -15,9 +15,9 @@ export default function Cart(props) {
     const [products, setProducts] = useState([])
 
     const [order, setOrder] = useState([])
-    const [total, setTotal] = useState(0.00)
-    const [price, setPrice] = useState(0.00)
-    const [difference, setDifference] = useState(0.00)
+    const [total, setTotal] = useState(0)
+    const [price, setPrice] = useState(0)
+    const [difference, setDifference] = useState(0)
 
     async function removeItem(cartid) {
         const response = await Axios.delete(`/cart/deleteItem/${cartid}`)
@@ -25,6 +25,7 @@ export default function Cart(props) {
 
         if (data) {
             manageState("delete", products, setProducts, data)
+            manageState("delete", order, setOrder, data)
             alert.toast("success", "Item removed from cart")
         }
 
@@ -48,47 +49,49 @@ export default function Cart(props) {
         }
     }, [router.isReady, props])
 
-    function updateState(product, action) {
-        if (action === "decrement") {
-            setPrice(price => price - (product.price * product.quantity))
-            setDifference(difference => difference - product.difference)
-            setTotal(total => total - (product.discount))
-            return
-        }
-
-        if (action === "increment" || action === "init") {
-
-            setPrice(price => price + (product.price * product.quantity))
-            setDifference(difference => difference + product.difference)
-            setTotal(total => total + (product.discount))
-            return
-        }
-
-
-
+    function getPrice() {
+        let _price = 0
+        let _discount = 0
+        products.forEach(item => {
+            _price = _price + parseFloat(item.Products.price * item.quantity)
+            _discount = _discount + parseFloat(((item.Products.discount / 100) * item.Products.price) * item.quantity)
+        })
+        setPrice(_price)
+        setDifference(_discount)
+        setTotal(_price - _discount)
+        return _price
     }
 
     function handleRowAction(callback) {
         const { action, product, cartid, opr } = callback
-        console.log(callback)
+
+        const index = products.findIndex(cart => cart.id === cartid)
+        var newProduct = products[index]
+
         switch (action) {
             case "remove":
                 removeItem(cartid)
                 break;
             case "init":
-                updateState(product, action )
-                setOrder(order => [...order, product])
                 break;
-
-            case "update":
-                updateState(product, opr)
-                manageState("update", order, setOrder, product)
+            case "increment":
+                console.log("increment", cartid)
+                newProduct.quantity = newProduct.quantity + 1
+                manageState("update", products, setProducts, newProduct)
+                break;
+            case "decrement":
+                console.log("decrement", cartid)
+                newProduct.quantity = newProduct.quantity - 1
+                manageState("update", products, setProducts, newProduct)
                 break;
             default:
                 break;
-
         }
     }
+
+    useEffect(() => {
+        getPrice()
+    }, [products])
 
 
     return (
@@ -96,7 +99,7 @@ export default function Cart(props) {
             <SectionPage title="🛒 ตะกร้าสินค้า" />
             <section className="section-content padding-y">
                 <div className="container">
-                    {JSON.stringify(order)}
+                    {JSON.stringify(products)}
                     <div className="row">
                         <main className="col-md-9">
                             <div className="card">
@@ -128,11 +131,11 @@ export default function Cart(props) {
                                         <a className="btn btn-light"> <i className="fa fa-chevron-left" /> ซื้อสินค้าต่อ </a>
                                     </Link>
                                 </div>
-                            </div> {/* card.// */}
+                            </div>
                             <div className="alert alert-success mt-3">
                                 <p className="icontext"><i className="icon text-success fa fa-truck" /> จัดส่งฟรีภายใน 1-2 สัปดาห์ </p>
                             </div>
-                        </main> {/* col.// */}
+                        </main>
                         <aside className="col-md-3">
                             {/* <div className="card mb-3">
                                 <div className="card-body">
@@ -168,11 +171,11 @@ export default function Cart(props) {
                                     <p className="text-center mb-3">
                                         <img src="/assets/images/misc/payments.png" height={26} />
                                     </p>
-                                </div> {/* card-body.// */}
-                            </div>  {/* card .// */}
-                        </aside> {/* col.// */}
+                                </div>
+                            </div>
+                        </aside>
                     </div>
-                </div> {/* container .//  */}
+                </div>
             </section>
             <Policy />
         </Layout>
@@ -181,48 +184,28 @@ export default function Cart(props) {
 
 export function CartRow({ product, callback, cartid, quantityItem }) {
     const router = useRouter()
-    const [quantity, setQuantity] = useState(quantityItem || 1)
+    // const [quantity, setQuantity] = useState(quantityItem || 1)
 
     function handleRemove() {
         callback({ action: "remove", product, cartid })
     }
 
-    function calulatePrice() {
-        const price = parseFloat(product.price)
-        const total = price * quantity
-        const discount = total - (total * product.discount / 100)
-        const difference = total - discount
-        const payload = {
-            id: product.id,
-            price,
-            discount,
-            difference,
-            quantity
-        }
-
-        return payload
-    }
-
     function increment() {
-        if (quantity < product.stock - 1) {
-            setQuantity(quantity => quantity + 1)
-            const payload = calulatePrice()
-            callback({ action: "update", product: payload, cartid, opr: "increment" })
-        }
+        // setQuantity(quantity => quantity + 1)
+        callback({ action: "increment", product, cartid })
 
     }
 
     function decrement() {
-        if (quantity > 1) {
-            setQuantity(quantity => quantity - 1)
-            const payload = calulatePrice()
-            callback({ action: "update", product: payload, cartid, opr: "decrement" })
+        if (quantityItem > 1) {
+            // setQuantity(quantity => quantity - 1)
+            callback({ action: "decrement", product, cartid })
         }
     }
 
     useEffect(() => {
-        const payload = calulatePrice()
-        callback({ action: "init", product: payload, cartid })
+
+        callback({ action: "init", product: {}, cartid })
 
     }, [])
 
@@ -257,7 +240,7 @@ export function CartRow({ product, callback, cartid, quantityItem }) {
                             <div className="input-group-prepend">
                                 <button className="btn btn-light" onClick={decrement} type="button" id="button-minus"> - </button>
                             </div>
-                            <input type="text" className="form-control" readOnly value={quantity} />
+                            <input type="text" className="form-control" readOnly value={quantityItem} />
                             <div className="input-group-append">
                                 <button className="btn btn-light" onClick={increment} type="button" id="button-plus"> + </button>
                             </div>
