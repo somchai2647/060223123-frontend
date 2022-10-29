@@ -7,14 +7,20 @@ import Image from 'next/image'
 import manageState from '../helpers/manageState'
 import useSweetAlert from '../hooks/useSweetAlert'
 import { useRouter } from 'next/router'
+import numberWithCommas from '../helpers/numberWithCommas'
 
 export default function Cart(props) {
     const router = useRouter()
     const alert = useSweetAlert()
     const [products, setProducts] = useState([])
 
-    async function removeItem(item) {
-        const response = await Axios.delete(`/cart/deleteItem/${item.id}`)
+    const [order, setOrder] = useState([])
+    const [total, setTotal] = useState(0.00)
+    const [price, setPrice] = useState(0.00)
+    const [difference, setDifference] = useState(0.00)
+
+    async function removeItem(cartid) {
+        const response = await Axios.delete(`/cart/deleteItem/${cartid}`)
         const data = await response.data
 
         if (data) {
@@ -42,79 +48,93 @@ export default function Cart(props) {
         }
     }, [router.isReady, props])
 
+    function updateState(product, action) {
+        if (action === "decrement") {
+            setPrice(price => price - (product.price * product.quantity))
+            setDifference(difference => difference - product.difference)
+            setTotal(total => total - (product.discount))
+            return
+        }
+
+        if (action === "increment" || action === "init") {
+
+            setPrice(price => price + (product.price * product.quantity))
+            setDifference(difference => difference + product.difference)
+            setTotal(total => total + (product.discount))
+            return
+        }
+
+
+
+    }
+
+    function handleRowAction(callback) {
+        const { action, product, cartid, opr } = callback
+        console.log(callback)
+        switch (action) {
+            case "remove":
+                removeItem(cartid)
+                break;
+            case "init":
+                updateState(product, action )
+                setOrder(order => [...order, product])
+                break;
+
+            case "update":
+                updateState(product, opr)
+                manageState("update", order, setOrder, product)
+                break;
+            default:
+                break;
+
+        }
+    }
+
 
     return (
         <Layout categorys={props.categorys}>
             <SectionPage title="🛒 ตะกร้าสินค้า" />
             <section className="section-content padding-y">
                 <div className="container">
+                    {JSON.stringify(order)}
                     <div className="row">
                         <main className="col-md-9">
                             <div className="card">
                                 <table className="table table-borderless table-shopping-cart">
                                     <thead className="text-muted">
                                         <tr className="small text-uppercase">
-                                            <th scope="col">รายการสินค้า</th>
+                                            <th scope="col" width={400}>รายการสินค้า</th>
                                             <th scope="col" width={120}>จำนวน</th>
                                             <th scope="col" width={120}>ราคา</th>
-                                            <th scope="col" className="text-right" width={200}> </th>
+                                            <th scope="col" width={120}>ราคารวม</th>
+                                            <th scope="col" className="text-right" width={120}> </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {products?.map((product) => (
-                                            <tr key={product.id}>
-                                                <td>
-                                                    <figure className="itemside">
-                                                        <div className="aside">
-                                                            {/* <img src={product.Products.image[0].url} /> */}
-                                                            <Image
-                                                                src={product.Products.image[0].url}
-                                                                alt="Picture of the author"
-                                                                width={70}
-                                                                height={100}
-                                                                quality={50}
-                                                            />
-                                                        </div>
-                                                        <figcaption className="info">
-                                                            <Link href={`/detail/${product.Products.id}`}>
-                                                                <a className="title text-dark">{product.Products.name}</a>
-                                                            </Link>
-                                                            <p className="text-muted small">Size: XL, Color: blue, <br /> Brand: Gucci</p>
-                                                        </figcaption>
-                                                    </figure>
-                                                </td>
-                                                <td>
-                                                    <select className="form-control">
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <div className="price-wrap">
-                                                        <var className="price">$1156.00</var>
-                                                        <small className="text-muted"> $315.20 each </small>
-                                                    </div> {/* price-wrap .// */}
-                                                </td>
-                                                <td className="text-right">
-                                                    <button onClick={() => removeItem(product)} className="btn btn-light"> Remove</button>
-                                                </td>
-                                            </tr>
+                                        {products?.map((cart) => (
+                                            <CartRow
+                                                key={cart.id}
+                                                cartid={cart.id}
+                                                product={cart.Products}
+                                                callback={handleRowAction}
+                                                quantityItem={cart.quantity}
+                                            />
                                         ))}
                                     </tbody>
                                 </table>
                                 <div className="card-body border-top">
                                     <a href="#" className="btn btn-primary float-md-right"> Make Purchase <i className="fa fa-chevron-right" /> </a>
-                                    <a href="#" className="btn btn-light"> <i className="fa fa-chevron-left" /> Continue shopping </a>
+                                    <Link href="/">
+                                        <a className="btn btn-light"> <i className="fa fa-chevron-left" /> ซื้อสินค้าต่อ </a>
+                                    </Link>
                                 </div>
                             </div> {/* card.// */}
                             <div className="alert alert-success mt-3">
-                                <p className="icontext"><i className="icon text-success fa fa-truck" /> Free Delivery within 1-2 weeks</p>
+                                <p className="icontext"><i className="icon text-success fa fa-truck" /> จัดส่งฟรีภายใน 1-2 สัปดาห์ </p>
                             </div>
                         </main> {/* col.// */}
                         <aside className="col-md-3">
-                            <div className="card mb-3">
+                            {/* <div className="card mb-3">
                                 <div className="card-body">
                                     <form>
                                         <div className="form-group">
@@ -127,21 +147,22 @@ export default function Cart(props) {
                                             </div>
                                         </div>
                                     </form>
-                                </div> {/* card-body.// */}
-                            </div>  {/* card .// */}
+                                </div>
+                            </div>  */}
                             <div className="card">
                                 <div className="card-body">
                                     <dl className="dlist-align">
-                                        <dt>Total price:</dt>
-                                        <dd className="text-right">USD 568</dd>
+                                        <dt>ราคา:</dt>
+                                        <dd className="text-right">{price.toFixed(2)} บาท</dd>
                                     </dl>
                                     <dl className="dlist-align">
-                                        <dt>Discount:</dt>
-                                        <dd className="text-right">USD 658</dd>
+                                        <dt>ประหยัด:</dt>
+                                        <dd className="text-right">{difference.toFixed(2)} บาท</dd>
                                     </dl>
+                                    <hr />
                                     <dl className="dlist-align">
-                                        <dt>Total:</dt>
-                                        <dd className="text-right  h5"><strong>$1,650</strong></dd>
+                                        <dt>ราคาสินค้าต้องชำระ :</dt>
+                                        <dd className="text-right"><strong>{total.toFixed(2)} บาท</strong></dd>
                                     </dl>
                                     <hr />
                                     <p className="text-center mb-3">
@@ -158,9 +179,111 @@ export default function Cart(props) {
     )
 }
 
+export function CartRow({ product, callback, cartid, quantityItem }) {
+    const router = useRouter()
+    const [quantity, setQuantity] = useState(quantityItem || 1)
+
+    function handleRemove() {
+        callback({ action: "remove", product, cartid })
+    }
+
+    function calulatePrice() {
+        const price = parseFloat(product.price)
+        const total = price * quantity
+        const discount = total - (total * product.discount / 100)
+        const difference = total - discount
+        const payload = {
+            id: product.id,
+            price,
+            discount,
+            difference,
+            quantity
+        }
+
+        return payload
+    }
+
+    function increment() {
+        if (quantity < product.stock - 1) {
+            setQuantity(quantity => quantity + 1)
+            const payload = calulatePrice()
+            callback({ action: "update", product: payload, cartid, opr: "increment" })
+        }
+
+    }
+
+    function decrement() {
+        if (quantity > 1) {
+            setQuantity(quantity => quantity - 1)
+            const payload = calulatePrice()
+            callback({ action: "update", product: payload, cartid, opr: "decrement" })
+        }
+    }
+
+    useEffect(() => {
+        const payload = calulatePrice()
+        callback({ action: "init", product: payload, cartid })
+
+    }, [])
+
+
+    return (
+        <>
+            <tr>
+                <td>
+                    <figure className="itemside">
+                        <div className="aside">
+                            {/* <img src={product.Products.image[0].url} /> */}
+                            <Image
+                                src={product.image[0].url}
+                                alt="Picture of the author"
+                                width={70}
+                                height={100}
+                                quality={50}
+                            />
+                        </div>
+                        <figcaption className="info">
+                            <Link href={`/detail/${product.id}`}>
+                                <a className="title text-dark">{product.name}</a>
+                            </Link>
+                            <p className="text-muted small">Size: XL, Color: blue, <br /> Brand: Gucci</p>
+                        </figcaption>
+                    </figure>
+                </td>
+                <td>
+                    <div className="form-group col-md flex-grow-0">
+                        <label>จำนวน</label>
+                        <div className="input-group mb-3 input-spinner">
+                            <div className="input-group-prepend">
+                                <button className="btn btn-light" onClick={decrement} type="button" id="button-minus"> - </button>
+                            </div>
+                            <input type="text" className="form-control" readOnly value={quantity} />
+                            <div className="input-group-append">
+                                <button className="btn btn-light" onClick={increment} type="button" id="button-plus"> + </button>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div className="price-wrap">
+                        <var className="price"> {numberWithCommas(product.price - (product.price / 100) * product.discount)} บาท</var>
+                        <small className="text-muted"><del>{numberWithCommas(product.price)} บาท</del> </small>
+                    </div> {/* price-wrap .// */}
+                </td>
+                <td>
+                    <var className="price"> {numberWithCommas((product.price - (product.price / 100) * product.discount) * quantityItem)} บาท</var>
+                </td>
+                <td className="text-right">
+                    <button onClick={handleRemove} className="btn btn-light"> นำออก</button>
+                </td>
+            </tr>
+        </>
+    )
+}
+
 export function Policy() {
     return (
-        <section className="section-name bg padding-y">
+        <section className="section-name bg padding-y mb-5">
             <div className="container">
                 <h6>Payment and refund policy</h6>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod

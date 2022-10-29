@@ -26,9 +26,9 @@ export async function getServerSideProps(context) {
       'Cache-Control',
       'public, s-maxage=10, stale-while-revalidate=59'
     )
-    const res = await Axios.get(`/product/getProdctGroup?isrecommend=true`)
+    const res = await Axios.get(`/product/getProdctGroup?isrecommend=true&take=5`)
     const products = await res.data
-    const res2 = await Axios.get(`/product/getProdctGroup?createdat=desc`)
+    const res2 = await Axios.get(`/product/getProdctGroup?createdat=desc&take=5`)
     const products2 = await res2.data
     return {
       props: {
