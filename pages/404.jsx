@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default function Page404(props) {
     return (
         <Layout categorys={props.categorys}>
-            <div className="container text-center">
+            <div className="container text-center m-5">
                 <Image
                     src={"/assets/images/404-V2.svg"}
                     width={400}

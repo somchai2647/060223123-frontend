@@ -1,5 +1,6 @@
 import Layout from '../components/Layout'
 import React, { useState, useEffect, useContext } from 'react'
+import Link from 'next/link'
 import SectionPage from '../components/SectionPage'
 import Axios from '../components/Axios'
 import Image from 'next/image'
@@ -75,7 +76,9 @@ export default function Cart(props) {
                                                             />
                                                         </div>
                                                         <figcaption className="info">
-                                                            <a href="#" className="title text-dark">{product.Products.name}</a>
+                                                            <Link href={`/detail/${product.Products.id}`}>
+                                                                <a className="title text-dark">{product.Products.name}</a>
+                                                            </Link>
                                                             <p className="text-muted small">Size: XL, Color: blue, <br /> Brand: Gucci</p>
                                                         </figcaption>
                                                     </figure>
