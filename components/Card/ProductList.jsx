@@ -1,29 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import Axios from '../Axios'
 
-export default function ProductList({ title, api, products }) {
-
-    // const [products, setProducts] = useState([])
-
-    // async function getProduct() {
-    //     const res = await Axios.get(api)
-    //     const data = await res.data
-
-    //     setProducts(data)
-    // }
-
-    // useEffect(() => {
-    //     getProduct()
-    // }, [])
-
+export default function ProductList({ title, url, products }) {
 
     return (
         <section className="section-content">
             <div className="container">
                 <header className="section-heading">
-                    <a href="#" className="btn  float-right text-primary">เพิ่มเติม</a>
+                    <Link href={`/search/c?title=${title}&url=${url}`}>
+                        <a className="btn  float-right text-primary">เพิ่มเติม</a>
+                    </Link>
                     <h3 className="section-title">{title}</h3>
                 </header>
                 <div className="row">
