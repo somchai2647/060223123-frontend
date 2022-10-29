@@ -75,12 +75,10 @@ export default function Cart(props) {
             case "init":
                 break;
             case "increment":
-                console.log("increment", cartid)
                 newProduct.quantity = newProduct.quantity + 1
                 manageState("update", products, setProducts, newProduct)
                 break;
             case "decrement":
-                console.log("decrement", cartid)
                 newProduct.quantity = newProduct.quantity - 1
                 manageState("update", products, setProducts, newProduct)
                 break;
@@ -99,7 +97,6 @@ export default function Cart(props) {
             <SectionPage title="🛒 ตะกร้าสินค้า" />
             <section className="section-content padding-y">
                 <div className="container">
-                    {JSON.stringify(products)}
                     <div className="row">
                         <main className="col-md-9">
                             <div className="card">

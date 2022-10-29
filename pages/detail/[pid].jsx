@@ -46,7 +46,7 @@ export async function getServerSideProps(context) {
             }
         }
     } catch (error) {
-        console.log(error)
+        console.error(error)
         return {
             props: {
                 product: []
