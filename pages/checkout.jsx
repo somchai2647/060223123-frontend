@@ -39,8 +39,24 @@ export default function Checkout(props) {
         }
     }
 
-    async function checkout(){
-        alert("DWADAW")
+    async function checkout() {
+        try {
+            setLoading(true)
+            const payload = {
+                paymethod: method,
+                address: address,
+            }
+            const res = await Axios.post(`/order/createCheckout`, payload)
+            const data = await res.data
+            if (data) {
+                router.push('/cart')
+            }
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setLoading(false)
+        }
+
     }
 
     function handleInputUpdate(value) {
@@ -70,11 +86,10 @@ export default function Checkout(props) {
                         <Accordion method={handlePaymentMethod} />
                     </main>
                     <aside className="col-md-4">
-                        <CheckoutCard method={method} total={total} onCheckout={checkout} />
+                        <CheckoutCard loading={loading} method={method} total={total} onCheckout={checkout} />
                     </aside>
                 </div>
             </div>
-
         </Layout>
     )
 }
@@ -254,7 +269,7 @@ export function Accordion({ method }) {
     )
 }
 
-export function CheckoutCard({ method = "Paypal", total = 0, onCheckout }) {
+export function CheckoutCard({ method = "Paypal", total = 0, onCheckout, loading }) {
 
     function handleCheckout() {
         onCheckout(true)
