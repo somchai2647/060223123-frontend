@@ -19,7 +19,7 @@ export default function ReviewCart({ carts }) {
                                             src={image[0]?.url}
                                             width={80}
                                             height={100}
-                                            
+                                            alt={name}
                                         />
                                     </div>
                                     <figcaption className="info">
