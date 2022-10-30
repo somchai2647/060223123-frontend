@@ -2,16 +2,15 @@ import * as yup from "yup"
 import { useForm } from 'react-hook-form'
 import Axios from '../../components/Axios'
 import Layout from '../../components/Layout'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import UserMenu from '../../components/Card/UserMenu'
 import SectionPage from '../../components/SectionPage'
 import { yupResolver } from '@hookform/resolvers/yup'
 import useSweetAlert from '../../hooks/useSweetAlert'
 import ErrorLabel from '../../components/ErrorLabel';
-
+import UserContext from '../../contexts/UserContext';
 const schema = yup.object().shape({
     username: yup.string().required("กรุณากรอกชื่อผู้ใช้งาน"),
-    password: yup.string().required("กรุณากรอกรหัสผ่าน"),
     fname: yup.string().required("กรุณากรอกชื่อจริง"),
     lname: yup.string().required("กรุณากรอกนามสกุล"),
     email: yup.string().email("กรุณากรอกอีเมลให้ถูกต้อง").required("กรุณากรอกอีเมล"),
@@ -25,6 +24,8 @@ const schema = yup.object().shape({
 });
 
 export default function Overview({ categorys }) {
+    const userContext = useContext(UserContext)
+
     const alert = useSweetAlert()
     const { register, handleSubmit, setValue, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
@@ -32,9 +33,32 @@ export default function Overview({ categorys }) {
 
     const [loading, setloading] = useState(false)
 
-    async function onSubmit(data) {
-        console.log(data)
+    async function updateProfile(data) {
+        try {
+            setloading(true)
+            const { fname, lname, email, tel, province, district, subdistrict, road, house, zipcode } = data
+            const address = `${house}|${road}|${subdistrict}|${district}|${province}|${zipcode}`
+            const payload = {
+                fname,
+                lname,
+                email,
+                tel,
+                address
+            }
+            const res = await Axios.put("/profile/updateProfile", payload)
+            const user = await res.data
+            if (user) {
+                alert.success("แก้ไขข้อมูลสำเร็จ", "แก้ไขข้อมูลส่วนตัวสำเร็จ")
+                userContext.setUser(user)
+            }
+        } catch (error) {
+            console.log(error)
+            alert.error("แก้ไขข้อมูลไม่สำเร็จ", "กรุณาลองใหม่อีกครั้ง")
+        } finally {
+            setloading(false)
+        }
     }
+
 
     async function getProfile() {
         try {
@@ -55,8 +79,6 @@ export default function Overview({ categorys }) {
                 setValue("district", address[3])
                 setValue("province", address[4])
                 setValue("zipcode", address[5])
-                // const address = `${house}|${road}|${subdistrict}|${district}|${province}|${zipcode}`
-
             }
         } catch (error) {
             console.log(error)
@@ -81,7 +103,7 @@ export default function Overview({ categorys }) {
                             <div className="card">
                                 <div className="card-body">
 
-                                    <form onSubmit={handleSubmit(onSubmit)}>
+                                    <form onSubmit={handleSubmit(updateProfile)}>
                                         <h2 className="mb-4">ข้อมูลส่วนตัว</h2>
                                         <div className="form-row">
                                             <div className="form-group col-12">
