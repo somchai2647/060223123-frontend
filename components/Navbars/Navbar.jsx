@@ -1,12 +1,24 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 import AuthenContext from '../../contexts/AuthenContext'
 import UserContext from '../../contexts/UserContext'
 
 export default function Navbar(props) {
+    const router = useRouter()
     const authenContext = useContext(AuthenContext)
     const userContext = useContext(UserContext)
+
+    const [keyword, setKeyword] = useState("")
+
+    function handleChange(e) {
+        setKeyword(keyworld => e.target.value)
+    }
+
+    function handleSearch() {
+        router.push(`/search?keyword=${keyword}`)
+    }
 
     return (
         <div>
@@ -22,16 +34,14 @@ export default function Navbar(props) {
                                 </Link>
                             </div>
                             <div className="col-lg-6 col-sm-12">
-                                <form action="#" className="search">
-                                    <div className="input-group w-100">
-                                        <input type="text" className="form-control" placeholder="คำค้นหา" />
-                                        <div className="input-group-append">
-                                            <button className="btn btn-primary" type="submit">
-                                                <i className="fa fa-search" /> ค้นหา
-                                            </button>
-                                        </div>
+                                <div className="input-group w-100">
+                                    <input type="text" className="form-control" onChange={handleChange} placeholder="คำค้นหา" />
+                                    <div className="input-group-append">
+                                        <button className="btn btn-primary" onClick={handleSearch} type="button">
+                                            <i className="fa fa-search" /> ค้นหา
+                                        </button>
                                     </div>
-                                </form> {/* search-wrap .end// */}
+                                </div>
                             </div> {/* col.// */}
                             <div className="col-lg-4 col-sm-6 col-12">
                                 <div className="widgets-wrap float-md-right">
