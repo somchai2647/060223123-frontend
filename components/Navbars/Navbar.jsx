@@ -70,6 +70,9 @@ export default function Navbar(props) {
                                                         <a className="dropdown-item">รายการสั่งซื้อของฉัน</a>
                                                     </Link>
                                                     <hr />
+                                                    <Link href="/profile/changpassword">
+                                                        <a className="dropdown-item">เปลี่ยนรหัสผ่าน</a>
+                                                    </Link>
                                                     <a className="dropdown-item text-danger" href="#">ออกจากระบบ</a>
                                                 </div>
                                             </div>

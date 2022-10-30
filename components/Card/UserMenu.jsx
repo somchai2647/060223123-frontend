@@ -18,7 +18,7 @@ export default function UserMenu() {
                                     </Link>
                                 </li>
                                 <li className='mb-3'>
-                                    <Link href={"/"}>
+                                    <Link href={"/cart"}>
                                         <a href="#">ตะกร้าสินค้า</a>
                                     </Link>
                                 </li>
@@ -33,6 +33,7 @@ export default function UserMenu() {
                                     </Link>
                                 </li>
                                 <hr />
+                                <li className='mb-3'><a href="#">เปลี่ยนรหัสผ่าน</a></li>
                                 <li className='mb-3'><a href="#" className='text-danger'>ออกจากระบบ</a></li>
                             </ul>
                         </div> {/* card-body.// */}

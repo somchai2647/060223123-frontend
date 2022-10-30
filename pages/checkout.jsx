@@ -1,3 +1,4 @@
+import * as yup from "yup"
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '../components/Layout'
@@ -5,7 +6,18 @@ import SectionPage from '../components/SectionPage'
 import ReviewCart from '../components/Card/ReviewCart'
 import Axios from '../components/Axios'
 import { useForm } from 'react-hook-form'
-import SVGLoading from '../components/SVGLoading';
+import SVGLoading from '../components/SVGLoading'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+const schema = yup.object().shape({
+    house: yup.string().required("กรุณากรอกบ้านเลขที่"),
+    road: yup.string().required("กรุณากรอกถนน"),
+    subdistrict: yup.string().required("กรุณากรอกตำบล"),
+    district: yup.string().required("กรุณากรอกอำเภอ"),
+    province: yup.string().required("กรุณากรอกจังหวัด"),
+    zipcode: yup.string().required("กรุณากรอกรหัสไปรษณีย์")
+})
+
 
 export default function Checkout(props) {
     const router = useRouter()
@@ -94,49 +106,18 @@ export default function Checkout(props) {
     )
 }
 
-export function ContactInfo() {
-
-    return (
-        <article className="card mb-4">
-            <div className="card-body">
-                <h4 className="card-title mb-4">Contact info</h4>
-                <form>
-                    <div className="row">
-                        <div className="form-group col-sm-6">
-                            <label>Frst name</label>
-                            <input type="text" placeholder="Type here" className="form-control" />
-                        </div>
-                        <div className="form-group col-sm-6">
-                            <label>Last name</label>
-                            <input type="text" placeholder="Type here" className="form-control" />
-                        </div>
-                        <div className="form-group col-sm-6">
-                            <label>Phone</label>
-                            <input type="text" defaultValue={+998} className="form-control" />
-                        </div>
-                        <div className="form-group col-sm-6">
-                            <label>Email</label>
-                            <input type="email" placeholder="example@gmail.com" className="form-control" />
-                        </div>
-                    </div>
-                    {/* row.// */}
-                </form>
-            </div>
-            {/* card-body.// */}
-        </article>
-
-    )
-}
 
 export function DeliveryInfo({ inputupdate }) {
 
-    const { register, watch } = useForm()
+    const { register, watch } = useForm({
+        resolver: yupResolver(schema)
+    })
 
     const watchAllFields = watch()
 
     useEffect(() => {
         const { province, district, subdistrict, road, house, zipcode } = watchAllFields
-        const address = `${house} ${road} ${subdistrict} ${district} ${province} ${zipcode}`
+        const address = `${house}|${road}|${subdistrict}|${district}|${province}|${zipcode}`
         inputupdate(address)
     }, [watchAllFields])
 
