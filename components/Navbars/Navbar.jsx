@@ -52,7 +52,35 @@ export default function Navbar(props) {
                                         {authenContext.isLogin && <span className="badge badge-pill badge-danger notify">0</span>}
                                     </div>
                                     <div className="widget-header icontext">
-                                        <a href="#" className="icon icon-sm rounded-circle border"><i className="fa fa-user" /></a>
+                                        {authenContext.isLogin ?
+
+                                            <div className="dropdown show">
+                                                <a href="#" className="icon icon-sm rounded-circle border" role="button" id="dropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fa fa-user" /></a>
+                                                <div className="dropdown-menu" aria-labelledby="dropdownMenuUser">
+                                                    <Link href="/profile/">
+                                                        <a className="dropdown-item">ข้อมูลส่วนตัว</a>
+                                                    </Link>
+                                                    <Link href="/profile/order">
+                                                        <a className="dropdown-item">รายการสั่งซื้อของฉัน</a>
+                                                    </Link>
+                                                    <Link href="/profile/review">
+                                                        <a className="dropdown-item">รีวิวของฉัน</a>
+                                                    </Link>
+                                                    <Link href="/profile/order">
+                                                        <a className="dropdown-item">รายการสั่งซื้อของฉัน</a>
+                                                    </Link>
+                                                    <hr />
+                                                    <a className="dropdown-item text-danger" href="#">ออกจากระบบ</a>
+                                                </div>
+                                            </div>
+                                            :
+                                            <Link href="/login">
+                                                <a className="icon icon-sm rounded-circle border" role="button"><i className="fa fa-user" /></a>
+                                            </Link>
+                                        }
+
+
+
                                         {authenContext.isLogin ?
                                             <div className="text">
                                                 <span className="text-muted">ยินดีต้อนรับ!</span>
