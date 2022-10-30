@@ -8,11 +8,13 @@ import manageState from '../helpers/manageState'
 import useSweetAlert from '../hooks/useSweetAlert'
 import { useRouter } from 'next/router'
 import numberWithCommas from '../helpers/numberWithCommas'
+import SVGLoading from '../components/SVGLoading'
 
 export default function Cart(props) {
     const router = useRouter()
     const alert = useSweetAlert()
     const [products, setProducts] = useState([])
+    const [loading, setLoading] = useState(false)
 
     const [order, setOrder] = useState([])
     const [total, setTotal] = useState(0)
@@ -33,6 +35,7 @@ export default function Cart(props) {
 
     async function getCart() {
         try {
+            setLoading(true)
             const res = await Axios.get(`/cart/getcart/${props.user.username}`)
             const data = await res.data
             if (data) {
@@ -40,6 +43,8 @@ export default function Cart(props) {
             }
         } catch (error) {
             console.error(error)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -111,6 +116,12 @@ export default function Cart(props) {
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {loading &&
+                                            <tr><td colSpan={5}><SVGLoading /></td></tr>
+                                        }
+                                        {!loading && products.length === 0 &&
+                                            <tr><td colSpan={5} align="center">ไม่พบรายการสินค้า</td></tr>
+                                        }
                                         {products?.map((cart) => (
                                             <CartRow
                                                 key={cart.id}
@@ -123,7 +134,7 @@ export default function Cart(props) {
                                     </tbody>
                                 </table>
                                 <div className="card-body border-top">
-                                    <a href="#" className="btn btn-primary float-md-right"> Make Purchase <i className="fa fa-chevron-right" /> </a>
+                                    <a href="#" className="btn btn-primary float-md-right"> ทำการซื้อ <i className="fa fa-chevron-right" /> </a>
                                     <Link href="/">
                                         <a className="btn btn-light"> <i className="fa fa-chevron-left" /> ซื้อสินค้าต่อ </a>
                                     </Link>
