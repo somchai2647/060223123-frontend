@@ -134,7 +134,9 @@ export default function Cart(props) {
                                     </tbody>
                                 </table>
                                 <div className="card-body border-top">
-                                    <a href="#" className="btn btn-primary float-md-right"> ทำการซื้อ <i className="fa fa-chevron-right" /> </a>
+                                    <Link href="/checkout" >
+                                        <a className="btn btn-primary float-md-right"> ทำการซื้อ <i className="fa fa-chevron-right" /> </a>
+                                    </Link>
                                     <Link href="/">
                                         <a className="btn btn-light"> <i className="fa fa-chevron-left" /> ซื้อสินค้าต่อ </a>
                                     </Link>
