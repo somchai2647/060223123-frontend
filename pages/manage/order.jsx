@@ -1,12 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../../components/Layout/Admin'
-import OrderingCard from '../../components/Card/OrderingCard';
-import Axios from '../../components/Axios';
+import Axios from '../../components/Axios'
+import OrderingCard from '../../components/Card/OrderingCard'
 
-export default function Order({ categorys, orders }) {
+export default function Order({ categorys }) {
+
+    const [orders, setorders] = useState([])
+
+    async function getOrders() {
+        try {
+            const res = await Axios.get("/order/getOrders")
+            const data = await res.data
+            if (data) {
+                setorders(data)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getOrders()
+    }, [])
+
     return (
         <Layout categorys={categorys} title={"📦 การสั่งซื้อสินค้า"}>
-            <div className="card">
+            <div className="card shadow-sm">
                 <div className="card-body">
                     <div>
                         <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -24,16 +43,16 @@ export default function Order({ categorys, orders }) {
                         </ul>
                         <div className="tab-content" id="myTabContent">
                             <div className="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
-                                <PendingWarpper orders={orders} status="pending" />
+                                <PendingWarpper orders={orders} status="pending" callback={getOrders} />
                             </div>
                             <div className="tab-pane fade" id="shipped" role="tabpanel" aria-labelledby="shipped-tab">
-                                <PendingWarpper orders={orders} status="shipped" />
+                                <PendingWarpper orders={orders} status="shipped" callback={getOrders} />
                             </div>
                             <div className="tab-pane fade" id="success" role="tabpanel" aria-labelledby="success-tab">
-                                <PendingWarpper orders={orders} status="success" />
+                                <PendingWarpper orders={orders} status="success" callback={getOrders} />
                             </div>
                             <div className="tab-pane fade" id="cancel" role="tabpanel" aria-labelledby="cancel-tab">
-                                <PendingWarpper orders={orders} status="cancel" />
+                                <PendingWarpper orders={orders} status="cancel" callback={getOrders} />
                             </div>
                         </div>
                     </div>
@@ -44,26 +63,15 @@ export default function Order({ categorys, orders }) {
 }
 
 
-function PendingWarpper({ orders = [], status }) {
+function PendingWarpper({ orders = [], status, callback }) {
 
     return (
         <div>
             <div className='mt-4'>
                 {orders?.filter(item => item.status === status).map((item) => (
-                    <OrderingCard key={item.id} order={item} />
+                    <OrderingCard key={item.id} order={item} callback={callback} disabled={status === "pending"} />
                 ))}
             </div>
         </div>
     )
-}
-
-export async function getServerSideProps(context) {
-    const res = await Axios.get("/order/getOrders")
-    const orders = await res.data
-
-    return {
-        props: {
-            orders
-        }
-    }
 }

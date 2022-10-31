@@ -44,11 +44,10 @@ export default function UserMenu() {
                                 <li className='mb-3'><a href="#">เปลี่ยนรหัสผ่าน</a></li>
                                 <li className='mb-3'><a href="#" onClick={handleLogout} className='text-danger'>ออกจากระบบ</a></li>
                             </ul>
-                        </div> {/* card-body.// */}
+                        </div>
                     </div>
-                </article> {/* filter-group  .// */}
-
-            </div> {/* card.// */}
+                </article>
+            </div>
         </>
     )
 }
