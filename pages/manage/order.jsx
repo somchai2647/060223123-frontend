@@ -6,9 +6,11 @@ import OrderingCard from '../../components/Card/OrderingCard'
 export default function Order({ categorys }) {
 
     const [orders, setorders] = useState([])
+    const [loading, setLoading] = useState(false)
 
     async function getOrders() {
         try {
+            setLoading(true)
             const res = await Axios.get("/order/getOrders")
             const data = await res.data
             if (data) {
@@ -16,6 +18,8 @@ export default function Order({ categorys }) {
             }
         } catch (error) {
             console.log(error)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -43,6 +47,7 @@ export default function Order({ categorys }) {
                         </ul>
                         <div className="tab-content" id="myTabContent">
                             <div className="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+                                {loading ? <div className="text-center mt-4"><div className="spinner-border text-primary" role="status"><span className="sr-only">Loading...</span></div></div> : <PendingWarpper orders={orders} status="pending" callback={getOrders} />}
                                 <PendingWarpper orders={orders} status="pending" callback={getOrders} />
                             </div>
                             <div className="tab-pane fade" id="shipped" role="tabpanel" aria-labelledby="shipped-tab">
