@@ -3,12 +3,18 @@ import Link from 'next/link';
 import AuthenContext from '../../contexts/AuthenContext'
 import UserContext from '../../contexts/UserContext'
 import Axios from '../Axios'
-import AdminMenu from '../Layout/AdminMenu';
+import AdminMenu from '../Layout/AdminMenu'
+import useAuthen from '../../hooks/useAuthen'
 
 export default function Navbar({ categorys }) {
 
+    const auth = useAuthen()
     const authenContext = useContext(AuthenContext)
     const userContext = useContext(UserContext)
+
+    function handleLogout() {
+        auth.logout()
+    }
 
     return (
         <div>
@@ -50,7 +56,7 @@ export default function Navbar({ categorys }) {
                                                 <a href="#" className="icon icon-sm rounded-circle border" role="button" id="dropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fa fa-user" /></a>
                                                 <div className="dropdown-menu" aria-labelledby="dropdownMenuUser">
                                                     {AdminMenu.map((item, index) => (
-                                                        <Link href={item.path} index={index}>
+                                                        <Link href={item.path} key={index}>
                                                             <a className="dropdown-item">{item.name}</a>
                                                         </Link>
                                                     ))}
@@ -58,7 +64,7 @@ export default function Navbar({ categorys }) {
                                                     <Link href="/profile/changpassword">
                                                         <a className="dropdown-item">🔐 เปลี่ยนรหัสผ่าน</a>
                                                     </Link>
-                                                    <a className="dropdown-item text-danger" href="#">ออกจากระบบ</a>
+                                                    <button className="dropdown-item text-danger" onClick={handleLogout} >ออกจากระบบ</button>
                                                 </div>
                                             </div>
                                             :

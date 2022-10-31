@@ -1,7 +1,15 @@
 import React from 'react'
-import Link from 'next/link';
+import Link from 'next/link'
+import useAuthen from '../../hooks/useAuthen';
 
 export default function UserMenu() {
+
+    const auth = useAuthen()
+
+    function handleLogout() {
+        auth.logout()
+    }
+
     return (
         <>
             <div className="card">
@@ -34,7 +42,7 @@ export default function UserMenu() {
                                 </li>
                                 <hr />
                                 <li className='mb-3'><a href="#">เปลี่ยนรหัสผ่าน</a></li>
-                                <li className='mb-3'><a href="#" className='text-danger'>ออกจากระบบ</a></li>
+                                <li className='mb-3'><a href="#" onClick={handleLogout} className='text-danger'>ออกจากระบบ</a></li>
                             </ul>
                         </div> {/* card-body.// */}
                     </div>

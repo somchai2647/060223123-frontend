@@ -14,13 +14,12 @@ export default function useAuthen() {
     async function logout() {
         try {
 
-            if (data) {
-                authenContext.setIsLogin(false)
-                userContext.setUser({})
-                localStorage.removeItem("token")
-                router.push("/")
-                alert.toast("success", "ออกจากระบบสำเร็จ")
-            }
+            authenContext.setIsLogin(false)
+            userContext.setUser({})
+            localStorage.removeItem("token")
+            router.push("/")
+            alert.toast("success", "ออกจากระบบสำเร็จ")
+
 
         } catch (error) {
             console.error(error)

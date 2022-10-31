@@ -4,8 +4,10 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import AuthenContext from '../../contexts/AuthenContext'
 import UserContext from '../../contexts/UserContext'
+import useAuthen from '../../hooks/useAuthen'
 
 export default function Navbar(props) {
+    const auth = useAuthen()
     const router = useRouter()
     const authenContext = useContext(AuthenContext)
     const userContext = useContext(UserContext)
@@ -18,6 +20,10 @@ export default function Navbar(props) {
 
     function handleSearch() {
         router.push(`/search?keyword=${keyword}`)
+    }
+
+    function handleLogout() {
+        auth.logout()
     }
 
     return (
@@ -73,7 +79,7 @@ export default function Navbar(props) {
                                                     <Link href="/profile/changpassword">
                                                         <a className="dropdown-item">เปลี่ยนรหัสผ่าน</a>
                                                     </Link>
-                                                    <a className="dropdown-item text-danger" href="#">ออกจากระบบ</a>
+                                                    <a className="dropdown-item text-danger" onClick={handleLogout} href="#">ออกจากระบบ</a>
                                                 </div>
                                             </div>
                                             :
