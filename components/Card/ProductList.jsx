@@ -36,7 +36,7 @@ export default function ProductList({ title, keyword, isRecommend }) {
         <section className="section-content">
             <div className="container">
                 <header className="section-heading">
-                    <Link href={`/search?keyword=${keyword}`}>
+                    <Link href={isRecommend ? `/search?keyword=${keyword}&isRecommend=true` : `/search?keyword=${keyword}`}>
                         <a className="btn  float-right text-primary">เพิ่มเติม</a>
                     </Link>
                     <h3 className="section-title">{title}</h3>

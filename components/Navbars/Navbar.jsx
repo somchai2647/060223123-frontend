@@ -22,6 +22,13 @@ export default function Navbar(props) {
         router.push(`/search?keyword=${keyword}`)
     }
 
+    useEffect(() => {
+      if(router.query.keyword) {
+        setKeyword(router.query.keyword)
+      }
+    }, [router.query])
+    
+
 
     return (
         <div>
@@ -38,7 +45,7 @@ export default function Navbar(props) {
                             </div>
                             <div className="col-lg-6 col-sm-12">
                                 <div className="input-group w-100">
-                                    <input type="text" className="form-control" onChange={handleChange} placeholder="คำค้นหา" />
+                                    <input type="text" className="form-control" value={keyword} onChange={handleChange} placeholder="คำค้นหา" />
                                     <div className="input-group-append">
                                         <button className="btn btn-primary" onClick={handleSearch} type="button">
                                             <i className="fa fa-search" /> ค้นหา

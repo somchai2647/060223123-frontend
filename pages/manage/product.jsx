@@ -16,7 +16,7 @@ export default function Product() {
     async function getProducts() {
         try {
             setLoadding(true)
-            const res = await Axois.get('/product/getproduct')
+            const res = await Axois.get('/product/getproduct?orderby=desc')
             setProducts(res.data)
         } catch (error) {
             console.error(error)

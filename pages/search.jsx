@@ -12,7 +12,7 @@ import SVGLoading from '../components/SVGLoading'
 
 export default function Search({ result, categorys }) {
   const router = useRouter()
-  const { keyword } = router.query
+  const { keyword, isRecommend } = router.query
 
   const [products, setProducts] = useState([])
   const [gride, setGride] = useState(false)
@@ -22,7 +22,7 @@ export default function Search({ result, categorys }) {
     try {
       setProducts([])
       setLoading(true)
-      const result = await Axios.get(`/product/searchProduct?keyword=${keyword}`)
+      const result = await Axios.get(isRecommend ? `/product/searchProduct?keyword=${keyword}&isRecommend=true` : `/product/searchProduct?keyword=${keyword}`)
       const data = await result.data
       if (data) {
         setProducts(data)
@@ -59,7 +59,7 @@ export default function Search({ result, categorys }) {
                         </aside> */}
             <main className="col-md-12">
               <HeaderPanel sortaction={handleSort} numberitem={products?.length} callback={handleGridMode} />
-              {loading &&  <SVGLoading />}
+              {loading && <SVGLoading />}
               {gride ? <ProductGride products={products} /> : <ProductListingLarge products={products} />}
               {products.length === 0 && <h2 className='text-center'>ไม่พบหนังสือ</h2>}
               {(products && products.length > 10) && <Pagination />}
