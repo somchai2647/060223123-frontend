@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import AuthenContext from '../../contexts/AuthenContext'
 import UserContext from '../../contexts/UserContext'
 import useAuthen from '../../hooks/useAuthen'
+import useCart from '../../hooks/useCart'
 import AdminMenu from '../Layout/AdminMenu'
 
 export default function Navbar(props) {
@@ -23,11 +24,11 @@ export default function Navbar(props) {
     }
 
     useEffect(() => {
-      if(router.query.keyword) {
-        setKeyword(router.query.keyword)
-      }
+        if (router.query.keyword) {
+            setKeyword(router.query.keyword)
+        }
     }, [router.query])
-    
+
 
 
     return (
@@ -59,7 +60,7 @@ export default function Navbar(props) {
                                         <Link href={"/cart"}>
                                             <a className="icon icon-sm rounded-circle border" style={{ cursor: "pointer" }}><i className="fa fa-shopping-cart" /></a>
                                         </Link>
-                                        {authenContext.isLogin && <span className="badge badge-pill badge-danger notify">0</span>}
+                                        {/* {authenContext.isLogin && <span className="badge badge-pill badge-danger notify">0</span>} */}
                                     </div>
                                     <div className="widget-header icontext">
                                         {authenContext.isLogin ? userContext.user.role === "ADMIN" ? <DropdownAdmin /> : <DropdownMember /> : <Link href="/login">

@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useState, useEffect } from "react"
 import AuthenContext from '../contexts/AuthenContext'
 import UserContext from '../contexts/UserContext'
 import useSweetAlert from '../hooks/useSweetAlert'
@@ -8,6 +8,21 @@ export default function useCart() {
     const authenContext = useContext(AuthenContext)
     const userContext = useContext(UserContext)
     const SweetAlert = useSweetAlert()
+
+    async function getCart() {
+        try {
+            if (userContext.user) {
+                const result = await Axios.get(`/cart/getCart/${userContext.user.username}`)
+                const data = await result.data
+                if (data) {
+                    return data
+                }
+            }
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     async function addCard(productid, quantity) {
         try {
@@ -25,6 +40,7 @@ export default function useCart() {
             const data = await res.data
 
             if (data) {
+                setLength(length => length += 1)
                 SweetAlert.toast("success", "เพิ่มสินค้าลงตะกร้าสำเร็จ")
             }
 
@@ -34,5 +50,5 @@ export default function useCart() {
     }
 
 
-    return { addCard }
+    return { addCard, getCart }
 }                                   

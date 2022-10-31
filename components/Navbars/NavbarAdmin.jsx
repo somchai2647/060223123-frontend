@@ -47,7 +47,7 @@ export default function Navbar({ categorys }) {
                                         <Link href={"/cart"}>
                                             <a className="icon icon-sm rounded-circle border"><i className="fa fa-shopping-cart" /></a>
                                         </Link>
-                                        <span className="badge badge-pill badge-danger notify">0</span>
+                                        {/* <span className="badge badge-pill badge-danger notify">0</span> */}
                                     </div>
                                     <div className="widget-header icontext">
                                         {authenContext.isLogin ?
