@@ -3,6 +3,7 @@ import Link from 'next/link';
 import AuthenContext from '../../contexts/AuthenContext'
 import UserContext from '../../contexts/UserContext'
 import Axios from '../Axios'
+import AdminMenu from '../Layout/AdminMenu';
 
 export default function Navbar({ categorys }) {
 
@@ -18,7 +19,7 @@ export default function Navbar({ categorys }) {
                             <div className="col-lg-2 col-4">
                                 <Link href={"/"}>
                                     <a className="brand-wrap">
-                                        <img className="logo" src="/assets/images/logo.png" />
+                                        <img className="logo" src="/assets/images/logo-large.png" alt='logo-large' />
                                     </a>
                                 </Link>
                             </div>
@@ -43,7 +44,28 @@ export default function Navbar({ categorys }) {
                                         <span className="badge badge-pill badge-danger notify">0</span>
                                     </div>
                                     <div className="widget-header icontext">
-                                        <a href="#" className="icon icon-sm rounded-circle border"><i className="fa fa-user" /></a>
+                                        {authenContext.isLogin ?
+
+                                            <div className="dropdown show">
+                                                <a href="#" className="icon icon-sm rounded-circle border" role="button" id="dropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fa fa-user" /></a>
+                                                <div className="dropdown-menu" aria-labelledby="dropdownMenuUser">
+                                                    {AdminMenu.map((item, index) => (
+                                                        <Link href={item.path} index={index}>
+                                                            <a className="dropdown-item">{item.name}</a>
+                                                        </Link>
+                                                    ))}
+                                                    <hr />
+                                                    <Link href="/profile/changpassword">
+                                                        <a className="dropdown-item">🔐 เปลี่ยนรหัสผ่าน</a>
+                                                    </Link>
+                                                    <a className="dropdown-item text-danger" href="#">ออกจากระบบ</a>
+                                                </div>
+                                            </div>
+                                            :
+                                            <Link href="/login">
+                                                <a className="icon icon-sm rounded-circle border" role="button"><i className="fa fa-user" /></a>
+                                            </Link>
+                                        }
                                         {authenContext.isLogin ?
                                             <div className="text">
                                                 <span className="text-muted">ยินดีต้อนรับ!</span>
