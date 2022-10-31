@@ -74,7 +74,7 @@ function PendingWarpper({ orders = [], status, callback }) {
         <div>
             <div className='mt-4'>
                 {orders?.filter(item => item.status === status).map((item) => (
-                    <OrderingCard key={item.id} order={item} callback={callback} disabled={status === "pending"} />
+                    <OrderingCard key={item.id} order={item} callback={callback} disabled={status !== "pending"} />
                 ))}
             </div>
         </div>

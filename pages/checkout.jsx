@@ -45,7 +45,7 @@ export default function Checkout(props) {
                 })
                 setTotal(total)
             } else {
-                router.push("/cart")
+                router.push("/profile/order")
             }
         } catch (error) {
             console.error(error)

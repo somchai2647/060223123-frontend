@@ -5,7 +5,7 @@ import Axios from '../Axios'
 import useSweetAlert from '../../hooks/useSweetAlert'
 import "moment/locale/th"
 
-export default function OrderingCard({ order, disabled, callback }) {
+export default function OrderingCard({ order, disabled, callback, isMember }) {
 
     const IconPayment = {
         "Credit Card": <span className="text-success">
@@ -36,8 +36,12 @@ export default function OrderingCard({ order, disabled, callback }) {
             if (data) {
                 if (status === "shipped") {
                     alert.success("อัพเดทสถานะสำเร็จ", "สถานะของคุณได้ถูกอัพเดทเป็น ส่งสินค้า เรียบร้อยแล้ว")
-                } else {
-                    alert.success("อัพเดทสถานะสำเร็จ", "สถานะของคุณได้ถูกอัพเดทเป็น ยกเลิกสินค้า เรียบร้อยแล้ว")
+                }
+                if (status === "success") {
+                    alert.success("อัพเดทสถานะสำเร็จ", "สถานะของคุณได้ถูกอัพเดทเป็น ส่งสินค้า เรียบร้อยแล้ว")
+                }
+                else {
+                    alert.success("อัพเดทสถานะสำเร็จ", "สถานะของคุณได้ถูกอัพเดทเป็น ตรวจสอบสินค้าและยอมรับ เรียบร้อยแล้ว")
                 }
                 callback(true)
             }
@@ -71,12 +75,17 @@ export default function OrderingCard({ order, disabled, callback }) {
                     <b className="d-inline-block mr-3">Transaction ID: {order.id}</b>
                     <span>วันเวลา: {moment(order.createdAt).format("LLL")}</span>
 
-                    {disabled &&
+                    {!disabled &&
                         <div className='d-flex mt-2'>
                             <button onClick={() => handleSubmitProduct("shipped")} className='btn btn-outline-success mr-2'>ยืนยันการสั่งซื้อ</button>
                             <button onClick={() => handleSubmitProduct("cancel")} className='btn btn-outline-danger mr-2'>ยกเลิกรายการซื้อ</button>
                         </div>
                     }
+
+                    {(isMember && order.status !== "success") && (
+                        <button onClick={() => handleSubmitProduct("success")} className='btn mt-2 btn-outline-success mr-2'>ตรวจสอบสินค้าและยอมรับ</button>
+                    )}
+
                 </header>
                 <div className="card-body">
                     <div className="row">

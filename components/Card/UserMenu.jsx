@@ -22,22 +22,22 @@ export default function UserMenu() {
                             <ul className="list-menu">
                                 <li className='mb-3'>
                                     <Link href="/profile">
-                                        <a href="#">ข้อมูลส่วนตัว</a>
+                                        <a>ข้อมูลส่วนตัว</a>
                                     </Link>
                                 </li>
                                 <li className='mb-3'>
                                     <Link href={"/cart"}>
-                                        <a href="#">ตะกร้าสินค้า</a>
+                                        <a>ตะกร้าสินค้า</a>
+                                    </Link>
+                                </li>
+                                <li className='mb-3'>
+                                    <Link href={"/profile/order"}>
+                                        <a>รายการสั่งซื้อของฉัน</a>
                                     </Link>
                                 </li>
                                 <li className='mb-3'>
                                     <Link href={"/"}>
-                                        <a href="#">รายการสั่งซื้อของฉัน</a>
-                                    </Link>
-                                </li>
-                                <li className='mb-3'>
-                                    <Link href={"/"}>
-                                        <a href="#">รีวิวของฉัน</a>
+                                        <a>รีวิวของฉัน</a>
                                     </Link>
                                 </li>
                                 <hr />
