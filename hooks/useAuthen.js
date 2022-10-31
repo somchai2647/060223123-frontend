@@ -26,5 +26,9 @@ export default function useAuthen() {
         }
     }
 
-    return { logout }
+    async function getMe() {
+        return userContext.user
+    }
+
+    return { logout, getMe }
 }

@@ -25,6 +25,7 @@ export default function Checkout(props) {
     const [cart, setCart] = useState([])
     const [loading, setLoading] = useState(false)
     const [address, setAddress] = useState("")
+    const [myAddress, setMyAddress] = useState("")
     const [total, setTotal] = useState(0)
     const [method, setMethod] = useState("Paypal")
 
@@ -33,7 +34,7 @@ export default function Checkout(props) {
             setLoading(true)
             const res = await Axios.get(`/cart/getcart/${props.user.username}`)
             const data = await res.data
-            if (data) {
+            if (data && data.length > 0) {
                 setCart(data)
                 let total = 0
                 data.map((cart) => {
@@ -43,6 +44,8 @@ export default function Checkout(props) {
                     total += subtotal
                 })
                 setTotal(total)
+            } else {
+                router.push("/cart")
             }
         } catch (error) {
             console.error(error)
@@ -82,6 +85,7 @@ export default function Checkout(props) {
     useEffect(() => {
         if (props.user) {
             getCart()
+            setMyAddress(props.user.address)
         }
     }, [router.isReady, props])
 
@@ -94,7 +98,7 @@ export default function Checkout(props) {
                     <main className="col-md-8">
                         {loading && <SVGLoading />}
                         <ReviewCart carts={cart} />
-                        <DeliveryInfo inputupdate={handleInputUpdate} />
+                        <DeliveryInfo inputupdate={handleInputUpdate} address={myAddress} />
                         <Accordion method={handlePaymentMethod} />
                     </main>
                     <aside className="col-md-4">
@@ -107,9 +111,9 @@ export default function Checkout(props) {
 }
 
 
-export function DeliveryInfo({ inputupdate }) {
+export function DeliveryInfo({ inputupdate, address = "" }) {
 
-    const { register, watch } = useForm({
+    const { register, watch, setValue } = useForm({
         resolver: yupResolver(schema)
     })
 
@@ -120,6 +124,19 @@ export function DeliveryInfo({ inputupdate }) {
         const address = `${house}|${road}|${subdistrict}|${district}|${province}|${zipcode}`
         inputupdate(address)
     }, [watchAllFields])
+
+    useEffect(() => {
+        if (address) {
+            const _address = address.split("|")
+            setValue("house", _address[0])
+            setValue("road", _address[1])
+            setValue("subdistrict", _address[2])
+            setValue("district", _address[3])
+            setValue("province", _address[4])
+            setValue("zipcode", _address[5])
+        }
+    }, [address])
+
 
 
     return (
@@ -282,7 +299,7 @@ export function CheckoutCard({ method = "Paypal", total = 0, onCheckout, loading
                 <p className="small mb-3 text-muted">
                     การคลิกแสดงว่าคุณยอมรับข้อกำหนดและเงื่อนไข
                 </p>
-                <button onClick={handleCheckout} className="btn btn-primary btn-block"> ชำระเงิน </button>
+                <button onClick={handleCheckout} disabled={loading} className="btn btn-primary btn-block"> ชำระเงิน </button>
             </div>
             {/* card-body.// */}
         </div>
