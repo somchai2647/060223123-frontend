@@ -10,7 +10,6 @@ export default function ProductList({ title, keyword, isRecommend }) {
     const [products, setProducts] = useState([])
     const [loading, setLoading] = useState(true)
     const router = useRouter()
-
     async function getSearch() {
         try {
             setProducts([])

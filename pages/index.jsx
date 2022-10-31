@@ -13,6 +13,7 @@ export default function Home(props) {
       <ProductList keyword={""} title={"⭐ สินค้าแนะนำ"} isRecommend={true} />
       <ProductList keyword={""} title={"สินค้าใหม่"} />
       <ProductList keyword={"SPY X FAMILY"} title={"SPY X FAMILY"} />
+      <ProductList keyword={"เกิดชาตินี้พี่ต้องเทพ"} title={"นิยายเรื่อง เกิดชาตินี้พี่ต้องเทพ"} />
     </Layout>
   )
 }
