@@ -54,6 +54,7 @@ export default function ProductList({ title, keyword, isRecommend }) {
                                             layout='fill'
                                             objectFit='contain'
                                             quality={40}
+                                            sizes="(max-width: 768px) 100vw, 50vw"
                                             priority
                                         />
                                     </a>
