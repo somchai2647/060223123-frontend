@@ -23,6 +23,10 @@ export default function Order({ categorys }) {
         }
     }
 
+    function getCout(data, status) {
+        return data.filter(item => item.status === status).length
+    }
+
     useEffect(() => {
         getOrders()
     }, [])
@@ -34,15 +38,15 @@ export default function Order({ categorys }) {
                     <div>
                         <ul className="nav nav-tabs" id="myTab" role="tablist">
                             <li className="nav-item">
-                                <a className="nav-link active text-warning" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
+                                <a className="nav-link active text-warning" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending {getCout(orders, "pending")}</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-info" id="shipped-tab" data-toggle="tab" href="#shipped" role="tab" aria-controls="shipped" aria-selected="false">Shipped</a>
+                                <a className="nav-link text-info" id="shipped-tab" data-toggle="tab" href="#shipped" role="tab" aria-controls="shipped" aria-selected="false">Shipped {getCout(orders, "shipped")}</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-success" id="success-tab" data-toggle="tab" href="#success" role="tab" aria-controls="success" aria-selected="false">Success</a>
+                                <a className="nav-link text-success" id="success-tab" data-toggle="tab" href="#success" role="tab" aria-controls="success" aria-selected="false">Success {getCout(orders, "success")}</a>
                             </li>  <li className="nav-item">
-                                <a className="nav-link text-danger" id="cancel-tab" data-toggle="tab" href="#cancel" role="tab" aria-controls="cancel" aria-selected="false">Cancel</a>
+                                <a className="nav-link text-danger" id="cancel-tab" data-toggle="tab" href="#cancel" role="tab" aria-controls="cancel" aria-selected="false">Cancel {getCout(orders, "cancel")}</a>
                             </li>
                         </ul>
                         <div className="tab-content" id="myTabContent">

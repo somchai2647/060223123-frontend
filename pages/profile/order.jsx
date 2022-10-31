@@ -29,6 +29,10 @@ export default function OrderPage({ categorys }) {
         getOrders()
     }, [])
 
+    function getCout(data, status) {
+        return data.filter(item => item.status === status).length
+    }
+
     return (
         <Layout categorys={categorys}>
             <SectionPage title={"📦 รายการสั่งซื้อของฉัน"} />
@@ -43,15 +47,15 @@ export default function OrderPage({ categorys }) {
                                 <div className="card-body">
                                     <ul className="nav nav-tabs" id="myTab" role="tablist">
                                         <li className="nav-item">
-                                            <a className="nav-link active text-warning" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
+                                            <a className="nav-link active text-warning" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending <b>{getCout(orders, "pending")}</b></a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link text-info" id="shipped-tab" data-toggle="tab" href="#shipped" role="tab" aria-controls="shipped" aria-selected="false">Shipped</a>
+                                            <a className="nav-link text-info" id="shipped-tab" data-toggle="tab" href="#shipped" role="tab" aria-controls="shipped" aria-selected="false">Shipped <b>{getCout(orders, "shipped")}</b></a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link text-success" id="success-tab" data-toggle="tab" href="#success" role="tab" aria-controls="success" aria-selected="false">Success</a>
+                                            <a className="nav-link text-success" id="success-tab" data-toggle="tab" href="#success" role="tab" aria-controls="success" aria-selected="false">Success <b>{getCout(orders, "success")}</b></a>
                                         </li>  <li className="nav-item">
-                                            <a className="nav-link text-danger" id="cancel-tab" data-toggle="tab" href="#cancel" role="tab" aria-controls="cancel" aria-selected="false">Cancel</a>
+                                            <a className="nav-link text-danger" id="cancel-tab" data-toggle="tab" href="#cancel" role="tab" aria-controls="cancel" aria-selected="false">Cancel <b>{getCout(orders, "cancel")}</b></a>
                                         </li>
                                     </ul>
                                     <div className="tab-content" id="myTabContent">

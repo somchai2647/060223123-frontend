@@ -40,7 +40,6 @@ export default function useCart() {
             const data = await res.data
 
             if (data) {
-                setLength(length => length += 1)
                 SweetAlert.toast("success", "เพิ่มสินค้าลงตะกร้าสำเร็จ")
             }
 
