@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import Image from 'next/image'
 import AuthenContext from '../../contexts/AuthenContext'
 import UserContext from '../../contexts/UserContext'
 import useAuthen from '../../hooks/useAuthen'
+import AdminMenu from '../Layout/AdminMenu'
 
 export default function Navbar(props) {
-    const auth = useAuthen()
+
     const router = useRouter()
     const authenContext = useContext(AuthenContext)
     const userContext = useContext(UserContext)
@@ -22,9 +22,6 @@ export default function Navbar(props) {
         router.push(`/search?keyword=${keyword}`)
     }
 
-    function handleLogout() {
-        auth.logout()
-    }
 
     return (
         <div>
@@ -58,37 +55,10 @@ export default function Navbar(props) {
                                         {authenContext.isLogin && <span className="badge badge-pill badge-danger notify">0</span>}
                                     </div>
                                     <div className="widget-header icontext">
-                                        {authenContext.isLogin ?
-
-                                            <div className="dropdown show">
-                                                <a href="#" className="icon icon-sm rounded-circle border" role="button" id="dropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fa fa-user" /></a>
-                                                <div className="dropdown-menu" aria-labelledby="dropdownMenuUser">
-                                                    <Link href="/profile/">
-                                                        <a className="dropdown-item">ข้อมูลส่วนตัว</a>
-                                                    </Link>
-                                                    <Link href="/profile/order">
-                                                        <a className="dropdown-item">รายการสั่งซื้อของฉัน</a>
-                                                    </Link>
-                                                    <Link href="/profile/review">
-                                                        <a className="dropdown-item">รีวิวของฉัน</a>
-                                                    </Link>
-                                                    <Link href="/profile/order">
-                                                        <a className="dropdown-item">รายการสั่งซื้อของฉัน</a>
-                                                    </Link>
-                                                    <hr />
-                                                    <Link href="/profile/changpassword">
-                                                        <a className="dropdown-item">เปลี่ยนรหัสผ่าน</a>
-                                                    </Link>
-                                                    <a className="dropdown-item text-danger" onClick={handleLogout} href="#">ออกจากระบบ</a>
-                                                </div>
-                                            </div>
-                                            :
-                                            <Link href="/login">
-                                                <a className="icon icon-sm rounded-circle border" role="button"><i className="fa fa-user" /></a>
-                                            </Link>
+                                        {authenContext.isLogin ? userContext.user.role === "ADMIN" ? <DropdownAdmin /> : <DropdownMember /> : <Link href="/login">
+                                            <a className="icon icon-sm rounded-circle border" role="button"><i className="fa fa-user" /></a>
+                                        </Link>
                                         }
-
-
 
                                         {authenContext.isLogin ?
                                             <div className="text">
@@ -122,6 +92,63 @@ export default function Navbar(props) {
 
 
     )
+}
+
+export function DropdownMember() {
+    const auth = useAuthen()
+    function handleLogout() {
+        auth.logout()
+    }
+    return (
+        <div className="dropdown show">
+            <a href="#" className="icon icon-sm rounded-circle border" role="button" id="dropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fa fa-user" /></a>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuUser">
+                <Link href="/profile/">
+                    <a className="dropdown-item">ข้อมูลส่วนตัว</a>
+                </Link>
+                <Link href="/profile/order">
+                    <a className="dropdown-item">รายการสั่งซื้อของฉัน</a>
+                </Link>
+                <Link href="/profile/review">
+                    <a className="dropdown-item">รีวิวของฉัน</a>
+                </Link>
+                <Link href="/profile/order">
+                    <a className="dropdown-item">รายการสั่งซื้อของฉัน</a>
+                </Link>
+                <hr />
+                <Link href="/profile/changpassword">
+                    <a className="dropdown-item">เปลี่ยนรหัสผ่าน</a>
+                </Link>
+                <a className="dropdown-item text-danger" onClick={handleLogout} href="#">ออกจากระบบ</a>
+            </div>
+        </div>
+    )
+}
+
+export function DropdownAdmin() {
+    const auth = useAuthen()
+    function handleLogout() {
+        auth.logout()
+    }
+    return (
+        <div className="dropdown show">
+            <a href="#" className="icon icon-sm rounded-circle border" role="button" id="dropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fa fa-user" /></a>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuUser">
+                {AdminMenu.map((item, index) => (
+                    <Link href={item.path} key={index}>
+                        <a className="dropdown-item">{item.name}</a>
+                    </Link>
+                ))}
+                <hr />
+                <Link href="/profile/changpassword">
+                    <a className="dropdown-item">🔐 เปลี่ยนรหัสผ่าน</a>
+                </Link>
+                <button className="dropdown-item text-danger" onClick={handleLogout} >ออกจากระบบ</button>
+            </div>
+        </div>
+    )
+
+
 }
 
 export function AdminPanel() {
