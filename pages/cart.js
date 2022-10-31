@@ -135,10 +135,10 @@ export default function Cart(props) {
                                 </table>
                                 <div className="card-body border-top">
                                     <Link href="/checkout" >
-                                        <a className="btn btn-primary float-md-right"> ทำการซื้อ <i className="fa fa-chevron-right" /> </a>
+                                        <button type='button' className="btn btn-primary float-md-right" disabled={products.length === 0}> ทำการซื้อ <i className="fa fa-chevron-right" /> </button>
                                     </Link>
                                     <Link href="/">
-                                        <a className="btn btn-light"> <i className="fa fa-chevron-left" /> ซื้อสินค้าต่อ </a>
+                                        <button type='button'  className="btn btn-light"> <i className="fa fa-chevron-left" /> ซื้อสินค้าต่อ </button>
                                     </Link>
                                 </div>
                             </div>
