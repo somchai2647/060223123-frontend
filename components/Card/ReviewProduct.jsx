@@ -1,11 +1,18 @@
 import * as yup from "yup"
 import Axios from '../Axios'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense, useContext } from 'react'
+import AuthenContext from '../../contexts/AuthenContext'
 import { yupResolver } from '@hookform/resolvers/yup'
 import useSweetAlert from '../../hooks/useSweetAlert'
 import { useForm } from 'react-hook-form'
-import CommandCardWarper from './CommandCardWarper'
+import dynamic from 'next/dynamic'
+import SVGLoading from '../SVGLoading'
+// import CommandCardWarper from './CommandCardWarper'
 import ErrorLabel from '../ErrorLabel'
+
+const CommandCardWarper = dynamic(() => import("./CommandCardWarper"), {
+    suspense: true,
+})
 
 const schema = yup.object().shape({
     rating: yup.number().required(),
@@ -14,6 +21,9 @@ const schema = yup.object().shape({
 
 
 export default function ReviewProduct({ product }) {
+
+    const authenContext = useContext(AuthenContext)
+    const alert = useSweetAlert()
 
     const [loading, setLoading] = useState(false)
     const [reviews, setReviews] = useState([])
@@ -26,6 +36,10 @@ export default function ReviewProduct({ product }) {
     async function onSubmit(formdata) {
         try {
             setLoading(true)
+            if (!authenContext.isLogin) {
+                alert.warning("กรุณาเข้าสู่ระบบก่อนใช้งาน", "คุณยังไม่ได้เข้าสู่ระบบ")
+                return
+            }
             const payload = {
                 ...formdata,
                 proid: product.id,
@@ -106,7 +120,9 @@ export default function ReviewProduct({ product }) {
                                 </div>
                             </div>
                         </form>
-                        <CommandCardWarper reviews={reviews} onDelete={getReviews} />
+                        <Suspense fallback={<SVGLoading />}>
+                            <CommandCardWarper reviews={reviews} onDelete={getReviews} />
+                        </Suspense>
                     </div>
                 </div>
             </div>

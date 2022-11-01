@@ -14,7 +14,7 @@ export default function useAuthen() {
     async function logout() {
         try {
 
-            authenContext.setIsLogin(false)
+            authenContext.setIsLogin(isLogin => false)
             userContext.setUser({})
             localStorage.removeItem("token")
             router.push("/")

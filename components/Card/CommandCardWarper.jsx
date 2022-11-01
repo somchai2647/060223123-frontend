@@ -50,7 +50,7 @@ export function CommandCard({ item, onDelete }) {
                 <img src="/assets/images/avatars/user-icon.png" className="img-xs icon rounded-circle" />
                 <div className="text">
                     <span className="date text-muted float-md-right"> {moment(item.updatedAt).format("lll")}
-                        {user?.user.username === item.userId && <button className="btn btn-sm" type="button" onClick={handleRemove}><i className="fas fa-trash"></i></button>}
+                        {(user && (user?.user?.username === item.userId)) && <button className="btn btn-sm" type="button" onClick={handleRemove}><i className="fas fa-trash"></i></button>}   { }
                     </span>
                     <h6 className="mb-1">{item.User.fname} {item.User.lname}</h6>
                     <ul className="rating-stars">
