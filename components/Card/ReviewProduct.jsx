@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import useSweetAlert from '../../hooks/useSweetAlert'
 import { useForm } from 'react-hook-form'
-import CommandCard from './CommandCard'
+import CommandCardWarper from './CommandCardWarper'
 import ErrorLabel from '../ErrorLabel'
 
 const schema = yup.object().shape({
@@ -106,7 +106,7 @@ export default function ReviewProduct({ product }) {
                                 </div>
                             </div>
                         </form>
-                        <CommandCard reviews={reviews} onDelete={getReviews} />
+                        <CommandCardWarper reviews={reviews} onDelete={getReviews} />
                     </div>
                 </div>
             </div>

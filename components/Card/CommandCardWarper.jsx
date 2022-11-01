@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import moment from 'moment'
 import "moment/locale/th"
 import useSweetAlert from '../../hooks/useSweetAlert'
+import UserContext from '../../contexts/UserContext'
 import Axios from '../Axios'
 
 export default function CommandCardWarper({ reviews, onDelete }) {
@@ -15,6 +16,7 @@ export default function CommandCardWarper({ reviews, onDelete }) {
 }
 
 export function CommandCard({ item, onDelete }) {
+    const user = useContext(UserContext)
 
     const alert = useSweetAlert()
 
@@ -22,8 +24,8 @@ export function CommandCard({ item, onDelete }) {
         try {
             const res = await Axios.delete(`/review/destroyReview/${item.id}`)
             const data = await res.data
+            onDelete(true)
 
-            return data
         } catch (error) {
             console.error(error)
         }
@@ -31,7 +33,7 @@ export function CommandCard({ item, onDelete }) {
     }
 
     async function handleRemove() {
-        const result = await alert.confirm({
+        await alert.confirm({
             title: "คุณต้องการลบความคิดเห็นนี้ใช่หรือไม่?",
             text: "คุณจะไม่สามารถกู้คืนความคิดเห็นนี้ได้หากลบแล้ว",
             icon: "warning",
@@ -40,10 +42,6 @@ export function CommandCard({ item, onDelete }) {
             text: "ความคิดเห็นของคุณถูกลบแล้ว",
             icon: "success",
         }, removeItem)
-
-        if (result) {
-            onDelete(result)
-        }
     }
 
     return (
@@ -51,7 +49,9 @@ export function CommandCard({ item, onDelete }) {
             <div className="icontext w-100">
                 <img src="/assets/images/avatars/user-icon.png" className="img-xs icon rounded-circle" />
                 <div className="text">
-                    <span className="date text-muted float-md-right"> {moment(item.updatedAt).format("lll")}  <button className="btn btn-sm" type="button" onClick={handleRemove}><i className="fas fa-trash"></i></button></span>
+                    <span className="date text-muted float-md-right"> {moment(item.updatedAt).format("lll")}
+                        {user?.user.username === item.userId && <button className="btn btn-sm" type="button" onClick={handleRemove}><i className="fas fa-trash"></i></button>}
+                    </span>
                     <h6 className="mb-1">{item.User.fname} {item.User.lname}</h6>
                     <ul className="rating-stars">
 
