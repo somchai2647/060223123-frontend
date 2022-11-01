@@ -98,7 +98,7 @@ export default function ReviewProduct({ product }) {
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-12">
-                                    <textarea cols="30" rows="3" {...register("comment", { required: true })} maxLength={70} className="form-control" placeholder='ใส่ข้อความของคุณ'></textarea>
+                                    <textarea cols="30" rows="3" {...register("comment", { required: true })} className="form-control" placeholder='ใส่ข้อความของคุณ'></textarea>
                                     {errors.comment && <ErrorLabel message={errors.comment.message} />}
                                 </div>
                                 <div className="form-group col-12">
@@ -106,7 +106,7 @@ export default function ReviewProduct({ product }) {
                                 </div>
                             </div>
                         </form>
-                        <CommandCard reviews={reviews} />
+                        <CommandCard reviews={reviews} onDelete={getReviews} />
                     </div>
                 </div>
             </div>

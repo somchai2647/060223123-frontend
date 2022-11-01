@@ -37,6 +37,33 @@ export default function useSweetAlert() {
         })
     }
 
+    async function confirm(alertOption, successOption, functionInput) {
+        return new Promise((resolve, reject) => {
+            MySwal.fire({
+                title: alertOption.title,
+                text: alertOption.text,
+                icon: alertOption.icon,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ใช่, ยืนยัน',
+                cancelButtonText: 'ไม่, ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const res = functionInput()
+                    if (res) {
+                        Swal.fire(
+                            `${successOption.title}`,
+                            `${successOption.text}`,
+                            `${successOption.icon}`
+                        )
+                        resolve(true)
+                    }
+                }
+            })
+        });
+    }
+
     function toast(icon, title) {
 
         const Toast = MySwal.mixin({
@@ -57,5 +84,5 @@ export default function useSweetAlert() {
         })
     }
 
-    return { success, warning, error, info, toast }
+    return { success, warning, error, info, toast, confirm }
 }
