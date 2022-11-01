@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import useSweetAlert from '../../hooks/useSweetAlert'
 import { useForm } from 'react-hook-form'
+import CommandCard from './CommandCard'
+import ErrorLabel from '../ErrorLabel'
 
 const schema = yup.object().shape({
     rating: yup.number().required(),
@@ -17,7 +19,7 @@ export default function ReviewProduct({ product }) {
     const [reviews, setReviews] = useState([])
 
     const sweetalert = useSweetAlert()
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schema)
     })
 
@@ -32,7 +34,9 @@ export default function ReviewProduct({ product }) {
             const data = await res.data
 
             if (data) {
-                setReviews(review => [...review, data])
+                sweetalert.success("บันทึกข้อมูลสำเร็จ", "ขอบคุณสำหรับความคิดเห็นของคุณ")
+                getReviews()
+                reset()
             }
 
 
@@ -53,6 +57,13 @@ export default function ReviewProduct({ product }) {
         }
     }
 
+    useEffect(() => {
+
+        getReviews()
+
+    }, [])
+
+
     return (
         <div>
             <div className="card mt-4">
@@ -62,10 +73,10 @@ export default function ReviewProduct({ product }) {
                         <div className="rating-wrap">
                             <ul className="rating-stars stars-lg">
                                 <li style={{ width: '80%' }} className="stars-active">
-                                    <img src="/assets/images/icons/stars-active.svg" alt />
+                                    <img src="/assets/images/icons/stars-active.svg" />
                                 </li>
                                 <li>
-                                    <img src="/assets/images/icons/starts-disable.svg" alt />
+                                    <img src="/assets/images/icons/starts-disable.svg" />
                                 </li>
                             </ul>
                             <strong className="label-rating text-lg"> 4.5 <span className="text-muted">| 112 reviews</span></strong>
@@ -88,38 +99,14 @@ export default function ReviewProduct({ product }) {
                             <div className="form-row">
                                 <div className="form-group col-12">
                                     <textarea cols="30" rows="3" {...register("comment", { required: true })} maxLength={70} className="form-control" placeholder='ใส่ข้อความของคุณ'></textarea>
+                                    {errors.comment && <ErrorLabel message={errors.comment.message} />}
                                 </div>
                                 <div className="form-group col-12">
                                     <button type="submit" disabled={loading} className="btn btn-primary">{loading ? "✏️ กำลังบันทึก" : "✏️ บันทึก"}</button>
                                 </div>
                             </div>
                         </form>
-                        <article className="box mb-3">
-                            <div className="icontext w-100">
-                                <img src="/assets/images/avatars/user-icon.png" className="img-xs icon rounded-circle" />
-                                <div className="text">
-                                    <span className="date text-muted float-md-right">24.04.2020 </span>
-                                    <h6 className="mb-1">Mike John </h6>
-                                    <ul className="rating-stars">
-                                        <li style={{ width: '80%' }} className="stars-active">
-                                            <img src="/assets/images/icons/stars-active.svg" alt />
-                                        </li>
-                                        <li>
-                                            <img src="/assets/images/icons/starts-disable.svg" alt />
-                                        </li>
-                                    </ul>
-                                    <span className="label-rating text-warning">Good</span>
-                                </div>
-                            </div> {/* icontext.// */}
-                            <div className="mt-3">
-                                <p>
-                                    Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip
-                                </p>
-                            </div>
-                        </article>
-
+                        <CommandCard reviews={reviews} />
                     </div>
                 </div>
             </div>
