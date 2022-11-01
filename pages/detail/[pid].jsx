@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
 import Axios from '../../components/Axios'
 import SVGLoading from '../../components/SVGLoading'
-// import ProductDetail from '../../components/Card/ProductDetail';
+import ReviewProduct from '../../components/Card/ReviewProduct';
 
 const DynamicProductDetail = dynamic(() => import('../../components/Card/ProductDetail'), {
     suspense: true,
@@ -21,10 +21,10 @@ export default function ProductDetailPage({ product, categorys }) {
                     <Suspense fallback={<SVGLoading />} >
                         <DynamicProductDetail product={product} />
                     </Suspense>
-                    {/* {product && <ProductDetail product={product} />} */}
+                    <ReviewProduct product={product} />
                 </div>
             </section>
-        </Layout>
+        </Layout >
     )
 }
 
