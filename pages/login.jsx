@@ -35,7 +35,7 @@ export default function Login(category) {
             }
 
             if (role === "ADMIN") {
-                router.push("/manage");
+                router.push("/manage/order");
             } else {
                 router.push("/");
             }
