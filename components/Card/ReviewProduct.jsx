@@ -56,7 +56,7 @@ export default function ReviewProduct({ product }) {
     return (
         <div>
             <div className="card mt-4">
-                <div classname="card-body">
+                <div className="card-body">
                     <header className="section-heading p-4">
                         <h3>Review</h3>
                         <div className="rating-wrap">
